@@ -55,3 +55,31 @@ You can change the font by replacing the "mainFont.ttf" file.
 To implement a command, create a class that inherit from Command, call the constructor of Command with the name of your command, and add your command to the commandList singleton with the method addCommand.
 
 The unimplemented command "quitconsole" is called each time the escape button is pressed while in the console.
+
+# Ianagd
+
+Ianagd is a simple Tower Defense game.
+
+## Gameplay
+
+To place tower, select a tower on the bottom left part on the screen and place it on a brown tile (those are buildable tiles).
+
+Each tower have a price, a range (indicated by a circle when you select a tower) and a damage value.
+
+To start the next wave, simply click on the start new wave button.
+
+## Control
+
+* Use the keyboard arrows to move the camera
+* Use the left click to select or place a tower
+* Use the right click to dismiss the tower you selected
+* Use the key A to open the console
+* Inside the console, use the key Escape to exit the console
+
+## Useful commands
+
+* "restart_game" to restart the game.
+* "time_scale \<number\>" to change the speed of the game. Default value is 1, 0 freeze the game.
+* "fps \<number\>" to change the fps of the game. Default value is 60.
+* "toggle_graphics" to disable/enable graphics. When disabled, only the console is rendered.
+* "quit" to exit the game.
