@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="FactoryTest.cpp" />
+    <ClCompile Include="IDGeneratorTest.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Container2DTest.cpp">
+      <Filter>pns-innov-test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MapTest.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="pns-innov-test">
+      <UniqueIdentifier>{d7acdf29-1c2d-4a7f-8040-5e718645d5d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
