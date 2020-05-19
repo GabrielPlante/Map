@@ -18,12 +18,27 @@
     <ClCompile Include="GeneticBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BotManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneticBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Container2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BotManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Values.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

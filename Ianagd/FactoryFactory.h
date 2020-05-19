@@ -1,6 +1,8 @@
 #pragma once
 #include "../GameEngine2D/Factory.h"
 
+#include "../pns-innov/BotManager.h"
+
 #include "DamageDealerComponent.h"
 #include "TileMovementComponent.h"
 #include "ShotRendererComponent.h"
@@ -54,6 +56,9 @@ namespace ian {
 		ge::Factory<TileMovementComponent> tileMovementFactory;
 
 		Map map;
+
+		//The bot manager for the bot system
+		std::unique_ptr<pns::BotManager> botManager;
 
 	};
 }

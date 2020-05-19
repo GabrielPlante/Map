@@ -119,6 +119,9 @@
     <ClCompile Include="GameValues.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>
+    <ClCompile Include="BotSystem.cpp">
+      <Filter>Source Files\ECS\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameGraphicSystem.h">
@@ -228,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="CommandStartNewWave.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="BotSystem.h">
+      <Filter>Header Files\ECS\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

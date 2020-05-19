@@ -21,6 +21,7 @@
 #include "MovementSystem.h"
 #include "GameSystem.h"
 #include "MapSystem.h"
+#include "BotSystem.h"
 
 //Include the command
 #include "CommandToggleGraphics.h"
@@ -67,6 +68,7 @@ namespace ian {
 		std::shared_ptr<GameSystem> gameSystem{ new GameSystem{} };
 		std::shared_ptr<DamageDealerSystem> damageDealerSystem{ new DamageDealerSystem{} };
 		std::shared_ptr<EnemyManagerSystem> enemyManagerSystem{ new EnemyManagerSystem{enemyStartPosition, enemyEndPosition } };
+		std::shared_ptr<BotSystem> botSystem{ new BotSystem{} };
 
 		//Add them to the engine
 		ge::Engine::getInstance()->addSystem(enemyManagerSystem);
@@ -75,6 +77,7 @@ namespace ian {
 		ge::Engine::getInstance()->addSystem(movementSystem);
 		ge::Engine::getInstance()->addSystem(gameSystem);
 		ge::Engine::getInstance()->addSystem(mapSystem);
+		ge::Engine::getInstance()->addSystem(botSystem);
 
 		factoryFactory->rendererFactory.getComponent(mapRendererId)->positionComponentId = factoryFactory->positionFactory.addComponent(PositionComponent{});
 	}
@@ -148,7 +151,7 @@ namespace ian {
 		mapRepresentation.transfertToMap(&factoryFactory->map);
 
 		//Workaround for a bug with UI rendering
-		ge::Engine::getInstance()->update();
+		//ge::Engine::getInstance()->update();
 
 		//Create a text
 		ge::Drawer drawer;
@@ -237,7 +240,9 @@ namespace ian {
 		factoryFactory->tileMovementFactory.clear();
 
 		//Reset the game component
+		bool graphics{ factoryFactory->gameComponent.graphicsOn };
 		factoryFactory->gameComponent = GameComponent{};
+		factoryFactory->gameComponent.graphicsOn = graphics;
 
 		//Clear the map
 		factoryFactory->map.clearMap();
@@ -245,11 +250,14 @@ namespace ian {
 		//Clear the tower manager
 		towerManager.clear();
 
+		factoryFactory->gameComponent.playerGold = gv::startingGold;
+
 		//Add the systems
 		addSystem(factoryFactory);
 
 		//Setup the game
 		setupGame();
+
 	}
 
 	GameCore::~GameCore() {

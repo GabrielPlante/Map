@@ -8,29 +8,26 @@ namespace pns {
 	class GeneticBot
 	{
 	private:
-		//The parameter used for the bot to work
-		std::function<int()> getMoney;
-		std::function<int()> getCurrentWave;
-		std::function<void(int)> placeTower;
-		std::vector<int> towersCost;
-
-		//Where every decision is stored
+		//Where every decision is stored, with the x == the wave number and y == the money
 		Container2D<int> decisionMap;
+
+		int lastMoneyAmount{ 0 };
+		int accumulatedMoney{ 0 };
+		int towerPlaced{ 0 };
 	public:
 		/*Default constructor
-		* getMoney is a function that should return the money the player have
-		* getCurrentWave is a function that should return the wave nbr the player currently is
-		* placeTower is a function that should place a tower on an optimal position when called
-		* towersCost is a vector that contain each cost of each tower
-		* decisionMap is the map of every 
+		* decisionMap is the map of every decision the bot can take
 		*/
-		GeneticBot(std::function<int()> getMoney, std::function<int()> getCurrentWave, std::function<void(int)> placeTower, std::vector<int> towersCost,
-			Container2D<int> decisionMap = Container2D<int>{});
+		GeneticBot(Container2D<int> decisionMap = Container2D<int>{});
 
-		//Update the bot, allowing him to play
-		void update();
+		//Make the bot play for this instant. The money gap is used if money is always the multiple of a number
+		void play(std::function<int()> getMoney, std::function<void(int)> placeTower,
+			const std::vector<int>& towersCost, int moneyGap = 1);
 
 		//Get the decision map the bot updated
 		const Container2D<int> getDecisionMap() const { return decisionMap; }
+
+		//Get the fitness this bot reached
+		int getFitness() const;
 	};
 }

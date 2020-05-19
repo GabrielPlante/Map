@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BotSystem.cpp" />
     <ClCompile Include="DamageDealerSystem.cpp" />
     <ClCompile Include="EnemyManagerSystem.cpp" />
     <ClCompile Include="FactoryFactory.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BotSystem.h" />
     <ClInclude Include="CommandEntityInfo.h" />
     <ClInclude Include="CommandPlaceTower.h" />
     <ClInclude Include="CommandQuitConsole.h" />
