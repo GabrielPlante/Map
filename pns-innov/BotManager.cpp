@@ -64,7 +64,7 @@ namespace pns {
 		while (newBots.size() < nbrOfBotPerGeneration) {
 			//Randomise the bot parameters
 			Container2D<int> newBotParameters{ bots[fitnessVector[i].position].getDecisionMap() };
-			randomiseParameters(&newBotParameters, percentageOfBotKept);
+			randomiseParameters(&newBotParameters, percentageOfParameterChanged);
 			GeneticBot bot{ newBotParameters };
 			newBots.push_back(bot);
 			//Increment i and check to not get out of the vector bound

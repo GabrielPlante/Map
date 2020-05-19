@@ -57,6 +57,6 @@ namespace pns {
 	}
 
 	int GeneticBot::getFitness() const {
-		return accumulatedMoney + lastMoneyAmount;
+		return accumulatedMoney;
 	}
 }

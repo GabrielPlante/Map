@@ -15,14 +15,19 @@ namespace ian {
 
 	int getMoney() { return F_FACTORY->gameComponent.playerGold; }
 
+	constexpr ge::Vector2<int> mapSize{ 25, 25 };
+
 	//This function find the best place to build a tower
 	void placeTower(int towerType) {
 		//The fitness of the best tower, ie: how many path tile the best tower see
 		int bestTowerFitness{ 0 };
 		ge::Vector2<int> bestTowerPosition;
+
+		//Range of the tower selected in tile
+		int towerRange{ gv::towersValues[towerType].range / gv::tileSize };
 		//For every tile
-		for (int i = 6; F_FACTORY->map.tileExist({ i, 0 }); i++) {
-			for (int j = 6; F_FACTORY->map.tileExist({ i, j }); j++) {
+		for (int i = towerRange; i < mapSize.x - towerRange; i++) {
+			for (int j = towerRange; j < mapSize.y - towerRange; j++) {
 				//If we can build on this tile
 				if (GameCore::getInstance()->getTowerManager()->isBuildable(F_FACTORY->map.relativeToAbsolute({ i, j }))) {
 					ge::Vector2<> tilePos{ F_FACTORY->map.relativeToAbsolute({i, j}) };
