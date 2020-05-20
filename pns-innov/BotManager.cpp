@@ -18,7 +18,7 @@ namespace pns {
 	};
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-		std::function<int()> getMoney, std::function<void(int)> placeTower, std::vector<int> towersCost, int moneyGap)
+		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
 		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, moneyGap{ moneyGap }
 	{
@@ -92,11 +92,14 @@ namespace pns {
 			for (int j = 0; values->exist(i, j); j++) {
 				//If it is not the unvalid value and it is chosen for a reassignement
 				if (values->get(i, j) != unvalidValue && Random::getRandomNumber() % 100 < randomPercent) {
-					//Change it to a random valid value
-					std::vector<int> validValues{ getAffordableTowers(j) };
-					//Add the "don't build a tower" option
-					validValues.push_back(-2);
-					values->set(i, j, validValues[Random::getRandomNumber() % validValues.size()]);
+					//Change it to a random valid value (tower or not according to the values)
+					if (Random::getRandomNumber() % 100 < chanceToBuildTower) {
+						std::vector<int> validValues{ getAffordableTowers(j) };
+						if (!validValues.empty())
+							values->set(i, j, validValues[Random::getRandomNumber() % validValues.size()]);
+					}
+					else
+						values->set(i, j, -2);
 				}
 			}
 		}

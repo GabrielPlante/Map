@@ -20,7 +20,7 @@ namespace pns {
 
 		//The parameter used for the bot to work
 		std::function<int()> getMoney;
-		std::function<void(int)> placeTower;
+		std::function<void(int, int)> placeTower;
 		std::vector<int> towersCost;
 		int moneyGap;
 
@@ -45,7 +45,7 @@ namespace pns {
 		* The money gap is used if money is always the multiple of a number
 		*/
 		BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-			std::function<int()> getMoney, std::function<void(int)> placeTower, std::vector<int> towersCost, int moneyGap = 1);
+			std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap = 1);
 
 		//Update the bot manager
 		void update();

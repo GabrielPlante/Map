@@ -17,46 +17,66 @@ namespace ian {
 
 	constexpr ge::Vector2<int> mapSize{ 25, 25 };
 
-	//This function find the best place to build a tower
-	void placeTower(int towerType) {
-		//The fitness of the best tower, ie: how many path tile the best tower see
-		int bestTowerFitness{ 0 };
-		ge::Vector2<int> bestTowerPosition;
+	//The vector containing all the tower position orderer by efficiency for each tower. The first number in the array is the fitness of the tower, the two other are the position
+	std::vector<std::vector<std::array<int, 3>>> bestTowerPositionVector;
 
-		//Range of the tower selected in tile
-		int towerRange{ gv::towersValues[towerType].range / gv::tileSize };
-		//For every tile
-		for (int i = towerRange; i < mapSize.x - towerRange; i++) {
-			for (int j = towerRange; j < mapSize.y - towerRange; j++) {
-				//If we can build on this tile
-				if (GameCore::getInstance()->getTowerManager()->isBuildable(F_FACTORY->map.relativeToAbsolute({ i, j }))) {
-					ge::Vector2<> tilePos{ F_FACTORY->map.relativeToAbsolute({i, j}) };
+	void generateBestTowerPositionVector() {
+		//For every tower
+		for (int towerType = 0; towerType != gv::towersValues.size(); towerType++) {
+			bestTowerPositionVector.push_back(std::vector<std::array<int, 3>>{});
+			int towerRange{ gv::towersValues[towerType].range / gv::tileSize };
+			//For every tile
+			for (int i = towerRange; i < mapSize.x - towerRange; i++) {
+				for (int j = towerRange; j < mapSize.y - towerRange; j++) {
+					//If we can build on this tile
+					if (GameCore::getInstance()->getTowerManager()->isBuildable(F_FACTORY->map.relativeToAbsolute({ i, j }))) {
+						ge::Vector2<> tilePos{ F_FACTORY->map.relativeToAbsolute({i, j}) };
 
-					//This tile fitness
-					int towerFitness{ 0 };
-					//For every tile in the square of size 2 x tower range centered on the tile
-					for (long k = -gv::towersValues[towerType].range + tilePos.x; k < gv::towersValues[towerType].range + tilePos.x; k += gv::tileSize) {
-						for (long l = -gv::towersValues[towerType].range + tilePos.y; l < gv::towersValues[towerType].range + tilePos.y; l += gv::tileSize) {
-							//If the tile [k, l] is still in the circle (this could be improved with the mid-point circle algorithm for performance)
-							//And this tile is part of the path the enemies take
-							if (tilePos.rectIntersectCircle(ge::Vector2<>{ k, l }, 1, 1, gv::towersValues[towerType].range)
-								&& F_FACTORY->map.tileExist(F_FACTORY->map.absoluteToRelative({ k, l }))
-								&& F_FACTORY->map.getTile(F_FACTORY->map.absoluteToRelative({ k, l })).isWalkable) {
-								towerFitness++;
+						//This tile fitness
+						int towerFitness{ 0 };
+						//For every tile in the square of size 2 x tower range centered on the tile
+						for (long k = -gv::towersValues[towerType].range + tilePos.x; k < gv::towersValues[towerType].range + tilePos.x; k += gv::tileSize) {
+							for (long l = -gv::towersValues[towerType].range + tilePos.y; l < gv::towersValues[towerType].range + tilePos.y; l += gv::tileSize) {
+								//If the tile [k, l] is still in the circle (this could be improved with the mid-point circle algorithm for performance)
+								//And this tile is part of the path the enemies take
+								if (tilePos.rectIntersectCircle(ge::Vector2<>{ k, l }, 1, 1, gv::towersValues[towerType].range)
+									&& F_FACTORY->map.tileExist(F_FACTORY->map.absoluteToRelative({ k, l }))
+									&& F_FACTORY->map.getTile(F_FACTORY->map.absoluteToRelative({ k, l })).isWalkable) {
+									towerFitness++;
+								}
 							}
 						}
-					}
-					//If this tile is the best for this tower type
-					if (towerFitness > bestTowerFitness) {
-						bestTowerFitness = towerFitness;
-						bestTowerPosition = { i, j };
+						std::array<int, 3> towerArray{ towerFitness, i, j };
+						//If it is the first tower to be added
+						if (bestTowerPositionVector[towerType].empty()) {
+							bestTowerPositionVector[towerType].push_back(towerArray);
+						}
+						else {
+							for (int towerI = 0; towerI != bestTowerPositionVector[towerType].size(); towerI++) {
+								//If we reached the correct place for this tower
+								if (bestTowerPositionVector[towerType][towerI][0] < towerFitness) {
+									bestTowerPositionVector[towerType].insert(bestTowerPositionVector[towerType].begin() + towerI, towerArray);
+									break;
+								}
+								//Else if we reached the end of the list (ie this tower placement is the worst one yet)
+								else if (towerI == bestTowerPositionVector[towerType].size() - 1) {
+									bestTowerPositionVector[towerType].push_back(towerArray);
+									break;
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-		//If we found a place to build the tower
-		if (bestTowerFitness != 0) {
-			GameCore::getInstance()->getTowerManager()->buildTower(F_FACTORY->map.relativeToAbsolute(bestTowerPosition), towerType);
+	}
+
+	//This function find the best place to build a tower
+	void placeTower(int towerType, int nbrOfTowerAlreadyPlaced) {
+		//While there is still tower that can be build, and while we fail to build a tower
+		while (bestTowerPositionVector[towerType].size() > nbrOfTowerAlreadyPlaced && !GameCore::getInstance()->getTowerManager()
+			->buildTower(F_FACTORY->map.relativeToAbsolute({ bestTowerPositionVector[towerType][nbrOfTowerAlreadyPlaced][1], bestTowerPositionVector[towerType][nbrOfTowerAlreadyPlaced][2] }), towerType)) {
+			nbrOfTowerAlreadyPlaced++;
 		}
 	}
 
@@ -70,7 +90,8 @@ namespace ian {
 				towersCost.push_back(gv::towersValues[i].cost);
 			}
 			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave},
-				std::function<bool()>{hasGameEnded}, std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int)>{placeTower}, towersCost, 50 } };
+				std::function<bool()>{hasGameEnded}, std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, int)>{placeTower}, towersCost, 50 } };
+			generateBestTowerPositionVector();
 		}
 		F_FACTORY->botManager->update();
 	}
