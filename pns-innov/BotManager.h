@@ -5,6 +5,7 @@
 
 #include "Container2D.h"
 #include "GeneticBot.h"
+#include "Statistics.h"
 
 
 namespace pns {
@@ -27,6 +28,7 @@ namespace pns {
 		//The bots storage
 		std::vector<GeneticBot> bots;
 		std::vector<GeneticBot>::iterator botIt;
+		Statistics stats;
 
 		//Prepare the next generation and randomise some bots parameters
 		void nextGeneration();

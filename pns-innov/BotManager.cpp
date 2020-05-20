@@ -20,7 +20,7 @@ namespace pns {
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
 		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
-		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, moneyGap{ moneyGap }
+		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
 	{
 	}
 
@@ -28,6 +28,7 @@ namespace pns {
 		//If no bots were created or loaded, create default bots
 		if (bots.empty())
 			createBots();
+
 		//If the game ended, go to the next bot
 		if (hasGameEnded()) {
 			botIt++;
@@ -53,7 +54,10 @@ namespace pns {
 		std::vector<SortWithPos> fitnessVector;
 		for (int i = 0; i != bots.size(); i++) {
 			fitnessVector.push_back({ bots[i].getFitness(), i });
+			//Store fitness values for statistics
+			stats.set(stats.genCounter, i, bots[i].getFitness());
 		}
+
 		std::sort(fitnessVector.begin(), fitnessVector.end());
 
 		//The bot of the next generation
@@ -107,6 +111,7 @@ namespace pns {
 
 	void BotManager::createBots() {
 		std::cout << "Creating bots" << std::endl;
+		std::cout << stats.getNbrOfBots() << std::endl;
 		for (int i = 0; i != nbrOfBotPerGeneration; i++) {
 			bots.push_back(GeneticBot{});
 		}
