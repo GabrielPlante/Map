@@ -1,8 +1,19 @@
 #pragma once
 #include <functional>
+#include <string>
+#include <iostream>
+#include <fstream>
 #include <vector>
 
 #include "Random.h"
+
+using std::string;
+using std::string;
+using std::fstream;
+using std::vector;
+using std::cout;
+using std::endl;
+using std::ios;
 
 namespace pns {
 	//Container2D hold a 2D storage and provide a safe insert function. It cannot handle negative values
@@ -26,6 +37,8 @@ namespace pns {
 
 		//Randomise a random percentage of all the valid value of the container with a value within the possible values
 		void randomiseValues(std::function<std::vector<int>(int)> possibleValues, int randomPercent, int unvalidValue = -1);
+
+		void writeToFile(string filePath);
 	};
 
 	template <typename T>
@@ -60,6 +73,31 @@ namespace pns {
 				}
 			}
 		}
+	}
+
+	template <typename T>
+	void Container2D<T>::writeToFile(string filePath) {
+		fstream myfile;
+		myfile.open(filePath, ios::out | ios::trunc);
+		//myfile.open();
+		int i, line_size = storage.size();
+		if (myfile.is_open()) {
+			for (vector<T> line : storage) {
+				i = 0;
+				for (T elt : line) {
+					myfile << elt;
+					if (i == line_size - 1)
+						myfile << ",";
+					++i;
+				}
+				myfile << ";";
+			}
+			myfile << "\n";
+		}
+		else {
+			throw string("Unable to open file\n");
+		}
+		myfile.close();
 	}
 }
 

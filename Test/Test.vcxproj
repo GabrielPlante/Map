@@ -41,6 +41,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Container2DSerializerTest.cpp" />
     <ClCompile Include="Container2DTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
     <ClCompile Include="IDGeneratorTest.cpp" />

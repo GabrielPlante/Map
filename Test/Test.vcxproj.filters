@@ -7,6 +7,9 @@
     <ClCompile Include="Container2DTest.cpp">
       <Filter>pns-innov-test</Filter>
     </ClCompile>
+    <ClCompile Include="Container2DSerializerTest.cpp">
+      <Filter>pns-innov-test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapTest.h" />

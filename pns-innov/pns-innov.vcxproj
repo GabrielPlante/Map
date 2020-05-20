@@ -26,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="BotManager.h" />
     <ClInclude Include="Container2D.h" />
+    <ClInclude Include="Container2DSerializer.h" />
     <ClInclude Include="GeneticBot.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Values.h" />
