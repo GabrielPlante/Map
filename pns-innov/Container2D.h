@@ -5,15 +5,8 @@
 #include <fstream>
 #include <vector>
 
+#include "FileWriter.h"
 #include "Random.h"
-
-using std::string;
-using std::string;
-using std::fstream;
-using std::vector;
-using std::cout;
-using std::endl;
-using std::ios;
 
 namespace pns {
 	//Container2D hold a 2D storage and provide a safe insert function. It cannot handle negative values
@@ -38,7 +31,8 @@ namespace pns {
 		//Randomise a random percentage of all the valid value of the container with a value within the possible values
 		void randomiseValues(std::function<std::vector<int>(int)> possibleValues, int randomPercent, int unvalidValue = -1);
 
-		void writeToFile(string filePath);
+		//Print the container to a file
+		const Container2D& print(const std::string& file) const;
 	};
 
 	template <typename T>
@@ -76,28 +70,15 @@ namespace pns {
 	}
 
 	template <typename T>
-	void Container2D<T>::writeToFile(string filePath) {
-		fstream myfile;
-		myfile.open(filePath, ios::out | ios::trunc);
-		//myfile.open();
-		int i, line_size = storage.size();
-		if (myfile.is_open()) {
-			for (vector<T> line : storage) {
-				i = 0;
-				for (T elt : line) {
-					myfile << elt;
-					if (i == line_size - 1)
-						myfile << ",";
-					++i;
-				}
-				myfile << ";";
+	const Container2D<T>& Container2D<T>::print(const std::string& file) const {
+		FileWriter fileWriter(file);
+		for (int i = 0; i != storage.size(); i++) {
+			for (int j = 0; j != storage[i].size(); j++) {
+				fileWriter.write(std::to_string(storage[i][j]) + " ");
 			}
-			myfile << "\n";
+			fileWriter.write(";");
 		}
-		else {
-			throw string("Unable to open file\n");
-		}
-		myfile.close();
+		return *this;
 	}
 }
 
