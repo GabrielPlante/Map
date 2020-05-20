@@ -22,13 +22,14 @@
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BotManager.h" />
     <ClInclude Include="Container2D.h" />
-    <ClInclude Include="Container2DSerializer.h" />
     <ClInclude Include="GeneticBot.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="Statistics.h" />
     <ClInclude Include="Values.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

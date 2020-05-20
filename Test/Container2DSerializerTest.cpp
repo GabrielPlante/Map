@@ -5,7 +5,7 @@
 
 TEST(Container2DSerializerTest, All) {
 	pns::Container2D<int> container;
-	/*
+
 	int a[3][3] = {
 		{1, 2, 3},
 		{4, 5, 6},
@@ -28,5 +28,5 @@ TEST(Container2DSerializerTest, All) {
 	EXPECT_EQ(-1, container.get(1, 0));
 	EXPECT_EQ(-1, container.get(1, 1));
 	EXPECT_EQ(5, container.get(1, 2));
-	EXPECT_FALSE(container.exist(0, 0)); */
+	EXPECT_FALSE(container.exist(0, 0));
 }
