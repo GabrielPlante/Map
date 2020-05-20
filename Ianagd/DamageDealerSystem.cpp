@@ -65,7 +65,13 @@ namespace ian {
 						F_FACTORY->positionFactory.getComponent(ith->positionComponentId)->getPosition()) < pow(itd->range, 2)) {
 						//Shot it
 						ith->health -= itd->damage;
-						itd->lastShotTime = ge::Engine::getInstance()->getTimeSinceStart();
+						//If the shot should have happened between the last frame and this one
+						if (ge::Engine::getInstance()->getTimeSinceStart() - itd->lastShotTime + static_cast<long long>(itd->reloadingTime * 1000)
+							< ge::Engine::getInstance()->getTimeSinceLastFrame()) {
+							itd->lastShotTime += static_cast<long long>(itd->reloadingTime * 1000);
+						}
+						else
+							itd->lastShotTime = ge::Engine::getInstance()->getTimeSinceStart();
 
 						if (F_FACTORY->gameComponent.graphicsOn) {
 							//Create the graphic shot

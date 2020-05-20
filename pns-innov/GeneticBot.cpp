@@ -18,8 +18,11 @@ namespace pns {
 		: decisionMap{ decisionMap }
 	{}
 
-	void GeneticBot::play(std::function<int()> getMoney, std::function<void(int)> placeTower,
+	void GeneticBot::play(std::function<int()> getMoney, std::function<void(int, int)> placeTower,
 		const std::vector<int>& towersCost, int moneyGap) {
+		if (towerPlacedByType.empty()) {
+			towerPlacedByType = std::vector<int>(towersCost.size(), 0);
+		}
 		//Manage the money
 		if (getMoney() != lastMoneyAmount) {
 			//If the bot won some money, remember it
@@ -30,8 +33,10 @@ namespace pns {
 
 		//If the bot already have a plan for this situation and this plan is to place a tower
 		if (decisionMap.exist(towerPlaced, getMoney() / moneyGap) && decisionMap.get(towerPlaced, getMoney() / moneyGap) > -1) {
-			placeTower(decisionMap.get(towerPlaced, getMoney() / moneyGap));
+			int towerType{ decisionMap.get(towerPlaced, getMoney() / moneyGap) };
+			placeTower(towerType, towerPlacedByType[towerType]);
 			towerPlaced++;
+			towerPlacedByType[towerType]++;
 		}
 		//If the bot doesn't have any plan
 		else if (!decisionMap.exist(towerPlaced, getMoney()/moneyGap)){
@@ -42,9 +47,11 @@ namespace pns {
 				//If it decide to build a tower
 				if (Random::getRandomNumber() % 100 < chanceToBuildTower) {
 					decisionMap.set(towerPlaced, getMoney() / moneyGap, affordableTowers[Random::getRandomNumber() % affordableTowers.size()], -1);
+					int towerType{ decisionMap.get(towerPlaced, getMoney() / moneyGap) };
 					//And build it
-					placeTower(decisionMap.get(towerPlaced, getMoney() / moneyGap));
+					placeTower(towerType, towerPlacedByType[towerType]);
 					towerPlaced++;
+					towerPlacedByType[towerType]++;
 				}
 				else {
 					decisionMap.set(towerPlaced, getMoney() / moneyGap, -2);

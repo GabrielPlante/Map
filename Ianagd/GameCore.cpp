@@ -195,6 +195,9 @@ namespace ian {
 		startComponent.positionComponentId = factoryFactory->positionFactory.addComponent(std::move(startPosComp));
 		startComponent.texture = drawer.finishDrawing(true);
 		factoryFactory->gameComponent.starterUiId = factoryFactory->uiFactory.addComponent(std::move(startComponent));
+
+		EXEC_ARGS("fps", { 500 })
+
 	}
 
 	void GameCore::endGame() {
