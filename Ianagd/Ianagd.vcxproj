@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Dependencies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Dependencies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Dependencies\include;$(IncludePath)</IncludePath>
@@ -84,7 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>D:\Dev\GameEngine2D\GameEngine2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\GameEngine2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
