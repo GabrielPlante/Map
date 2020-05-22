@@ -67,7 +67,7 @@ namespace pns {
 		int i{ bestBotStart };
 		while (newBots.size() < nbrOfBotPerGeneration) {
 			//Randomise the bot parameters
-			Container2D<int> newBotParameters{ bots[fitnessVector[i].position].getDecisionMap() };
+			std::vector<int> newBotParameters{ bots[fitnessVector[i].position].getDecisionMap() };
 			randomiseParameters(&newBotParameters, percentageOfParameterChanged);
 			GeneticBot bot{ newBotParameters };
 			newBots.push_back(bot);
@@ -90,8 +90,9 @@ namespace pns {
 		return goodValues;
 	}
 
-	void BotManager::randomiseParameters(Container2D<int>* values, int randomPercent, int unvalidValue) {
+	void BotManager::randomiseParameters(std::vector<int>* values, int randomPercent) {
 		//For every value in this container
+		/* Test with new architecture
 		for (int i = 0; values->exist(i); i++) {
 			for (int j = 0; values->exist(i, j); j++) {
 				//If it is not the unvalid value and it is chosen for a reassignement
@@ -105,6 +106,11 @@ namespace pns {
 					else
 						values->set(i, j, -2);
 				}
+			}
+		}*/
+		for (int i = 0; i != values->size(); i++) {
+			if (Random::getRandomNumber() % 100 < randomPercent) {
+				(*values)[i] = Random::getRandomNumber() % towersCost.size();
 			}
 		}
 	}

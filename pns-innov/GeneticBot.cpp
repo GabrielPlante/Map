@@ -14,12 +14,12 @@ namespace pns {
 		return goodValues;
 	}
 
-	GeneticBot::GeneticBot(Container2D<int> decisionMap)
+	GeneticBot::GeneticBot(std::vector<int> decisionMap)
 		: decisionMap{ decisionMap }
 	{}
 
 	void GeneticBot::play(std::function<int()> getMoney, std::function<void(int, int)> placeTower,
-		const std::vector<int>& towersCost, int moneyGap) {
+		const std::vector<int>& towersCost, int) {
 		if (towerPlacedByType.empty()) {
 			towerPlacedByType = std::vector<int>(towersCost.size(), 0);
 		}
@@ -31,8 +31,21 @@ namespace pns {
 			lastMoneyAmount = getMoney();
 		}
 
+		//Test of a new bot memory, a simple vector with the tower to buy in order
+		//If the bot don't have a plan
+		if (decisionMap.size() <= towerPlaced) {
+			decisionMap.push_back(Random::getRandomNumber() % towersCost.size());
+		}
+		//If the bot can afford the tower
+		if (towersCost[decisionMap[towerPlaced]] <= getMoney()) {
+			int towerType{ decisionMap[towerPlaced] };
+			placeTower(towerType, towerPlacedByType[towerType]);
+			towerPlaced++;
+			towerPlacedByType[towerType]++;
+		}
+
 		//If the bot already have a plan for this situation and this plan is to place a tower
-		if (decisionMap.exist(towerPlaced, getMoney() / moneyGap) && decisionMap.get(towerPlaced, getMoney() / moneyGap) > -1) {
+		/*if (decisionMap.exist(towerPlaced, getMoney() / moneyGap) && decisionMap.get(towerPlaced, getMoney() / moneyGap) > -1) {
 			int towerType{ decisionMap.get(towerPlaced, getMoney() / moneyGap) };
 			placeTower(towerType, towerPlacedByType[towerType]);
 			towerPlaced++;
@@ -60,7 +73,7 @@ namespace pns {
 			//Else indicate that the bot cannot buy any tower for future iteration
 			else
 				decisionMap.set(towerPlaced, getMoney() / moneyGap, -1, -1);
-		}
+		}*/
 	}
 
 	int GeneticBot::getFitness() const {

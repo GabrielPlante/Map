@@ -23,12 +23,12 @@ namespace pns {
 	{
 		for (int i = 0; i < genCounter; i++)
 		{
-			cout << "Generation " << i << " :" << endl;
+			std::cout << "Generation " << i << " :" << std::endl;
 			for (int j = 0; j < nbrOfBots; j++)
 			{
-				cout << j << " : " << (int) fitnessValues.get(i, j) << ", ";
+				std::cout << j << " : " << (int) fitnessValues.get(i, j) << ", ";
 			}
-			cout << endl;
+			std::cout << std::endl;
 		}
 	}
 }

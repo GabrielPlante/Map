@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 
-#include "Container2D.h"
 #include "GeneticBot.h"
 #include "Statistics.h"
 
@@ -37,7 +36,7 @@ namespace pns {
 		std::vector<int> getAffordableTowers(int diminishedPrice) const;
 
 		//Randomise a random percentage of all the valid value in the container with a value within the possible values
-		void randomiseParameters(Container2D<int>* values, int randomPercent, int unvalidValue = -1);
+		void randomiseParameters(std::vector<int>* values, int randomPercent);
 	public:
 		/*Default constructor
 		* getMoney is a function that should return the money the player have
