@@ -21,6 +21,8 @@ namespace pns {
 
 		const int getNbrOfBots();
 
+		const Container2D<int> getFitnessValues();
+
 		void set(int generation, int bot, int value);
 
 		void display();

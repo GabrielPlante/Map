@@ -14,6 +14,10 @@ namespace pns {
 		return nbrOfBots;
 	}
 
+	const Container2D<int> Statistics::getFitnessValues() {
+		return fitnessValues;
+	}
+
 	void Statistics::set(int generation, int bot, int value)
 	{
 		fitnessValues.set(generation, bot, value);

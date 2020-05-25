@@ -57,6 +57,9 @@ namespace pns {
 			//Store fitness values for statistics
 			stats.set(stats.genCounter, i, bots[i].getFitness());
 		}
+		//increment necessary to record fitness values of next generation
+		stats.genCounter++;
+		stats.getFitnessValues().print("fitnessValues.txt");
 
 		std::sort(fitnessVector.begin(), fitnessVector.end());
 
