@@ -4,6 +4,10 @@
 #include "Values.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
+using std::ifstream;
 
 namespace pns {
 	//Struct to make possible sorting the fitness of every bot and keeping their position
@@ -16,6 +20,8 @@ namespace pns {
 		//Override operator < for the std::sort algorithm
 		bool operator<(const SortWithPos& other) const { return fitness < other.fitness; }
 	};
+
+	std::vector<GeneticBot> BotManager::getBots() { return bots; }
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
 		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
@@ -123,5 +129,31 @@ namespace pns {
 		}
 		botIt = bots.begin();
 	}
+
+	void BotManager::loadBots(std::string fileName) {
+		ifstream ifs(fileName, ifstream::in);
+		std::string line;
+		std::vector<int> decisionMap = std::vector<int>();
+		GeneticBot temp;
+		if (ifs.is_open()) {
+			while (!ifs.eof()) {
+				getline(ifs, line, '\n');
+				std::stringstream sep(line);
+				std::string field;
+				//std::cout << "line" << line << std::endl;
+				sep.str(line);
+				while (getline(sep, field, ',')) {
+					decisionMap.push_back(std::stoi(field));
+				}
+				bots.push_back(GeneticBot(decisionMap));
+				decisionMap.clear();
+			}
+			ifs.close();
+		}
+		else {
+			std::cerr << "cannot open file: " << fileName << std::endl;
+		}
+	}
+
 
 }

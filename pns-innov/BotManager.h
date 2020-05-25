@@ -50,6 +50,8 @@ namespace pns {
 
 		//Update the bot manager
 		void update();
+
+		std::vector<GeneticBot> getBots();
 		
 		//Create the bots
 		void createBots();
