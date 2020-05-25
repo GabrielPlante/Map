@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Balancer.cpp" />
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Balancer.h" />
+    <ClInclude Include="BalancerAttribute.h" />
+    <ClInclude Include="BalancerObject.h" />
     <ClInclude Include="BotManager.h" />
     <ClInclude Include="Container2D.h" />
     <ClInclude Include="FileWriter.h" />

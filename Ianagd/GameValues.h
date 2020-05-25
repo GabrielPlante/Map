@@ -37,7 +37,7 @@ public:
 
 	struct TowerValues {
 		const int cost;
-		const int damage;
+		int damage;
 		const int range;
 		const int reloadingTime;
 		ge::Color color;
@@ -45,5 +45,5 @@ public:
 			: cost{ cost }, damage{ damage }, range{ range }, reloadingTime{ reloadingTime }, color{ color } {}
 	};
 
-	static const std::vector<TowerValues> towersValues;
+	static std::vector<TowerValues> towersValues;
 };
