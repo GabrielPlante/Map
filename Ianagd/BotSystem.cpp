@@ -80,6 +80,10 @@ namespace ian {
 		}
 	}
 
+	void buffDamage(int tower) { gv::towersValues[tower].damage += 4; }
+	void nerfDamage(int tower) { tower == 0 ? gv::towersValues[tower].damage -= 1 : gv::towersValues[tower].damage -= 5; }
+
+
 	BotSystem::BotSystem() {
 	}
 
@@ -92,6 +96,8 @@ namespace ian {
 			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave},
 				std::function<bool()>{hasGameEnded}, std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, int)>{placeTower}, towersCost, 50 } };
 			generateBestTowerPositionVector();
+
+			F_FACTORY->botManager->setupBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
 		}
 		F_FACTORY->botManager->update();
 	}

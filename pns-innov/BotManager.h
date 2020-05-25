@@ -5,6 +5,7 @@
 
 #include "GeneticBot.h"
 #include "Statistics.h"
+#include "Balancer.h"
 
 
 namespace pns {
@@ -29,6 +30,14 @@ namespace pns {
 		std::vector<GeneticBot>::iterator botIt;
 		Statistics stats;
 
+		//The balancer
+		std::unique_ptr<Balancer> balancer;
+
+		//The parameter for the balancer
+		int bestFitness{ 0 };
+		int nbrOfGenerationSinceImprovement{ 0 };
+		std::vector<GeneticBot> bestBots;
+
 		//Prepare the next generation and randomise some bots parameters
 		void nextGeneration();
 
@@ -37,6 +46,8 @@ namespace pns {
 
 		//Randomise a random percentage of all the valid value in the container with a value within the possible values
 		void randomiseParameters(std::vector<int>* values, int randomPercent);
+
+		void balanceGame(const std::vector<GeneticBot>& bots);
 	public:
 		/*Default constructor
 		* getMoney is a function that should return the money the player have
@@ -58,6 +69,12 @@ namespace pns {
 
 		//Load bots from a file
 		void loadBots(std::string fileName = "default_bot_file.txt");
+
+		//Setup the balancer to allow it to execute
+		/* buff and nerf attribute are function that take in parameter the tower to change
+		 * desiredTowerUsage is the percent wanted for the tower usage (between 0 and 100)
+		*/
+		void setupBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
 	};
 }
 
