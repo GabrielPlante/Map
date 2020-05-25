@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <vector>
+#include <string>
 
 namespace pns {
 	class GeneticBot
@@ -29,5 +30,8 @@ namespace pns {
 
 		//Get the fitness this bot reached
 		int getFitness() const;
+
+		//Print this bot in a file
+		void print(const std::string& file) const;
 	};
 }

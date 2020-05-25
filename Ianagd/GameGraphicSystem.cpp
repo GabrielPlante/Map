@@ -23,9 +23,11 @@ namespace ian {
 	{}
 
 	void GameGraphicSystem::update() {
-		window.clear();
-
+		//Update and render the console
+		ge::Console::getInstance()->update(window.getRenderer());
 		if (F_FACTORY->gameComponent.graphicsOn) {
+			window.clear();
+
 			//Every other update goes here
 
 			//Update every renderer associated with an entity
@@ -62,13 +64,11 @@ namespace ian {
 					SDL_RenderCopy(window.getRenderer(), it->texture.get(), NULL, &textureRect);
 				}
 			}
+
+			//The console doesn't show itself automaticaly if it's not open
+			ge::Console::getInstance()->render(window.getRenderer());
+
+			window.render();
 		}
-
-		//Update and render the console
-		ge::Console::getInstance()->update(window.getRenderer());
-		//The console doesn't show itself automaticaly if it's not open
-		ge::Console::getInstance()->render(window.getRenderer());
-
-		window.render();
 	}
 }
