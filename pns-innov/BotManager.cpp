@@ -1,5 +1,7 @@
 #include "BotManager.h"
 #include <algorithm>
+#include <string>
+#include <ctime>
 
 #include "Values.h"
 
@@ -65,7 +67,7 @@ namespace pns {
 		}
 		//increment necessary to record fitness values of next generation
 		stats.genCounter++;
-		stats.getFitnessValues().print("fitnessValues.txt");
+		stats.getFitnessValues().print("../pns-innov/runs/fitness/fitnessValues" + getDate() + ".txt");
 
 		//Sort the bots by increasing fitness
 		std::sort(fitnessVector.begin(), fitnessVector.end());
@@ -163,7 +165,7 @@ namespace pns {
 
 	void BotManager::createBots() {
 		std::cout << "Creating bots" << std::endl;
-		std::cout << stats.getNbrOfBots() << std::endl;
+		std::cout << stats.getNbrOfBots() << " bots per generation." << std::endl;
 		for (int i = 0; i != nbrOfBotPerGeneration; i++) {
 			bots.push_back(GeneticBot{});
 		}
