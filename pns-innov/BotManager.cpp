@@ -57,24 +57,24 @@ namespace pns {
 	}
 
 	void BotManager::nextGeneration() {
-		std::cout << "New generation";
+		std::cout << "New generation" << std::endl;
 		//Make a sorted vector with all the fitness of all the bot
 		std::vector<SortWithPos> fitnessVector;
 		for (int i = 0; i != bots.size(); i++) {
 			fitnessVector.push_back({ bots[i].getFitness(), i });
 			//Store fitness values for statistics
-			stats.set(stats.genCounter, i, bots[i].getFitness());
+			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
+		stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
+		stats.printFitnessValues(stats.fitnessValuesFile);
 		//increment necessary to record fitness values of next generation
 		stats.genCounter++;
-		stats.getFitnessValues().print("../pns-innov/runs/fitness/fitnessValues" + getDate() + ".txt");
-
 		//Sort the bots by increasing fitness
 		std::sort(fitnessVector.begin(), fitnessVector.end());
 
 		//If the best bot of this generation is improving compared to the last generation
 		if (fitnessVector[fitnessVector.size() - 1].fitness > bestFitness) {
-			std::cout << ", fitness improvement ! Previous: " << bestFitness;
+			std::cout << "Fitness improvement ! Previous: " << bestFitness;
 			bestFitness = fitnessVector[fitnessVector.size() - 1].fitness;
 			std::cout << ", actual: " << bestFitness;
 			nbrOfGenerationSinceImprovement = 0;
@@ -98,6 +98,7 @@ namespace pns {
 			nbrOfGenerationSinceImprovement = 0;
 			bestFitness = 0;
 			bestBots.clear();
+			stats.nextBalance();
 		}
 		else {
 

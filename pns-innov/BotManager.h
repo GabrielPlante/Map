@@ -2,8 +2,6 @@
 #include <functional>
 #include <vector>
 #include <string>
-#include <ctime>
-#pragma warning(disable : 4996)
 #include <algorithm>
 
 #include "GeneticBot.h"
@@ -32,15 +30,6 @@ namespace pns {
 		std::vector<GeneticBot> bots;
 		std::vector<GeneticBot>::iterator botIt;
 		Statistics stats;
-
-		//to store statistics of each run in different files
-		time_t now = time(0);
-		std::string getDate() {
-			tm* ltm = localtime(&now);
-			std::string date = std::to_string(ltm->tm_mday) + "-" + std::to_string(ltm->tm_mon) + "-" + std::to_string(ltm->tm_year + 1900);
-			std::string hour = std::to_string(ltm->tm_hour) + "h" + std::to_string(ltm->tm_min) + "m" + std::to_string(ltm->tm_sec) + "s";
-			return "_" + date + "_" + hour;
-		}
 
 		//The balancer
 		std::unique_ptr<Balancer> balancer;
