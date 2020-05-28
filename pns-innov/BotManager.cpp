@@ -150,21 +150,15 @@ namespace pns {
 
 	void BotManager::balanceGame(const std::vector<GeneticBot>& newBots) {
 		//Make the tower balancing if setup with the new bots
-		if (towerBalancer && !towerBalancer->didFinishBalance()) {
-			//Take the usage of each and every tower
+		if (towerBalancer) {
+			//Calculate the usage of each and every tower
 			std::vector<double> towerUsage(towersCost.size(), 0);
-			int nbrOfTower{ 0 };
 			for (int i = 0; i != newBots.size(); i++) {
 				for (int j = 0; j != newBots[i].getDecisionMap().size(); j++) {
 					towerUsage[newBots[i].getDecisionMap()[j]]++;
-					nbrOfTower++;
 				}
 			}
-			for (int i = 0; i != towerUsage.size(); i++) {
-				towerUsage[i] *= 100 / static_cast<double>(nbrOfTower);
-				std::cout << "Tower usage of " << i << ": " << towerUsage[i] << ".";
-				towerBalancer->setCurrentUsage(i, static_cast<int>(towerUsage[i]));
-			}
+			towerBalancer->balanceTowers(towerUsage);
 		}
 		//Make the wave balancing if setup
 		if (waveBalancer && waveBalancer->didFinishBalance()) {

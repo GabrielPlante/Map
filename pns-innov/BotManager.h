@@ -97,6 +97,10 @@ namespace pns {
 		//buffWave and nerfWave take for parameter the wave number and buff / nerf this wave
 		//nbrOfWave is the total number of wave present in the game
 		void setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave);
+
+		//Get the number of buff (or nerf) per tower or per wave. Does not check if the wave / tower balancer is set up
+		std::vector<int> getNbrOfBuffPerWave() const { return waveBalancer->getNbrOfBuffPerWave(); }
+		std::vector<int> getNbrOfBuffPerTower() const { return towerBalancer->getNbrOfBuffPerTower(); }
 	};
 }
 
