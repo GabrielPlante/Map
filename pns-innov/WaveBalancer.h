@@ -35,6 +35,12 @@ namespace pns {
 
 		//Did the algorithme finish it's balancing
 		bool didFinishBalance() const { return finishedBalancing; }
+
+		//Restart the balance process
+		void restartBalance(int waveToStartBalance) { finishedBalancing = false; currentBalancingWave = waveToStartBalance; }
+
+		//Get the number of wave in the game
+		int getNbrOfWave() const { return nbrOfWave; }
 	};
 }
 

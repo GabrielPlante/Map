@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../GameEngine2D/Factory.h"
 
 #include "DamageDealerComponent.h"

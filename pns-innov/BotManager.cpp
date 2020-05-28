@@ -39,6 +39,9 @@ namespace pns {
 
 		//If the game ended, go to the next bot
 		if (hasGameEnded()) {
+			//If there is a wave balancer check if a bot did finish the game
+			if (waveNbr > bestBotWave)
+				bestBotWave = waveNbr;
 			botIt++;
 			waveNbr = -1;
 			//If there is no more bots that need to play, go to the next generation
@@ -149,8 +152,17 @@ namespace pns {
 	}
 
 	void BotManager::balanceGame(const std::vector<GeneticBot>& newBots) {
+		//If there is a wave balancer that did finish the balance but no bot finished the game, it's time to restart balancing
+		if (waveBalancer && waveBalancer->didFinishBalance() && bestBotWave == waveBalancer->getNbrOfWave() - 1) {
+			waveBalancer->restartBalance(bestBotWave);
+			std::cout << "The bot can't finish the game ! Restarting the wave balancing proccess" << std::endl;
+		}
+		//Make the wave balancing if setup
+		if (waveBalancer && !waveBalancer->didFinishBalance()) {
+			waveBalancer->balanceWave(false);
+		}
 		//Make the tower balancing if setup with the new bots
-		if (towerBalancer) {
+		else if (towerBalancer && !towerBalancer->didFinishBalance()) {
 			//Calculate the usage of each and every tower
 			std::vector<double> towerUsage(towersCost.size(), 0);
 			for (int i = 0; i != newBots.size(); i++) {
@@ -160,20 +172,6 @@ namespace pns {
 			}
 			towerBalancer->balanceTowers(towerUsage);
 		}
-		//Make the wave balancing if setup
-		if (waveBalancer && waveBalancer->didFinishBalance()) {
-			waveBalancer->balanceWave(false);
-		}
-
-	}
-
-	std::vector<int> BotManager::getAffordableTowers(int diminishedPrice) const {
-		std::vector<int> goodValues;
-		for (int i = 0; i != towersCost.size(); i++) {
-			if (towersCost[i] <= diminishedPrice * moneyGap)
-				goodValues.push_back(i);
-		}
-		return goodValues;
 	}
 
 	void BotManager::randomiseParameters(std::vector<int>* values, int randomPercent) {
@@ -185,7 +183,7 @@ namespace pns {
 	}
 
 	void BotManager::createBots() {
-		std::cout << "Creating bots" << std::endl;
+		std::cout << "Creating bots, with ";
 		std::cout << stats.getNbrOfBots() << " bots per generation." << std::endl;
 		for (int i = 0; i != nbrOfBotPerGeneration; i++) {
 			bots.push_back(GeneticBot{});
@@ -203,7 +201,6 @@ namespace pns {
 				getline(ifs, line, '\n');
 				std::stringstream sep(line);
 				std::string field;
-				//std::cout << "line" << line << std::endl;
 				sep.str(line);
 				while (getline(sep, field, ',')) {
 					decisionMap.push_back(std::stoi(field));

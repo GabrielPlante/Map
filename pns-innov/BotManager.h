@@ -32,21 +32,14 @@ namespace pns {
 		std::vector<GeneticBot>::iterator botIt;
 		Statistics stats;
 
-		//to store statistics of each run in different files
-		time_t now = time(0);
-		std::string getDate() {
-			tm* ltm = localtime(&now);
-			std::string date = std::to_string(ltm->tm_mday) + "-" + std::to_string(ltm->tm_mon) + "-" + std::to_string(ltm->tm_year + 1900);
-			std::string hour = std::to_string(ltm->tm_hour) + "h" + std::to_string(ltm->tm_min) + "m" + std::to_string(ltm->tm_sec) + "s";
-			return "_" + date + "_" + hour;
-		}
-
 		//The towerBalancer
 		std::unique_ptr<TowerBalancer> towerBalancer;
 
 		//The wave balancer
 		std::unique_ptr<WaveBalancer> waveBalancer;
 		int waveNbr{ -1 };
+		//The wave the best bot got to
+		int bestBotWave{ 0 };
 
 		//The parameter for the towerBalancer
 		int bestFitness{ 0 };
@@ -55,9 +48,6 @@ namespace pns {
 
 		//Prepare the next generation and randomise some bots parameters
 		void nextGeneration();
-
-		//Get all the towers with a cost under diminishedPrice*priceGap
-		std::vector<int> getAffordableTowers(int diminishedPrice) const;
 
 		//Randomise a random percentage of all the valid value in the container with a value within the possible values
 		void randomiseParameters(std::vector<int>* values, int randomPercent);
