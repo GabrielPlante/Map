@@ -1,12 +1,14 @@
 #include "Statistics.h"
+#include "FileWriter.h"
 
 #include <iostream>
 
 namespace pns {
 
 	Statistics::Statistics(int nbrOfBots)
-		: nbrOfBots{ nbrOfBots }, genCounter(0)
+		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0)
 	{
+		fitnessValues.push_back(Container2D<int>());
 	}
 
 	const int Statistics::getNbrOfBots()
@@ -14,25 +16,63 @@ namespace pns {
 		return nbrOfBots;
 	}
 
-	const Container2D<int> Statistics::getFitnessValues() {
+	const std::vector<Container2D<int>> Statistics::getFitnessValues() {
 		return fitnessValues;
 	}
 
-	void Statistics::set(int generation, int bot, int value)
+	void Statistics::setFitnessValue(int balance, int generation, int bot, int value)
 	{
-		fitnessValues.set(generation, bot, value);
+		fitnessValues[balance].set(generation, bot, value);
 	}
 
-	void Statistics::display()
+	void Statistics::displayFitnessValues(int balance, int generation)
 	{
-		for (int i = 0; i < genCounter; i++)
+		std::cout << "Balance : " << balanceCounter + 1 << ", Generation : " << genCounter + 1 << std::endl;
+		for (int i = 0; i < (int) nbrOfBots - 1; i++)
 		{
-			std::cout << "Generation " << i << " :" << std::endl;
-			for (int j = 0; j < nbrOfBots; j++)
+			std::cout << i << " : " << (int) fitnessValues[balance].get(generation, i) << ", ";
+		}
+		std::cout << nbrOfBots - 1 << " : " << (int)fitnessValues[balance].get(generation, nbrOfBots - 1) << std::endl;
+	}
+
+	void Statistics::displayAllFitnessValues()
+	{
+		for (int k = 0; k < balanceCounter; k++) 
+		{
+			std::cout << std::endl;
+			std::cout << "Balance " << k + 1 << " :" << std::endl;
+
+			for (int i = 0; i < fitnessValues[k].size(); i++)
 			{
-				std::cout << j << " : " << (int) fitnessValues.get(i, j) << ", ";
+				std::cout << "Generation " << i + 1 << " :" << std::endl;
+				for (int j = 0; j < nbrOfBots; j++)
+				{
+					std::cout << j + 1<< " : " << (int)fitnessValues[k].get(i, j) << ", ";
+				}
+				std::cout << std::endl;
 			}
 			std::cout << std::endl;
 		}
 	}
+
+	void Statistics::nextBalance() {
+		fitnessValues.push_back(Container2D<int>());
+		balanceCounter++;
+		genCounter = 0;
+	}
+
+	const std::vector<Container2D<int>>& Statistics::printFitnessValues(const std::string& file) const{
+		FileWriter fileWriter(file);
+		for (int k = 0; k < fitnessValues.size(); k++) {
+			for (int i = 0; i != fitnessValues[k].size(); i++) {
+				for (int j = 0; j != nbrOfBots; j++) {
+					fileWriter.write(std::to_string(fitnessValues[k].get(i, j)) + " ");
+				}
+				fileWriter.write(";");
+			}
+			fileWriter.write("\n");
+		}
+		return fitnessValues;
+	}
+
 }

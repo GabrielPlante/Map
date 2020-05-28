@@ -2,8 +2,6 @@
 #include <functional>
 #include <vector>
 #include <string>
-#include <ctime>
-#pragma warning(disable : 4996)
 #include <algorithm>
 
 #include "TowerBalancer.h"

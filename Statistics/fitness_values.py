@@ -7,26 +7,20 @@ import matplotlib.pyplot as plt
 
 def parser(data):
     parsed_data = []
-    gen = []
-    value = ""
-    for c in data:
-        if ((c != " ") and (c != ";")):
-            value += c
-        if (c == " "):
-            gen.append(int(value))
-            value = ""
-        if (c == ";"):
-            parsed_data.append(gen)
-            gen = []
-            value = ""
-    return parsed_data
+    for bal in data.split("\n")[:-1]:
+        balance = []
+        for gen in bal.split(";")[:-1]:
+            generation = []
+            for value in gen.split(" ")[:-1]:
+                generation.append(int(value))
+            balance.append(generation)
+        parsed_data.append(balance)
+    return parsed_data    
 
-
-def plot_all_bots(fitnessValues):
-    bots = [i+1 for i in range(len(fitnessValues[0]))]
-    for line in fitnessValues:
-        plt.plot(bots, line, marker = '.',
-                 label = str(fitnessValues.index(line) + 1))
+def plot_all_fitnesses(balance):
+    bots = [i+1 for i in range(len(balance[0]))]
+    for line in balance:
+        plt.plot(bots, line, marker = '.', label = str(balance.index(line) + 1))
     plt.xticks(bots)
     plt.xlabel("bot")
     plt.ylabel("fitness")
@@ -35,30 +29,34 @@ def plot_all_bots(fitnessValues):
     #plt.savefig('all_bots.png', dpi = 200)
     plt.show()
 
-def plot_best_bots(fitnessValues):
+def plot_best_fitnesses(balance):
     generations = []
     best_bots_values = []
-    for gen in fitnessValues:
-        generations.append(fitnessValues.index(gen) + 1)
+    for gen in balance:
+        generations.append(balance.index(gen) + 1)
         best_bots_values.append(max(gen))
     plt.plot(generations, best_bots_values)
     plt.xticks(generations)
+    plt.ylim(100, 4100)
     plt.xlabel("generation")
     plt.ylabel("fitness")
     plt.title("best fitness for each generation")
+    #plt.savefig('best_fitnesses.png', dpi = 200)
     plt.show()
 
-def plot_average_fitnesses(fitnessValues):
+def plot_average_fitnesses(balance):
     generations = []
     average_fitnesses = []
-    for gen in fitnessValues:
-        generations.append(fitnessValues.index(gen) + 1)
+    for gen in balance:
+        generations.append(balance.index(gen) + 1)
         average_fitnesses.append(sum(gen)/len(gen))
     plt.plot(generations, average_fitnesses)
     plt.xticks(generations)
+    plt.ylim(100, 4100)
     plt.xlabel("generation")
     plt.ylabel("fitness")
     plt.title("average fitnesses for each generation")
+    #plt.savefig('average_fitnesses.png', dpi = 200)
     plt.show()
 
 
@@ -66,18 +64,18 @@ def main():
     fileDir = os.path.dirname(os.path.realpath('__file__'))
     print (fileDir + '\n')
 
-    filename = os.path.join(fileDir, '../pns-innov/runs/fitness/' + sys.argv[1])
+    filename = os.path.join(fileDir, '../pns-innov/runs/fitness/fitness_values_27-4-2020_21h33m59s.txt')
 
     f = open(filename, "r")
-    stats = f.read()
+    data = f.read()
+    print(data)
+
+    fitnessValues = parser(data)
     
-    fitnessValues = parser(stats)
-    print(fitnessValues)
-    
-    #plt.figure(dpi = 200)
-    plot_all_bots(fitnessValues)
-    plot_best_bots(fitnessValues)
-    plot_average_fitnesses(fitnessValues)
+    for balance in fitnessValues:
+        #plot_all_fitnesses(balance)
+        #plot_best_fitnesses(balance)
+        plot_average_fitnesses(balance)
 
 if __name__ == "__main__":
     main()

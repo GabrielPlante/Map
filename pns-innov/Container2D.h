@@ -22,6 +22,9 @@ namespace pns {
 		//Get the value stored at the position [x, y]
 		T get(int x, int y) const { return storage[x][y]; }
 
+		//Get size of the storage
+		int size() const { return (int) storage.size(); }
+
 		//Is there a value at the position [x, y]
 		bool exist(int x, int y) const;
 

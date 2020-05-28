@@ -12,7 +12,9 @@ namespace pns {
 		FileWriter(const std::string& fileName) : out{ fileName } {}
 
 		//Write something on the file
-		void write(const std::string& text) { out << text; }
+		void write(const std::string& text) {
+			out << text; 
+		}
 
 		//Destructor
 		~FileWriter() { out.close(); }
