@@ -6,7 +6,7 @@
 namespace pns {
 
 	Statistics::Statistics(int nbrOfBots)
-		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0)
+		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0), waveBalancingCounter(0)
 	{
 		fitnessValues.push_back(Container2D<int>());
 	}
@@ -59,6 +59,7 @@ namespace pns {
 		fitnessValues.push_back(Container2D<int>());
 		balanceCounter++;
 		genCounter = 0;
+		waveBalancingCounter = 0;
 	}
 
 	const std::vector<Container2D<int>>& Statistics::printFitnessValues(const std::string& file) const{
@@ -73,6 +74,23 @@ namespace pns {
 			fileWriter.write("\n");
 		}
 		return fitnessValues;
+	}
+
+	void Statistics::setWaveBalancingValue(int wave, int value) {
+		waveBalancingValues.set(wave, waveBalancingCounter, value);
+		waveBalancingCounter++;
+	}
+
+	void Statistics::displayAllBalancingValues() {
+		for (int i = 0; i < waveBalancingValues.size(); i++)
+		{
+			std::cout << "wave " << i << ":" << std::endl;
+			for (int j = 0; j < waveBalancingValues.sizeOfRow(i); j++)
+			{
+				std::cout << waveBalancingValues.get(i, j) << " ";
+			}
+			std::cout << std::endl;
+		}
 	}
 
 }

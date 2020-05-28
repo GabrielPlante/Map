@@ -53,6 +53,8 @@ namespace pns {
 			//balance the wave and start a new game with the same bot
 			if (waveBalancer && waveBalancer->getCurrentBalancingWave() == waveNbr) {
 				waveBalancer->balanceWave(true);
+				int currentWave = waveBalancer->getCurrentBalancingWave();
+				stats.setWaveBalancingValue(currentWave, waveBalancer->getNbrOfBuffPerWave()[currentWave]);
 				startNewGame();
 				waveNbr = -1;
 				//Reset the bot
@@ -87,6 +89,7 @@ namespace pns {
 			//Store fitness values for statistics
 			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
+		stats.displayAllBalancingValues();
 		stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
 		stats.printFitnessValues(stats.fitnessValuesFile);
 		//increment necessary to record fitness values of next generation

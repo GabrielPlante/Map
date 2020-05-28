@@ -13,8 +13,12 @@ namespace pns {
 	{
 	private:
 
+		//number of bots per generation
 		int nbrOfBots;
 		std::vector<Container2D<int>> fitnessValues;
+		Container2D<int> waveBalancingValues;
+		//counter needed to store values in waveBalancingValues
+		int waveBalancingCounter;
 
 		//to store statistics of each run in different files
 		time_t now = time(0);
@@ -48,5 +52,8 @@ namespace pns {
 		//store fitness values of a given generation in a file
 		const std::vector<Container2D<int>>& printFitnessValues(const std::string& file) const;
 
+		void setWaveBalancingValue(int wave, int value);
+
+		void displayAllBalancingValues();
 	};
 }
