@@ -9,20 +9,12 @@
 #include "GameCore.h"
 
 namespace ian {
-	//Every function the bot manager need
-	bool hasWaveEnded() { return F_FACTORY->gameComponent.startNewWave == interWave; }
-	void startNextWave() { EXEC("start_new_wave") }
-	bool hasGameEnded() { return F_FACTORY->gameComponent.startNewWave == playerLost || F_FACTORY->gameComponent.startNewWave == playerWin; }
-	void startNewGame() { EXEC("restart_game") }
-
-	int getMoney() { return F_FACTORY->gameComponent.playerGold; }
-
-	constexpr ge::Vector2<int> mapSize{ 25, 25 };
-
 	//The vector containing all the tower position orderer by efficiency for each tower. The first number in the array is the fitness of the tower, the two other are the position
 	std::vector<std::vector<std::array<int, 3>>> bestTowerPositionVector;
 
+
 	void generateBestTowerPositionVector() {
+		constexpr ge::Vector2<int> mapSize{ 25, 25 };
 		//For every tower
 		for (int towerType = 0; towerType != gv::towersValues.size(); towerType++) {
 			bestTowerPositionVector.push_back(std::vector<std::array<int, 3>>{});
@@ -73,6 +65,14 @@ namespace ian {
 		}
 	}
 
+	//Every function the bot manager need
+	bool hasWaveEnded() { return F_FACTORY->gameComponent.startNewWave == interWave; }
+	void startNextWave() { EXEC("start_new_wave") }
+	bool hasGameEnded() { return F_FACTORY->gameComponent.startNewWave == playerLost || F_FACTORY->gameComponent.startNewWave == playerWin; }
+	void startNewGame() { EXEC("restart_game") }
+
+	int getMoney() { return F_FACTORY->gameComponent.playerGold; }
+
 	//This function find the best place to build a tower
 	void placeTower(int towerType, int nbrOfTowerAlreadyPlaced) {
 		//While there is still tower that can be build, and while we fail to build a tower
@@ -94,6 +94,8 @@ namespace ian {
 	void BotSystem::update() {
 		//If there isn't a bot yet create one
 		if (F_FACTORY->botManager == nullptr) {
+			//Create the best tower position for the bot
+			generateBestTowerPositionVector();
 			//Make the towers cost vector
 			std::vector<int> towersCost;
 			for (int i = 0; i != gv::towersValues.size(); i++) {
@@ -102,10 +104,9 @@ namespace ian {
 			//Create the bot
 			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave},
 				std::function<bool()>{hasGameEnded}, std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, int)>{placeTower}, towersCost, 50 } };
-			generateBestTowerPositionVector();
 
 			//Setup a tower balancer
-			//F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
+			F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
 
 			//Setup a wave balancer
 			F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));

@@ -22,8 +22,9 @@ namespace pns {
 			nbrOfBuffPerWave[currentBalancingWave]--;
 			if (hasWonThisWave) {
 				currentBalancingWave++;
-				if (currentBalancingWave == nbrOfWave)
+				if (currentBalancingWave == nbrOfWave) {
 					finishedBalancing = true;
+				}
 				hasWonThisWave = false;
 			}
 		}

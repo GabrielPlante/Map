@@ -38,6 +38,8 @@ namespace pns {
 		//The wave balancer
 		std::unique_ptr<WaveBalancer> waveBalancer;
 		int waveNbr{ -1 };
+		//The wave the best bot got to
+		int bestBotWave{ 0 };
 
 		//The parameter for the towerBalancer
 		int bestFitness{ 0 };
@@ -46,9 +48,6 @@ namespace pns {
 
 		//Prepare the next generation and randomise some bots parameters
 		void nextGeneration();
-
-		//Get all the towers with a cost under diminishedPrice*priceGap
-		std::vector<int> getAffordableTowers(int diminishedPrice) const;
 
 		//Randomise a random percentage of all the valid value in the container with a value within the possible values
 		void randomiseParameters(std::vector<int>* values, int randomPercent);
