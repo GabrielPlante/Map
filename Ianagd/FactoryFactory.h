@@ -1,8 +1,6 @@
 #pragma once
 #include "../GameEngine2D/Factory.h"
 
-#include "../pns-innov/BotManager.h"
-
 #include "DamageDealerComponent.h"
 #include "TileMovementComponent.h"
 #include "ShotRendererComponent.h"
@@ -17,6 +15,9 @@
 
 #include "Map.h"
 
+namespace pns {
+	class BotManager;
+}
 namespace ian {
 	/// <summary>
 	/// This class contain every factory in the game

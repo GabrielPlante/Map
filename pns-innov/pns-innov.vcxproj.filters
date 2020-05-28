@@ -13,8 +13,11 @@
     <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Balancer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WaveBalancer.cpp">
+      <Filter>Source Files\Balancer</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerBalancer.cpp">
+      <Filter>Source Files\Balancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,13 +42,16 @@
     <ClInclude Include="FileWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Balancer.h">
-      <Filter>Header Files\Balancer</Filter>
-    </ClInclude>
     <ClInclude Include="BalancerAttribute.h">
       <Filter>Header Files\Balancer</Filter>
     </ClInclude>
     <ClInclude Include="BalancerObject.h">
+      <Filter>Header Files\Balancer</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveBalancer.h">
+      <Filter>Header Files\Balancer</Filter>
+    </ClInclude>
+    <ClInclude Include="TowerBalancer.h">
       <Filter>Header Files\Balancer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -58,6 +64,9 @@
     </Filter>
     <Filter Include="Header Files\Balancer">
       <UniqueIdentifier>{d9d93e44-fe27-45b1-b253-62ac9f972621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Balancer">
+      <UniqueIdentifier>{4d84907a-2bc1-43b6-b9ae-bb353d03ab08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

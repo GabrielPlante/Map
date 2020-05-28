@@ -5,16 +5,20 @@
 #include "BalancerObject.h"
 
 namespace pns {
-	class Balancer
+	class TowerBalancer
 	{
 	private:
 		std::vector<BalancerObject> objects;
 
+		bool finishedBalancing{ false };
 	public:
 		//Constructor
-		Balancer(const std::vector<BalancerObject>& objects) : objects{ objects } {}
+		TowerBalancer(const std::vector<BalancerObject>& objects) : objects{ objects } {}
 
 		//Set the current usage for an object
 		void setCurrentUsage(int id, int usage) { objects[id].balanceObject(usage); }
+
+		//Did the algorithme finish it's balancing
+		bool didFinishBalance() const { return finishedBalancing; }
 	};
 }

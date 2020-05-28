@@ -6,9 +6,10 @@
 #pragma warning(disable : 4996)
 #include <algorithm>
 
+#include "TowerBalancer.h"
+#include "WaveBalancer.h"
 #include "GeneticBot.h"
 #include "Statistics.h"
-#include "Balancer.h"
 
 
 namespace pns {
@@ -42,10 +43,14 @@ namespace pns {
 			return "_" + date + "_" + hour;
 		}
 
-		//The balancer
-		std::unique_ptr<Balancer> balancer;
+		//The towerBalancer
+		std::unique_ptr<TowerBalancer> towerBalancer;
 
-		//The parameter for the balancer
+		//The wave balancer
+		std::unique_ptr<WaveBalancer> waveBalancer;
+		int waveNbr{ -1 };
+
+		//The parameter for the towerBalancer
 		int bestFitness{ 0 };
 		int nbrOfGenerationSinceImprovement{ 0 };
 		std::vector<GeneticBot> bestBots;
@@ -72,10 +77,11 @@ namespace pns {
 		BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
 			std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap = 1);
 
-		//Update the bot manager
-		void update();
+		//Update the bot manager, return true if the game is balanced
+		bool update();
 
-		std::vector<GeneticBot> getBots();
+		//Get the bot list
+		const std::vector<GeneticBot>& getBots() const;
 		
 		//Create the bots
 		void createBots();
@@ -83,11 +89,16 @@ namespace pns {
 		//Load bots from a file
 		void loadBots(std::string fileName = "default_bot_file.txt");
 
-		//Setup the balancer to allow it to execute
+		//Setup the towerBalancer to allow it to execute
 		/* buff and nerf attribute are function that take in parameter the tower to change
 		 * desiredTowerUsage is the percent wanted for the tower usage (between 0 and 100)
 		*/
-		void setupBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
+		void setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
+
+		//Setup the wave towerBalancer
+		//buffWave and nerfWave take for parameter the wave number and buff / nerf this wave
+		//nbrOfWave is the total number of wave present in the game
+		void setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave);
 	};
 }
 

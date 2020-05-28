@@ -2,6 +2,8 @@
 
 #include "../GameEngine2D/CommandList.h"
 
+#include "../pns-innov/BotManager.h"
+
 #include "FactoryFactory.h"
 #include "GameValues.h"
 #include "GameCore.h"
@@ -83,21 +85,30 @@ namespace ian {
 	void buffDamage(int tower) { gv::towersValues[tower].damage += 4; }
 	void nerfDamage(int tower) { tower == 0 ? gv::towersValues[tower].damage -= 1 : gv::towersValues[tower].damage -= 5; }
 
+	void buffWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth += 10; }
+	void nerfWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth -= 20; }
 
 	BotSystem::BotSystem() {
 	}
 
 	void BotSystem::update() {
+		//If there isn't a bot yet create one
 		if (F_FACTORY->botManager == nullptr) {
+			//Make the towers cost vector
 			std::vector<int> towersCost;
 			for (int i = 0; i != gv::towersValues.size(); i++) {
 				towersCost.push_back(gv::towersValues[i].cost);
 			}
+			//Create the bot
 			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave},
 				std::function<bool()>{hasGameEnded}, std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, int)>{placeTower}, towersCost, 50 } };
 			generateBestTowerPositionVector();
 
-			F_FACTORY->botManager->setupBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
+			//Setup a tower balancer
+			//F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
+
+			//Setup a wave balancer
+			F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));
 		}
 		F_FACTORY->botManager->update();
 	}

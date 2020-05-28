@@ -19,14 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Balancer.cpp" />
+    <ClCompile Include="TowerBalancer.cpp" />
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
+    <ClCompile Include="WaveBalancer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Balancer.h" />
+    <ClInclude Include="TowerBalancer.h" />
     <ClInclude Include="BalancerAttribute.h" />
     <ClInclude Include="BalancerObject.h" />
     <ClInclude Include="BotManager.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="Values.h" />
+    <ClInclude Include="WaveBalancer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

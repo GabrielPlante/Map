@@ -12,7 +12,7 @@
 using std::ifstream;
 
 namespace pns {
-	//Struct to make possible sorting the fitness of every bot and keeping their position
+	//Struct to make possible sorting the fitness of every bot and keep their position
 	struct SortWithPos {
 		int fitness, position;
 		
@@ -23,7 +23,7 @@ namespace pns {
 		bool operator<(const SortWithPos& other) const { return fitness < other.fitness; }
 	};
 
-	std::vector<GeneticBot> BotManager::getBots() { return bots; }
+	const std::vector<GeneticBot>& BotManager::getBots() const { return bots; }
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
 		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
@@ -32,7 +32,7 @@ namespace pns {
 	{
 	}
 
-	void BotManager::update() {
+	bool BotManager::update() {
 		//If no bots were created or loaded, create default bots
 		if (bots.empty())
 			createBots();
@@ -40,6 +40,7 @@ namespace pns {
 		//If the game ended, go to the next bot
 		if (hasGameEnded()) {
 			botIt++;
+			waveNbr = -1;
 			//If there is no more bots that need to play, go to the next generation
 			if (botIt == bots.end()) {
 				nextGeneration();
@@ -48,12 +49,33 @@ namespace pns {
 		}
 		//If the wave ended, go to the next one
 		else if (hasWaveEnded()) {
-			startNextWave();
+			//If there is a wave balancer setup and the bot pass the wave it is working on,
+			//balance the wave and start a new game with the same bot
+			if (waveBalancer && waveBalancer->getCurrentBalancingWave() == waveNbr) {
+				waveBalancer->balanceWave(true);
+				startNewGame();
+				waveNbr = -1;
+				//Reset the bot
+				botIt->reset();
+			}
+			else {
+				startNextWave();
+				waveNbr++;
+			}
 		}
 		//Finally, if nothing special happened, let the bot play
 		else {
 			botIt->play(getMoney, placeTower, towersCost, moneyGap);
 		}
+		//Return if the algorithm finish balancing the game
+		if (towerBalancer && waveBalancer)
+			return towerBalancer->didFinishBalance() && waveBalancer->didFinishBalance();
+		else if (towerBalancer)
+			return towerBalancer->didFinishBalance();
+		else if (waveBalancer)
+			return waveBalancer->didFinishBalance();
+		else
+			return false;
 	}
 
 	void BotManager::nextGeneration() {
@@ -126,8 +148,8 @@ namespace pns {
 	}
 
 	void BotManager::balanceGame(const std::vector<GeneticBot>& newBots) {
-		//Make the balancing if setup with the new bots
-		if (balancer) {
+		//Make the tower balancing if setup with the new bots
+		if (towerBalancer && !towerBalancer->didFinishBalance()) {
 			//Take the usage of each and every tower
 			std::vector<double> towerUsage(towersCost.size(), 0);
 			int nbrOfTower{ 0 };
@@ -140,8 +162,12 @@ namespace pns {
 			for (int i = 0; i != towerUsage.size(); i++) {
 				towerUsage[i] *= 100 / static_cast<double>(nbrOfTower);
 				std::cout << "Tower usage of " << i << ": " << towerUsage[i] << ".";
-				balancer->setCurrentUsage(i, static_cast<int>(towerUsage[i]));
+				towerBalancer->setCurrentUsage(i, static_cast<int>(towerUsage[i]));
 			}
+		}
+		//Make the wave balancing if setup
+		if (waveBalancer && waveBalancer->didFinishBalance()) {
+			waveBalancer->balanceWave(false);
 		}
 
 	}
@@ -197,17 +223,20 @@ namespace pns {
 		}
 	}
 
-	void BotManager::setupBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
-		//Create the list of balancer objects
+	void BotManager::setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
+		//Create the list of towerBalancer objects
 		std::vector<BalancerObject> balancerObjects;
 		for (int i = 0; i != desiredTowerUsageRange.size(); i++) {
 			BalancerAttribute attribute{ buffAttribute, nerfAttribute };
 			BalancerObject object{ attribute, desiredTowerUsageRange[i], i };
 			balancerObjects.push_back(object);
 		}
-		//Setup the balancer
-		balancer = std::unique_ptr<Balancer>{ new Balancer{balancerObjects} };
+		//Setup the towerBalancer
+		towerBalancer = std::unique_ptr<TowerBalancer>{ new TowerBalancer{balancerObjects} };
+	}
 
+	void BotManager::setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave) {
+		waveBalancer = std::unique_ptr<WaveBalancer>{ new WaveBalancer{buffWave, nerfWave, nbrOfWave} };
 	}
 
 }

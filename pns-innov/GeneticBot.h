@@ -33,5 +33,8 @@ namespace pns {
 
 		//Print this bot in a file
 		void print(const std::string& file) const;
+
+		//Reset the bot except his decision map
+		void reset();
 	};
 }

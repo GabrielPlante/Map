@@ -79,4 +79,11 @@ namespace pns {
 	int GeneticBot::getFitness() const {
 		return accumulatedMoney;
 	}
+
+	void GeneticBot::reset() {
+		lastMoneyAmount = 0;
+		accumulatedMoney = 0;
+		towerPlaced = 0;
+		towerPlacedByType.clear();
+	}
 }
