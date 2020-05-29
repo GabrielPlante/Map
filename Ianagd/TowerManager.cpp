@@ -13,17 +13,7 @@ namespace ian {
 		if (F_FACTORY->gameComponent.playerGold < gv::towersValues[type].cost)
 			return false;
 		//If the tile is buildable
-		if (F_FACTORY->map.tileExist(F_FACTORY->map.absoluteToRelative(position))
-			&& F_FACTORY->map.getTile(F_FACTORY->map.absoluteToRelative(position)).isBuildable) {
-			//Check if no other tower are on the tile
-			for (auto it = towersId.begin(); it != towersId.end(); it++) {
-				unsigned int damageCompId{ F_FACTORY->getEntityCompId(*it, damageDealerCompId) };
-				if (F_FACTORY->map.absoluteToRelative(F_FACTORY->positionFactory.getComponent(F_FACTORY->damageDealerFactory.getComponent(damageCompId)->positionComponentId)
-					->getPosition()) == F_FACTORY->map.absoluteToRelative(position)) {
-
-					return false;
-				}
-			}
+		if (isBuildable(position)){
 
 			//Draw the tower texture
 			ge::Drawer drawer;
@@ -43,6 +33,23 @@ namespace ian {
 
 			towersId.push_back(towerId);
 
+			return true;
+		}
+		return false;
+	}
+
+	bool TowerManager::isBuildable(ge::Vector2<> position) const {
+		if (F_FACTORY->map.tileExist(F_FACTORY->map.absoluteToRelative(position))
+			&& F_FACTORY->map.getTile(F_FACTORY->map.absoluteToRelative(position)).isBuildable) {
+			//Check if no other tower are on the tile
+			for (auto it = towersId.begin(); it != towersId.end(); it++) {
+				unsigned int damageCompId{ F_FACTORY->getEntityCompId(*it, damageDealerCompId) };
+				if (F_FACTORY->map.absoluteToRelative(F_FACTORY->positionFactory.getComponent(F_FACTORY->damageDealerFactory.getComponent(damageCompId)->positionComponentId)
+					->getPosition()) == F_FACTORY->map.absoluteToRelative(position)) {
+
+					return false;
+				}
+			}
 			return true;
 		}
 		return false;

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "MapTest.h"
+//#include "MapTest.h" Commented to avoid error if ianagd is not set to library
 
 #include <string>
 

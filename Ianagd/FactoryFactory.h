@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../GameEngine2D/Factory.h"
 
 #include "DamageDealerComponent.h"
@@ -15,6 +16,9 @@
 
 #include "Map.h"
 
+namespace pns {
+	class BotManager;
+}
 namespace ian {
 	/// <summary>
 	/// This class contain every factory in the game
@@ -54,6 +58,9 @@ namespace ian {
 		ge::Factory<TileMovementComponent> tileMovementFactory;
 
 		Map map;
+
+		//The bot manager for the bot system
+		std::unique_ptr<pns::BotManager> botManager;
 
 	};
 }

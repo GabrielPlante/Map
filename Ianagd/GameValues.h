@@ -20,7 +20,7 @@ public:
 
 	struct WaveValues {
 		const int nbrOfEnemy;
-		const int enemyHealth;
+		int enemyHealth;
 		const float enemySpeed;
 		const int goldPerEnemy;
 		const ge::Color color;
@@ -29,7 +29,7 @@ public:
 	};
 
 	//Wave values
-	static const std::vector<WaveValues> wavesValues;
+	static std::vector<WaveValues> wavesValues;
 	static constexpr int nbrOfEnemyForLoss{ 0 };
 
 	//Other game values
@@ -37,7 +37,7 @@ public:
 
 	struct TowerValues {
 		const int cost;
-		const int damage;
+		int damage;
 		const int range;
 		const int reloadingTime;
 		ge::Color color;
@@ -45,5 +45,5 @@ public:
 			: cost{ cost }, damage{ damage }, range{ range }, reloadingTime{ reloadingTime }, color{ color } {}
 	};
 
-	static const std::vector<TowerValues> towersValues;
+	static std::vector<TowerValues> towersValues;
 };
