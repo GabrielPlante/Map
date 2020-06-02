@@ -55,7 +55,8 @@ namespace pns {
 			//If there is a wave balancer setup and the bot pass the wave it is working on,
 			//balance the wave and start a new game with the same bot
 			if (waveBalancer && waveBalancer->getCurrentBalancingWave() == waveNbr) {
-				waveBalancer->balanceWave(true);
+				int balancedWave = waveBalancer->balanceWave(true);
+				stats.setWaveBalancingValue(balancedWave, waveBalancer->getNbrOfBuffPerWave()[balancedWave]);
 				startNewGame();
 				waveNbr = -1;
 				//Reset the bot
@@ -91,7 +92,9 @@ namespace pns {
 			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
 		//stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
-		//stats.printFitnessValues(stats.fitnessValuesFile);
+		stats.displayAllWaveBalancingValues();
+		stats.printFitnessValues(stats.fitnessValuesFile);
+		stats.printWaveBalancingValues(stats.waveBalancingValuesFile);
 		//increment necessary to record fitness values of next generation
 		stats.genCounter++;
 		//Sort the bots by increasing fitness
@@ -159,7 +162,8 @@ namespace pns {
 		}
 		//Make the wave balancing if setup
 		if (waveBalancer && !waveBalancer->didFinishBalance()) {
-			waveBalancer->balanceWave(false);
+			int balancedWave = waveBalancer->balanceWave(false);
+			stats.setWaveBalancingValue(balancedWave, waveBalancer->getNbrOfBuffPerWave()[balancedWave]);
 		}
 		//Make the tower balancing if setup with the new bots
 		else if (towerBalancer && !towerBalancer->didFinishBalance()) {
