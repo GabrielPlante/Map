@@ -57,13 +57,13 @@ namespace ian {
 			}
 
 			//Render the UI just before the console
-			for (auto it = F_FACTORY->uiFactory.getBeginningIterator(); it != F_FACTORY->uiFactory.getEndIterator(); it++) {
+			/*for (auto it = F_FACTORY->uiFactory.getBeginningIterator(); it != F_FACTORY->uiFactory.getEndIterator(); it++) {
 				if (it->texture.get() != nullptr) {
 					ge::Vector2<> texturePos{ F_FACTORY->positionFactory.getComponent(it->positionComponentId)->getPosition() };
 					SDL_Rect textureRect{ ge::Rectangle{texturePos, it->getSize().x, it->getSize().y}.toSDL_Rect() };
 					SDL_RenderCopy(window.getRenderer(), it->texture.get(), NULL, &textureRect);
 				}
-			}
+			}*/
 
 			//The console doesn't show itself automaticaly if it's not open
 			ge::Console::getInstance()->render(window.getRenderer());
