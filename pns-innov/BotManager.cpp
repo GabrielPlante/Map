@@ -26,9 +26,9 @@ namespace pns {
 	const std::vector<GeneticBot>& BotManager::getBots() const { return bots; }
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
+		std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
-		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
+		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, towerManager{ towerManager }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
 	{
 	}
 
@@ -68,7 +68,10 @@ namespace pns {
 		}
 		//Finally, if nothing special happened, let the bot play
 		else {
-			botIt->play(getMoney, placeTower, towersCost, moneyGap);
+			std::vector<std::array<int, 3>> towerToPlace{ botIt->play(getMoney, towersCost, towerManager, moneyGap) };
+			if (!towerToPlace.empty()) {
+				placeTower(towerToPlace[0][0], std::array<int, 2>{towerToPlace[0][1], towerToPlace[0][2]});
+			}
 		}
 		//Return if the algorithm finish balancing the game
 		if (towerBalancer && waveBalancer)

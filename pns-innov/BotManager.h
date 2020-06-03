@@ -6,6 +6,7 @@
 
 #include "TowerBalancer.h"
 #include "WaveBalancer.h"
+#include "TowerManager.h"
 #include "GeneticBot.h"
 #include "Statistics.h"
 
@@ -23,7 +24,7 @@ namespace pns {
 
 		//The parameter used for the bot to work
 		std::function<int()> getMoney;
-		std::function<void(int, int)> placeTower;
+		std::function<void(int, std::array<int, 2>)> placeTower;
 		std::vector<int> towersCost;
 		int moneyGap;
 
@@ -31,6 +32,9 @@ namespace pns {
 		std::vector<GeneticBot> bots;
 		std::vector<GeneticBot>::iterator botIt;
 		Statistics stats;
+
+		//The tower manager
+		TowerManager towerManager;
 
 		//The towerBalancer
 		std::unique_ptr<TowerBalancer> towerBalancer;
@@ -52,18 +56,19 @@ namespace pns {
 		//Randomise a random percentage of all the valid value in the container with a value within the possible values
 		void randomiseParameters(std::vector<int>* values, int randomPercent);
 
+		//Balance the game with a list of bots
 		void balanceGame(const std::vector<GeneticBot>& bots);
 
 	public:
 		/*Default constructor
 		* getMoney is a function that should return the money the player have
 		* getCurrentWave is a function that should return the wave nbr the player currently is
-		* placeTower is a function that should place a tower on an optimal position when called, the second parameter is the number of tower already placed by the bot
+		* placeTower is a function that should place a tower on the give position
 		* towersCost is a vector that contain each cost of each tower
 		* The money gap is used if money is always the multiple of a number
 		*/
 		BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-			std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap = 1);
+			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1);
 
 		//Update the bot manager, return true if the game is balanced
 		bool update();
