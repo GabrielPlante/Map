@@ -5,6 +5,8 @@
 using namespace std;
 typedef sf::IntRect* srcArrayPtr;
 
+int Frec::id_counter{ 0 };
+
 Frec::Frec() {
 	id = Frec::value();
 }
