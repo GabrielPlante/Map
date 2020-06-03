@@ -1,4 +1,4 @@
-/*#include "pch.h"
+#include "pch.h"
 #include <sstream>
 #include <iostream>
 
@@ -15,4 +15,4 @@ TEST(FrecTest, All) {
 	EXPECT_EQ(2, two.getID());
 	EXPECT_EQ(3, three.getID());
 	EXPECT_EQ(4, four.getID());
-} */
+}
