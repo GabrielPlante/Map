@@ -15,6 +15,7 @@ namespace pns {
 
 		int nbrOfBots;
 		std::vector<Container2D<int>> fitnessValues;
+		Container2D<int> waveBalancingValues;
 
 		//to store statistics of each run in different files
 		time_t now = time(0);
@@ -29,6 +30,7 @@ namespace pns {
 		int genCounter;
 		int balanceCounter;
 		std::string fitnessValuesFile = "../pns-innov/runs/fitness/fitness_values" + getFileId() + ".txt";
+		std::string waveBalancingValuesFile = "../pns-innov/runs/wave_balancing/wave_balancing_values" + getFileId() + ".txt";
 
 		Statistics(int nbrOfBots);
 
@@ -45,8 +47,14 @@ namespace pns {
 		//reset genCounter, create a new container to store values of next balance
 		void nextBalance(); 
 
-		//store fitness values of a given generation in a file
+		//store fitness values in a file
 		const std::vector<Container2D<int>>& printFitnessValues(const std::string& file) const;
 
+		void setWaveBalancingValue(int wave, int value);
+
+		void displayAllWaveBalancingValues();
+
+		//store wave balancing values in a file
+		const Container2D<int>& printWaveBalancingValues(const std::string& file) const;
 	};
 }

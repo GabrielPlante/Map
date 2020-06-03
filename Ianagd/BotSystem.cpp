@@ -75,7 +75,7 @@ namespace ian {
 			//F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
 
 			//Setup a wave balancer
-			//F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));
+			F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));
 		}
 		F_FACTORY->botManager->update();
 	}

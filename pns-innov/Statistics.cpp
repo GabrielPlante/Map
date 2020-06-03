@@ -2,6 +2,7 @@
 #include "FileWriter.h"
 
 #include <iostream>
+#include <direct.h>
 
 namespace pns {
 
@@ -9,6 +10,9 @@ namespace pns {
 		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0)
 	{
 		fitnessValues.push_back(Container2D<int>());
+		std::cout << mkdir("../pns-innov/runs/fitness") << std::endl;
+		std::cout << mkdir("../pns-innov/runs/wave_balancing") << std::endl;
+
 	}
 
 	const int Statistics::getNbrOfBots()
@@ -73,6 +77,34 @@ namespace pns {
 			fileWriter.write("\n");
 		}
 		return fitnessValues;
+	}
+
+	void Statistics::setWaveBalancingValue(int wave, int value) {
+		waveBalancingValues.add(wave, value);
+	}
+
+	void Statistics::displayAllWaveBalancingValues() {
+		for (int i = 0; i < waveBalancingValues.size(); i++)
+		{
+			std::cout << "wave " << i << ":" << std::endl;
+			for (int j = 0; j < waveBalancingValues.sizeOfRow(i); j++)
+			{
+				std::cout << waveBalancingValues.get(i, j) << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+
+
+	const Container2D<int>& Statistics::printWaveBalancingValues(const std::string& file) const {
+		FileWriter fileWriter(file);
+		for (int k = 0; k < waveBalancingValues.size(); k++) {
+			for (int i = 0; i != waveBalancingValues.sizeOfRow(k); i++) {
+				fileWriter.write(std::to_string(waveBalancingValues.get(k, i)) + " ");
+			}
+			fileWriter.write("\n");
+		}
+		return waveBalancingValues;
 	}
 
 }
