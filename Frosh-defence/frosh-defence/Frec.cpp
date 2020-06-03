@@ -5,6 +5,10 @@
 using namespace std;
 typedef sf::IntRect* srcArrayPtr;
 
+Frec::Frec() {
+	id = Frec::value();
+}
+
 Frec::Frec(const sf::Vector2f position, sf::Texture* _texture, FrecType _type,
 	int damage, int range, int cooldown) :
 	Clickable(position, sf::Vector2f(120, 120)), coordinate(position), frecPos(position), texture(
@@ -14,6 +18,8 @@ Frec::Frec(const sf::Vector2f position, sf::Texture* _texture, FrecType _type,
 	// and to their sizes, as well as the coordinate
 	// construct current sprite on the given position
 	srcSprite = new srcArrayPtr[numPers];
+	
+	id = Frec::value();
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < numPers; i++) {
@@ -62,6 +68,10 @@ void Frec::setMode(char AorS) {
 
 char Frec::getDirection() const {
 	return direction;
+}
+
+int Frec::getID() const {
+	return id;
 }
 
 char Frec::getMode() const {

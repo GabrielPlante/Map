@@ -153,6 +153,7 @@
     <ClCompile Include="FrecController.cpp" />
     <ClCompile Include="Frosh.cpp" />
     <ClCompile Include="FroshController.cpp" />
+    <ClCompile Include="FroshDefenceBotSystem.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameMenuController.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="FrecController.h" />
     <ClInclude Include="Frosh.h" />
     <ClInclude Include="FroshController.h" />
+    <ClInclude Include="FroshDefenceBotSystem.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameMenuController.h" />
     <ClInclude Include="GameState.h" />

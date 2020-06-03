@@ -1,5 +1,5 @@
 /*
- * FrecButton.h
+ * Frec(dans Button.h
  *
  *  Created on: Nov 10, 2018
  *      Author: Taffy

@@ -18,7 +18,7 @@ enum class FrecType {
 
 class Frec : public Clickable {
 public:
-	Frec() = delete;
+	Frec();
 	Frec(const sf::Vector2f position, sf::Texture* texture, FrecType type,
 		int damage, int range, int cooldown);
 	~Frec();
@@ -28,6 +28,7 @@ public:
 	// accessors for attributes on heap
 	srcArrayPtr* getIntRects() const;
 
+	int getID() const;
 	// accessors for attributes on stack
 	char getDirection() const;
 	char getMode() const;
@@ -65,6 +66,8 @@ public:
 	void setPosition(sf::Vector2f);
 
 private:
+	int id;
+	static int id_counter;
 	// Sprite properties
 	sf::Vector2f coordinate; // the frec position on map
 	sf::Sprite frecSprite;
@@ -85,6 +88,12 @@ private:
 	float frecDamage;
 	float frecRange;
 	int baseCooldown;
+
+	static int value()
+	{
+		static int id = Frec::id_counter++;
+		return id;
+	}
 };
 
 class SlammingFrec {

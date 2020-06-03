@@ -15,6 +15,7 @@
 #include "Frec.h"
 #include "GameState.h"
 #include "Timer.h"
+#include "FroshDefenceBotSystem.h"
 
 using sf::Vector2f;
 using std::cout;
@@ -297,6 +298,9 @@ int main() {
 
 	Timer* clk = new Timer();
 	GameState* gameState = new GameState(clk);
+	FroshDefenceBotSystem bot = FroshDefenceBotSystem::getInstance();
+	FroshDefenceBotSystem::setGameStateInstance(*gameState);
+
 	GameMenuController* gameMenuController = new GameMenuController(window,
 		gameState);
 	FrecController* frecController = new FrecController(window, gameState);
