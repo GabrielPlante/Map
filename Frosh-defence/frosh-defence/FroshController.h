@@ -32,6 +32,9 @@ private:
 	const std::vector<sf::Vector2f> pathInCubits;
 
 public:
+	//For the bot
+	static bool hasWaveEnded;
+
 	FroshController() = delete;
 	FroshController(sf::RenderWindow* window, GameState* gameState,
 		const std::vector<sf::Vector2f> pathToFollow);

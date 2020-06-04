@@ -9,11 +9,14 @@
 #include "Frec.h"
 #include "FrecController.h"
 
+#include "../../pns-innov/BotManager.h"
+
  // Game Controller keeps all Game State Variables Running and Updated
 class GameController {
 private:
 
 public:
+
 	GameController();
 
 	void process();
@@ -25,6 +28,9 @@ public:
 // for any entities sitting on the map
 class GameBoard {
 private:
+	//For the bot implementation
+	static GameBoard* instance;
+
 	GameState* gameState;
 	FrecController* frecController;
 	int width;
@@ -36,6 +42,13 @@ private:
 public:
 	GameBoard(GameState* gameState, FrecController* frecController,
 		int widthInPixels);
+
+	//Function for the bot
+	static GameBoard* getInstance() { return instance; }
+	int getMoney() { return gameState->getTams(); }
+	GameState* getGameState() { return gameState; }
+
+	void placeFrec(FrecType type, int gridX, int gridY);
 
 	bool validatePos(int mouseX, int mouseY, int range);
 	void process(sf::Event event, sf::Vector2i mousePos);

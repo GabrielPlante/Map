@@ -21,9 +21,6 @@
     <ClCompile Include="Clickable.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Frec.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="FrecAndFroshController.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -58,6 +55,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="FroshDefenceBotSystem.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Frec.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

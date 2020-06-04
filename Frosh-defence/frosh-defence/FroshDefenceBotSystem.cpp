@@ -7,7 +7,7 @@ FroshDefenceBotSystem::FroshDefenceBotSystem(GameState& gsInstance) {
 void FroshDefenceBotSystem::update() {}
 
 //Every function the bot manager need
-bool hasWaveEnded() { return false; }
+/*bool hasWaveEnded() { return false; }
 void startNextWave() { ; }
 bool hasGameEnded() { return false; }
 void startNewGame() { ; }

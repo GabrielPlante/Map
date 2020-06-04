@@ -85,7 +85,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -94,7 +94,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\user\Documents\S8\PS8\pns-innov1920-pns-innov1920-i\Dependencies\lib;..\..\Dependencies\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Dependencies\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -206,6 +206,11 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\..\Project-frosh-defence\Project-frosh-defence\Project-frosh-defence\assets\GEORGIA.TTF" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\pns-innov\pns-innov.vcxproj">
+      <Project>{75eb6a15-a014-4a52-aa6a-b50188b32552}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

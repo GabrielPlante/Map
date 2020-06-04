@@ -42,6 +42,8 @@ sf::Event event;
 
 bool debug;
 
+GameBoard* GameBoard::instance{ nullptr };
+
 GameBoard::GameBoard(GameState* _gameState, FrecController* _frecController,
 	int _width) :
 	gameState(_gameState), frecController(_frecController), width(_width) {
@@ -104,6 +106,8 @@ GameBoard::GameBoard(GameState* _gameState, FrecController* _frecController,
 	// Shadow Object
 	shadowTile = sf::RectangleShape(sf::Vector2f(60, 60));
 	shadowTile.setFillColor(sf::Color(255, 0, 0, 150));
+
+	instance = this;
 }
 
 bool GameBoard::gridSpaceAvailable(int gridX, int gridY) {
@@ -125,6 +129,20 @@ bool GameBoard::frecIsPurchasable(FrecType type) {
 	return false;
 }
 
+void GameBoard::placeFrec(FrecType type, int gridX, int gridY) {
+	if (frecIsPurchasable(type) && gridSpaceAvailable(gridX, gridY)) {
+		gridStatus[gridX][gridY] = 2;
+		gridStatus[gridX + 1][gridY] = 2;
+		gridStatus[gridX][gridY + 1] = 2;
+		gridStatus[gridX + 1][gridY + 1] = 2;
+		sf::Vector2f spawnPos = sf::Vector2f(gridX * gameState->cubit,
+			gridY * gameState->cubit);
+		frecController->spawnFrec(spawnPos, type);
+		gameState->updateTamBy(-(gameState->getFrecProps(type)["tam"]));
+	}
+}
+
+
 // Determine if any action needs ton be taken by
 // cliking on the game board
 void GameBoard::process(sf::Event event, sf::Vector2i mousePos) {
@@ -141,16 +159,8 @@ void GameBoard::process(sf::Event event, sf::Vector2i mousePos) {
 		gameState->setBoardFrec(nullptr);
 		FrecType type = gameState->getPurchaseFrec();
 		// If an open space exists, fill the board with twos.
-		if (frecIsPurchasable(type) && gridSpaceAvailable(gridX, gridY)) {
-			gridStatus[gridX][gridY] = 2;
-			gridStatus[gridX + 1][gridY] = 2;
-			gridStatus[gridX][gridY + 1] = 2;
-			gridStatus[gridX + 1][gridY + 1] = 2;
-			sf::Vector2f spawnPos = sf::Vector2f(gridX * gameState->cubit,
-				gridY * gameState->cubit);
-			frecController->spawnFrec(spawnPos, type);
-			gameState->updateTamBy(-(gameState->getFrecProps(type)["tam"]));
-		}
+		placeFrec(type, gridX, gridY);
+		
 		//PRINT BOARD
 		if (debug) {
 			for (int i = 0; i < 18; i++) {
@@ -279,6 +289,26 @@ void deathLoop() {
 		}
 	}
 }
+//------------------------------------------------------------------------------------------
+//------------------------------------BOT IMPLEMENTATION------------------------------------
+//------------------------------------------------------------------------------------------
+int getTams() { return GameBoard::getInstance()->getMoney(); }
+bool hasWaveEnded() {
+	if (FroshController::hasWaveEnded) {
+		FroshController::hasWaveEnded = false; return true;
+	}
+	return false;
+}
+void startNewWave() {}
+bool hasGameEnded() { return !GameBoard::getInstance()->getGameState()->timer->isRunning(); }
+void startNewGame() { GameBoard::getInstance()->getGameState()->timer->start(); }
+void placeFrec(int type, std::array<int, 2> position) {
+	FrecType frecType;
+	if (type == 0) frecType = FrecType::slammer;
+	else if (type == 1) frecType = FrecType::swinger;
+	else if (type == 2) frecType = FrecType::thrower;
+	GameBoard::getInstance()->placeFrec(frecType, position[0], position[1]);
+}
 
 // Main
 int main() {
@@ -295,6 +325,7 @@ int main() {
 		healthText.setFont(font);
 		waveWord.setFont(font);
 	}
+
 
 	Timer* clk = new Timer();
 	GameState* gameState = new GameState(clk);
@@ -313,9 +344,41 @@ int main() {
 		window, gameState, froshController, frecController->getFrecVec(),
 		froshController->getFroshVec());
 
-	// TODO: Remove this temp frosh creating code
-		//froshController->spawnFrosh(sf::Vector2f(100, 100), FroshType::fast);
-		//froshController->spawnFrosh(sf::Vector2f(500, 500), FroshType::regular);
+	//------------------------------------------------------------------------------------------
+	//------------------------------------BOT IMPLEMENTATION------------------------------------
+	//------------------------------------------------------------------------------------------
+	//The grid is updated in the render function 
+	gameBoard->render();
+
+	std::vector<std::array<int, 2>> pathTile;
+	std::vector<std::array<int, 2>> buildableTile;
+
+	for (int i = 0; i != 32; i++) {
+		for (int j = 0; j != 18; j++) {
+			//Build the path vector
+			if (gameBoard->gridStatus[i][j] == 1) {
+				pathTile.push_back({ i, j });
+			}
+			//Only take half the tile a tower take a square of 2 tiles
+			if (i % 2 == 0 && j % 2 == 0) {
+				if (gameBoard->gridStatus[i][j] == 0) {
+					buildableTile.push_back({ i, j });
+				}
+			}
+		}
+	}
+	std::cout << pathTile.size() << " ; " << buildableTile.size() << std::endl;
+
+	//Range defined in GameState.cpp
+	std::vector<int> towersRange{ 200 / 60, 125 / 60, 300 / 60 };
+
+	pns::TowerManager towerManager{ pathTile, buildableTile, towersRange };
+
+	//Price defined in GameState.cpp
+	std::vector<int> towersCost{ 30, 50, 40 };
+
+	pns::BotManager botManager{ hasWaveEnded, startNewWave, hasGameEnded, startNewGame, getTams, placeFrec, towersCost, towerManager };
+
 
 	gameMenuController->setDebug(debug);
 	// Main game loop
@@ -364,6 +427,8 @@ int main() {
 			froshController->update();
 			attackController->update();
 		}
+
+		botManager.update();
 
 		if (gameState->dirtyBit) {
 			waveText.setString(std::to_string(gameState->getCurrentWave()));

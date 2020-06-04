@@ -15,6 +15,8 @@
 using std::string;
 using std::shared_ptr;
 
+bool FroshController::hasWaveEnded{ true };
+
 FroshController::FroshController(sf::RenderWindow* _window,
 	GameState* _gameState, const std::vector<sf::Vector2f> _path) :
 	window(_window), gameState(_gameState), pathInCubits(_path) {
@@ -93,6 +95,7 @@ void FroshController::waveOne() {
 		this->modifier *= 1.1;
 		::wave = 2;
 		gameState->setCurrentWave(2);
+		hasWaveEnded = true;
 	}
 }
 
@@ -113,6 +116,8 @@ void FroshController::waveTwo() {
 		::counter = 0;
 		modifier *= 1.2;
 		gameState->setCurrentWave(gameState->getCurrentWave() + 1);
+		hasWaveEnded = true;
+
 	}
 }
 // This goes through the array and releases all frosh objects
