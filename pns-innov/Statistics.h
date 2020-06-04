@@ -16,6 +16,8 @@ namespace pns {
 		int nbrOfBots;
 		std::vector<Container2D<int>> fitnessValues;
 		Container2D<int> waveBalancingValues;
+		Container2D<int> towerBalancingValues;
+		Container2D<double> towerUsageValues;
 
 		//to store statistics of each run in different files
 		time_t now = time(0);
@@ -31,6 +33,8 @@ namespace pns {
 		int balanceCounter;
 		std::string fitnessValuesFile = "../pns-innov/runs/fitness/fitness_values" + getFileId() + ".txt";
 		std::string waveBalancingValuesFile = "../pns-innov/runs/wave_balancing/wave_balancing_values" + getFileId() + ".txt";
+		std::string towerBalancingValuesFile = "../pns-innov/runs/tower_balancing/tower_balancing_values" + getFileId() + ".txt";
+		std::string towerUsageValuesFile = "../pns-innov/runs/tower_usage/tower_usage_values" + getFileId() + ".txt";
 
 		Statistics(int nbrOfBots);
 
@@ -55,6 +59,20 @@ namespace pns {
 		void displayAllWaveBalancingValues();
 
 		//store wave balancing values in a file
-		const Container2D<int>& printWaveBalancingValues(const std::string& file) const;
+		void printWaveBalancingValues(const std::string& file) const;
+
+		void setTowerBalancingValue(std::vector<int> balancingValues);
+
+		void displayAllTowerBalancingValues();
+
+		//store tower balancing values in a file
+		void printTowerBalancingValues(const std::string& file) const;
+
+		void setTowerUsageValue(std::vector<double> towerUsage);
+
+		void displayAllTowerUsageValues();
+
+		//store tower usage values in a file
+		void printTowerUsageValues(const std::string& file) const;
 	};
 }

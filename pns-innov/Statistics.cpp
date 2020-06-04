@@ -10,9 +10,10 @@ namespace pns {
 		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0)
 	{
 		fitnessValues.push_back(Container2D<int>());
-		std::cout << mkdir("../pns-innov/runs/fitness") << std::endl;
-		std::cout << mkdir("../pns-innov/runs/wave_balancing") << std::endl;
-
+		mkdir("../pns-innov/runs/fitness");
+		mkdir("../pns-innov/runs/wave_balancing");
+		mkdir("../pns-innov/runs/tower_balancing");
+		mkdir("../pns-innov/runs/tower_usage");
 	}
 
 	const int Statistics::getNbrOfBots()
@@ -95,16 +96,55 @@ namespace pns {
 		}
 	}
 
+	void Statistics::printWaveBalancingValues(const std::string& file) const {
+		waveBalancingValues.print(file);
+	}
 
-	const Container2D<int>& Statistics::printWaveBalancingValues(const std::string& file) const {
-		FileWriter fileWriter(file);
-		for (int k = 0; k < waveBalancingValues.size(); k++) {
-			for (int i = 0; i != waveBalancingValues.sizeOfRow(k); i++) {
-				fileWriter.write(std::to_string(waveBalancingValues.get(k, i)) + " ");
-			}
-			fileWriter.write("\n");
+	void Statistics::setTowerBalancingValue(std::vector<int> balancingValues) {
+		for (int i = 0; i < balancingValues.size(); i++)
+		{
+			towerBalancingValues.add(balanceCounter, balancingValues[i]);
 		}
-		return waveBalancingValues;
+	}
+
+	void Statistics::displayAllTowerBalancingValues() {
+		for (int i = 0; i < towerBalancingValues.size(); i++)
+		{
+			std::cout << std::endl;
+			for (int j = 0; j < towerBalancingValues.sizeOfRow(i); j++)
+			{
+				std::cout << towerBalancingValues.get(i, j) << " ";
+			}
+			std::cout << std::endl;
+		}
+
+	}
+
+	void Statistics::printTowerBalancingValues(const std::string& file) const {
+		towerBalancingValues.print(file);
+	}
+
+	void Statistics::setTowerUsageValue(std::vector<double> towerUsage) {
+		for (int i = 0; i < towerUsage.size(); i++)
+		{
+			towerUsageValues.add(balanceCounter, towerUsage[i]);
+		}
+	}
+
+	void Statistics::displayAllTowerUsageValues() {
+		for (int i = 0; i < towerUsageValues.size(); i++)
+		{
+			std::cout << std::endl;
+			for (int j = 0; j < towerUsageValues.sizeOfRow(i); j++)
+			{
+				std::cout << towerUsageValues.get(i, j) << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+
+	void Statistics::printTowerUsageValues(const std::string& file) const {
+		towerUsageValues.print(file);
 	}
 
 }

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def parser(data):
     parsed_data = []
-    for w in data.split("\n")[:-1]:
+    for w in data.split(";")[:-1]:
         wave = []
         for value in w.split(" ")[:-1]:
             wave.append(int(value))

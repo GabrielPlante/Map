@@ -83,7 +83,7 @@ namespace pns {
 	}
 
 	void BotManager::nextGeneration() {
-		std::cout << "New generation";
+		std::cout << "New generation. ";
 		//Make a sorted vector with all the fitness of all the bot
 		std::vector<SortWithPos> fitnessVector;
 		for (int i = 0; i != bots.size(); i++) {
@@ -92,7 +92,8 @@ namespace pns {
 			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
 		//stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
-		stats.displayAllWaveBalancingValues();
+
+		//store statistics values in files
 		stats.printFitnessValues(stats.fitnessValuesFile);
 		stats.printWaveBalancingValues(stats.waveBalancingValuesFile);
 		//increment necessary to record fitness values of next generation
@@ -175,6 +176,13 @@ namespace pns {
 				}
 			}
 			towerBalancer->balanceTowers(towerUsage);
+			std::vector<int> towerBalancingValues = towerBalancer->getNbrOfBuffPerTower();
+
+			//store statistics values in files
+			stats.setTowerBalancingValue(towerBalancingValues);
+			stats.printTowerBalancingValues(stats.towerBalancingValuesFile);
+			stats.setTowerUsageValue(towerUsage);
+			stats.printTowerUsageValues(stats.towerUsageValuesFile);
 		}
 	}
 
