@@ -19,6 +19,9 @@
     <ClCompile Include="TowerBalancer.cpp">
       <Filter>Source Files\Balancer</Filter>
     </ClCompile>
+    <ClCompile Include="TowerManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BotManager.h">
@@ -53,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="TowerBalancer.h">
       <Filter>Header Files\Balancer</Filter>
+    </ClInclude>
+    <ClInclude Include="TowerManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

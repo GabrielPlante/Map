@@ -24,6 +24,7 @@
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
+    <ClCompile Include="TowerManager.cpp" />
     <ClCompile Include="WaveBalancer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     <ClInclude Include="GeneticBot.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Statistics.h" />
+    <ClInclude Include="TowerManager.h" />
     <ClInclude Include="Values.h" />
     <ClInclude Include="WaveBalancer.h" />
   </ItemGroup>
