@@ -5,7 +5,7 @@
 
 namespace pns {
 	//Get all the position of the values under a certain point
-	std::vector<int> getValuesUnder(const std::vector<int>& values, int max) {
+	std::vector<int> GeneticBot::getValuesUnder(const std::vector<int>& values, int max) {
 		std::vector<int> goodValues;
 		for (int i = 0; i != values.size(); i++) {
 			if (values[i] <= max)

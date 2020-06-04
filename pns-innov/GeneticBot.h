@@ -25,6 +25,8 @@ namespace pns {
 		*/
 		GeneticBot(std::vector<int> decisionMap = std::vector<int>{});
 
+		std::vector<int> getValuesUnder(const std::vector<int>& values, int max);
+
 		//Make the bot play for this instant. The money gap is used if money is always the multiple of a number
 		std::vector<std::array<int, 3>> play(std::function<int()> getMoney, const std::vector<int>& towersCost, const TowerManager& towerManager, int moneyGap = 1);
 
