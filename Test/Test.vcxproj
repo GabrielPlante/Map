@@ -33,8 +33,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Dependencies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="MapTest.h" />
@@ -44,6 +44,8 @@
     <ClCompile Include="BotManagerTest.cpp" />
     <ClCompile Include="Container2DTest.cpp" />
     <ClCompile Include="FactoryTest.cpp" />
+    <ClCompile Include="FrecTest.cpp" />
+    <ClCompile Include="GeneticBotTest.cpp" />
     <ClCompile Include="IDGeneratorTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -51,8 +53,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TowerManagerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Frosh-defence\frosh-defence\frosh-defence.vcxproj">
+      <Project>{6bda8870-2b5a-4d5a-9969-3477660a6928}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\GameEngine2D\GameEngine2D.vcxproj">
       <Project>{fb60dcd9-ffaf-46cf-ab53-a9b4d27e85d9}</Project>
     </ProjectReference>
@@ -95,12 +101,13 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\Ianagd;C:\Users\gabri\source\repos\GabrielPlante\GameEngine2D\GameEngine2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\utilisateur\source\repos\pns-innov1920-pns-innov1920-i\Frosh-defence\frosh-defence\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,12 +134,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\Users\user\Documents\S8\PS8\pns-innov1920-pns-innov1920-i\Dependencies\include\SFML;C:\Users\user\Documents\S8\PS8\pns-innov1920-pns-innov1920-i\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\include\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

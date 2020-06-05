@@ -26,9 +26,9 @@ namespace pns {
 	const std::vector<GeneticBot>& BotManager::getBots() const { return bots; }
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-		std::function<int()> getMoney, std::function<void(int, int)> placeTower, std::vector<int> towersCost, int moneyGap)
+		std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
-		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
+		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, towerManager{ towerManager }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
 	{
 	}
 
@@ -55,9 +55,8 @@ namespace pns {
 			//If there is a wave balancer setup and the bot pass the wave it is working on,
 			//balance the wave and start a new game with the same bot
 			if (waveBalancer && waveBalancer->getCurrentBalancingWave() == waveNbr) {
-				waveBalancer->balanceWave(true);
-				int currentWave = waveBalancer->getCurrentBalancingWave();
-				stats.setWaveBalancingValue(currentWave, waveBalancer->getNbrOfBuffPerWave()[currentWave]);
+				int balancedWave = waveBalancer->balanceWave(true);
+				stats.setWaveBalancingValue(balancedWave, waveBalancer->getNbrOfBuffPerWave()[balancedWave]);
 				startNewGame();
 				waveNbr = -1;
 				//Reset the bot
@@ -70,7 +69,10 @@ namespace pns {
 		}
 		//Finally, if nothing special happened, let the bot play
 		else {
-			botIt->play(getMoney, placeTower, towersCost, moneyGap);
+			std::vector<std::array<int, 3>> towerToPlace{ botIt->play(getMoney, towersCost, towerManager, moneyGap) };
+			if (!towerToPlace.empty()) {
+				placeTower(towerToPlace[0][0], std::array<int, 2>{towerToPlace[0][1], towerToPlace[0][2]});
+			}
 		}
 		//Return if the algorithm finish balancing the game
 		if (towerBalancer && waveBalancer)
@@ -84,7 +86,7 @@ namespace pns {
 	}
 
 	void BotManager::nextGeneration() {
-		std::cout << "New generation" << std::endl;
+		std::cout << "New generation. ";
 		//Make a sorted vector with all the fitness of all the bot
 		std::vector<SortWithPos> fitnessVector;
 		for (int i = 0; i != bots.size(); i++) {
@@ -92,9 +94,8 @@ namespace pns {
 			//Store fitness values for statistics
 			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
-		stats.displayAllBalancingValues();
-		stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
 		stats.printFitnessValues(stats.fitnessValuesFile);
+		stats.printWaveBalancingValues(stats.waveBalancingValuesFile);
 		//increment necessary to record fitness values of next generation
 		stats.genCounter++;
 		//Sort the bots by increasing fitness
@@ -162,7 +163,8 @@ namespace pns {
 		}
 		//Make the wave balancing if setup
 		if (waveBalancer && !waveBalancer->didFinishBalance()) {
-			waveBalancer->balanceWave(false);
+			int balancedWave = waveBalancer->balanceWave(false);
+			stats.setWaveBalancingValue(balancedWave, waveBalancer->getNbrOfBuffPerWave()[balancedWave]);
 		}
 		//Make the tower balancing if setup with the new bots
 		else if (towerBalancer && !towerBalancer->didFinishBalance()) {
@@ -174,6 +176,13 @@ namespace pns {
 				}
 			}
 			towerBalancer->balanceTowers(towerUsage);
+			std::vector<int> towerBalancingValues = towerBalancer->getNbrOfBuffPerTower();
+
+			//store statistics values in files
+			stats.setTowerBalancingValue(towerBalancingValues);
+			stats.printTowerBalancingValues(stats.towerBalancingValuesFile);
+			stats.setTowerUsageValue(towerUsage);
+			stats.printTowerUsageValues(stats.towerUsageValuesFile);
 		}
 	}
 

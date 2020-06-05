@@ -25,7 +25,7 @@ namespace pns {
 		WaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave);
 
 		//Balance the actual wave
-		void balanceWave(bool didBotPass);
+		int balanceWave(bool didBotPass);
 
 		//Get the wave the algorithm is currently balancing
 		int getCurrentBalancingWave() const { return currentBalancingWave; }

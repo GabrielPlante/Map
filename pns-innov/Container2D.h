@@ -19,6 +19,9 @@ namespace pns {
 		//Set a value at the position [x, y]. If new values need to be inserted, the defaultValue is inserted
 		void set(int x, int y, T value, T defaultValue = 0);
 
+		//add a new element for row x
+		void add(int x, T value);
+
 		//Get the value stored at the position [x, y]
 		T get(int x, int y) const { return storage[x][y]; }
 
@@ -27,6 +30,9 @@ namespace pns {
 		
 		//Get size of row x
 		int sizeOfRow(int x) const { return (int) storage[x].size(); }
+
+		//Get size of row x
+		int sizeOfRow(int x) const { return (int)storage[x].size(); }
 
 		//Is there a value at the position [x, y]
 		bool exist(int x, int y) const;
@@ -53,6 +59,15 @@ namespace pns {
 		}
 		//Insert the element
 		storage[x][y] = value;
+	}
+
+	template <typename T>
+	void Container2D<T>::add(int x, T value) {
+		//Make sure the x dimension is large enough
+		while (storage.size() <= x) {
+			storage.push_back(std::vector<T>{});
+		}
+		storage[x].push_back(value);
 	}
 
 	template <typename T>

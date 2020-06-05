@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "TowerManager.h"
+
 namespace pns {
 	class GeneticBot
 	{
@@ -15,15 +17,18 @@ namespace pns {
 		int towerPlaced{ 0 };
 
 		std::vector<int> towerPlacedByType;
+		//The position of the tower already placed
+		std::set<std::array<int, 2>> towerAlreadyPlaced;
 	public:
 		/*Default constructor
 		* decisionMap is the map of every decision the bot can take
 		*/
 		GeneticBot(std::vector<int> decisionMap = std::vector<int>{});
 
+		std::vector<int> getValuesUnder(const std::vector<int>& values, int max);
+
 		//Make the bot play for this instant. The money gap is used if money is always the multiple of a number
-		void play(std::function<int()> getMoney, std::function<void(int, int)> placeTower,
-			const std::vector<int>& towersCost, int moneyGap = 1);
+		std::vector<std::array<int, 3>> play(std::function<int()> getMoney, const std::vector<int>& towersCost, const TowerManager& towerManager, int moneyGap = 1);
 
 		//Get the decision map the bot updated
 		const std::vector<int> getDecisionMap() const { return decisionMap; }

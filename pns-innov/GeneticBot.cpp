@@ -5,7 +5,7 @@
 
 namespace pns {
 	//Get all the position of the values under a certain point
-	std::vector<int> getValuesUnder(const std::vector<int>& values, int max) {
+	std::vector<int> GeneticBot::getValuesUnder(const std::vector<int>& values, int max) {
 		std::vector<int> goodValues;
 		for (int i = 0; i != values.size(); i++) {
 			if (values[i] <= max)
@@ -18,8 +18,8 @@ namespace pns {
 		: decisionMap{ decisionMap }
 	{}
 
-	void GeneticBot::play(std::function<int()> getMoney, std::function<void(int, int)> placeTower,
-		const std::vector<int>& towersCost, int) {
+	std::vector<std::array<int, 3>> GeneticBot::play(std::function<int()> getMoney, const std::vector<int>& towersCost, const TowerManager& towerManager, int) {
+		std::vector<std::array<int, 3>> towerPlacedVector;
 		if (towerPlacedByType.empty()) {
 			towerPlacedByType = std::vector<int>(towersCost.size(), 0);
 		}
@@ -39,10 +39,17 @@ namespace pns {
 		//If the bot can afford the tower
 		if (towersCost[decisionMap[towerPlaced]] <= getMoney()) {
 			int towerType{ decisionMap[towerPlaced] };
-			placeTower(towerType, towerPlacedByType[towerType]);
+			//Get the position of the tower that will be placed
+			std::array<int, 2> towerPlacedArray{ towerManager.getBestTowerPosition(towerType, towerPlacedByType[towerType], towerAlreadyPlaced) };
+			//Add it to the list of tower already placed
+			towerAlreadyPlaced.insert(towerPlacedArray);
+			//Add it to the vector of tower we will return
+			towerPlacedVector.push_back({ towerType, towerPlacedArray[0], towerPlacedArray[1] });
 			towerPlaced++;
 			towerPlacedByType[towerType]++;
 		}
+
+		return towerPlacedVector;
 
 		//If the bot already have a plan for this situation and this plan is to place a tower
 		/*if (decisionMap.exist(towerPlaced, getMoney() / moneyGap) && decisionMap.get(towerPlaced, getMoney() / moneyGap) > -1) {

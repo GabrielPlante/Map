@@ -7,7 +7,8 @@ namespace pns {
 		: buffWave{ buffWave }, nerfWave{ nerfWave }, nbrOfWave{ nbrOfWave }
 	{}
 
-	void WaveBalancer::balanceWave(bool didBotPass) {
+	int WaveBalancer::balanceWave(bool didBotPass) {
+		int balancedWave = currentBalancingWave;
 		if (nbrOfBuffPerWave.size() <= currentBalancingWave)
 			nbrOfBuffPerWave.push_back(0);
 		if (didBotPass) {
@@ -28,5 +29,6 @@ namespace pns {
 				hasWonThisWave = false;
 			}
 		}
+		return balancedWave;
 	}
 }
