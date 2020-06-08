@@ -27,6 +27,7 @@ def plot_all_tower_usage(towerUsageValues):
 
     for t in towers:
         plt.plot(nbrOfBalancing, t, label = str(towers.index(t)))
+    plt.xticks(nbrOfBalancing)
     plt.xlabel("number of balancing")
     plt.ylabel("usage in percentage")
     plt.title("tower usage")

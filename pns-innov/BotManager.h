@@ -33,6 +33,12 @@ namespace pns {
 		std::vector<GeneticBot>::iterator botIt;
 		Statistics stats;
 
+		//Parameters for genetic algorithm
+		int nbrOfBotPerGeneration;
+		int percentageOfBotKept;
+		int percentageOfParameterChanged;
+		int nbrOfStaleGenerationForReset;
+
 		//The tower manager
 		TowerManager towerManager;
 
@@ -68,7 +74,8 @@ namespace pns {
 		* The money gap is used if money is always the multiple of a number
 		*/
 		BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1);
+			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1,
+			int nbrOfBotPerGeneration = 20, int percentageOfBotKept = 5, int percentageOfParameterChanged = 20, int nbrOfStaleGenerationForReset = 3);
 
 		//Update the bot manager, return true if the game is balanced
 		bool update();

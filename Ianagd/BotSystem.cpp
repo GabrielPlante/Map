@@ -127,7 +127,8 @@ namespace ian {
 
 			//Create the bot
 			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave}, std::function<bool()>{hasGameEnded},
-				std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, std::array<int, 2>)>{placeTower}, towersCost, towerManager, 50 } };
+				std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, std::array<int, 2>)>{placeTower}, towersCost, towerManager, 50 ,
+			50, 5, 15, 3} };
 
 			//Setup a tower balancer
 			//F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });

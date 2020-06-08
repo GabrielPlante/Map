@@ -27,12 +27,9 @@ namespace pns {
 
 		//Get size of the storage
 		int size() const { return (int) storage.size(); }
-		
-		//Get size of row x
-		int sizeOfRow(int x) const { return (int) storage[x].size(); }
 
 		//Get size of row x
-		int sizeOfRow(int x) const { return (int)storage[x].size(); }
+		int sizeOfRow(int x) const { return (int) storage[x].size(); }
 
 		//Is there a value at the position [x, y]
 		bool exist(int x, int y) const;

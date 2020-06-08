@@ -26,9 +26,12 @@ namespace pns {
 	const std::vector<GeneticBot>& BotManager::getBots() const { return bots; }
 
 	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-		std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap)
+		std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap,
+		int nbrOfBotPerGeneration, int percentageOfBotKept, int percentageOfParameterChanged, int nbrOfStaleGenerationForReset)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
-		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, towerManager{ towerManager }, moneyGap{ moneyGap }, stats{ nbrOfBotPerGeneration }
+		getMoney{ getMoney }, placeTower{ placeTower }, towersCost{ towersCost }, towerManager{ towerManager }, moneyGap{ moneyGap },
+		nbrOfBotPerGeneration{ nbrOfBotPerGeneration }, percentageOfBotKept{ percentageOfBotKept }, percentageOfParameterChanged{ percentageOfParameterChanged },
+		nbrOfStaleGenerationForReset{ nbrOfStaleGenerationForReset }, stats{ nbrOfBotPerGeneration }
 	{
 	}
 
@@ -196,7 +199,7 @@ namespace pns {
 
 	void BotManager::createBots() {
 		std::cout << "Creating bots, with ";
-		std::cout << stats.getNbrOfBots() << " bots per generation." << std::endl;
+		std::cout << nbrOfBotPerGeneration << " bots per generation." << std::endl;
 		for (int i = 0; i != nbrOfBotPerGeneration; i++) {
 			bots.push_back(GeneticBot{});
 		}
