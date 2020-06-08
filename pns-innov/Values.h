@@ -2,7 +2,7 @@
 
 namespace pns {
 	//The number of bot that exist and compete each generation
-	constexpr int nbrOfBotPerGeneration{ 20 };
+	constexpr int nbrOfBotPerGeneration{ 100 };
 
 	//The percentage of bot kept at the end of each generation for the next one
 	constexpr int percentageOfBotKept{ 5 };

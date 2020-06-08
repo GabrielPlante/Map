@@ -16,6 +16,12 @@
     <ClCompile Include="FrecTest.cpp">
       <Filter>FroshDefence-test</Filter>
     </ClCompile>
+    <ClCompile Include="TowerBalancerTest.cpp">
+      <Filter>pns-innov-test</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveBalancerTest.cpp">
+      <Filter>pns-innov-test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapTest.h" />

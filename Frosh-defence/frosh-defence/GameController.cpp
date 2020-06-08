@@ -309,6 +309,9 @@ void placeFrec(int type, std::array<int, 2> position) {
 	else if (type == 2) frecType = FrecType::thrower;
 	GameBoard::getInstance()->placeFrec(frecType, position[0], position[1]);
 }
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
 // Main
 int main() {
@@ -343,6 +346,8 @@ int main() {
 	FrecAndFroshController* attackController = new FrecAndFroshController(
 		window, gameState, froshController, frecController->getFrecVec(),
 		froshController->getFroshVec());
+	
+
 
 	//------------------------------------------------------------------------------------------
 	//------------------------------------BOT IMPLEMENTATION------------------------------------
@@ -352,7 +357,6 @@ int main() {
 
 	std::vector<std::array<int, 2>> pathTile;
 	std::vector<std::array<int, 2>> buildableTile;
-
 	for (int i = 0; i != 32; i++) {
 		for (int j = 0; j != 18; j++) {
 			//Build the path vector
@@ -367,18 +371,15 @@ int main() {
 			}
 		}
 	}
-	std::cout << pathTile.size() << " ; " << buildableTile.size() << std::endl;
-
 	//Range defined in GameState.cpp
 	std::vector<int> towersRange{ 200 / 60, 125 / 60, 300 / 60 };
-
 	pns::TowerManager towerManager{ pathTile, buildableTile, towersRange };
-
 	//Price defined in GameState.cpp
 	std::vector<int> towersCost{ 30, 50, 40 };
-
 	pns::BotManager botManager{ hasWaveEnded, startNewWave, hasGameEnded, startNewGame, getTams, placeFrec, towersCost, towerManager };
-
+	//------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------
 
 	gameMenuController->setDebug(debug);
 	// Main game loop
@@ -428,7 +429,13 @@ int main() {
 			attackController->update();
 		}
 
+		//------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------
 		botManager.update();
+		//------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------------------
 
 		if (gameState->dirtyBit) {
 			waveText.setString(std::to_string(gameState->getCurrentWave()));
