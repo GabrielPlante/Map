@@ -13,11 +13,13 @@ namespace pns {
 	{
 	private:
 
+		//number of bots per generation
 		int nbrOfBots;
 		std::vector<Container2D<int>> fitnessValues;
 		Container2D<int> waveBalancingValues;
 		Container2D<int> towerBalancingValues;
 		Container2D<double> towerUsageValues;
+
 
 		//to store statistics of each run in different files
 		time_t now = time(0);

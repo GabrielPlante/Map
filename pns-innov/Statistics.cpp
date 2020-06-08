@@ -7,7 +7,7 @@
 namespace pns {
 
 	Statistics::Statistics(int nbrOfBots)
-		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0)
+		: nbrOfBots{ nbrOfBots }, genCounter(0), balanceCounter(0), waveBalancingCounter(0)
 	{
 		fitnessValues.push_back(Container2D<int>());
 		mkdir("../pns-innov/runs/fitness");
@@ -64,6 +64,7 @@ namespace pns {
 		fitnessValues.push_back(Container2D<int>());
 		balanceCounter++;
 		genCounter = 0;
+		waveBalancingCounter = 0;
 	}
 
 	const std::vector<Container2D<int>>& Statistics::printFitnessValues(const std::string& file) const{
@@ -85,6 +86,7 @@ namespace pns {
 	}
 
 	void Statistics::displayAllWaveBalancingValues() {
+
 		for (int i = 0; i < waveBalancingValues.size(); i++)
 		{
 			std::cout << "wave " << i << ":" << std::endl;
@@ -146,5 +148,4 @@ namespace pns {
 	void Statistics::printTowerUsageValues(const std::string& file) const {
 		towerUsageValues.print(file);
 	}
-
 }

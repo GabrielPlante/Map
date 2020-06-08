@@ -22,6 +22,9 @@
     <ClCompile Include="WaveBalancerTest.cpp">
       <Filter>pns-innov-test</Filter>
     </ClCompile>
+    <ClCompile Include="GeneticBotTest.cpp">
+      <Filter>pns-innov-test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapTest.h" />

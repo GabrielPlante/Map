@@ -94,9 +94,6 @@ namespace pns {
 			//Store fitness values for statistics
 			stats.setFitnessValue(stats.balanceCounter, stats.genCounter, i, bots[i].getFitness());
 		}
-		//stats.displayFitnessValues(stats.balanceCounter, stats.genCounter);
-
-		//store statistics values in files
 		stats.printFitnessValues(stats.fitnessValuesFile);
 		stats.printWaveBalancingValues(stats.waveBalancingValuesFile);
 		//increment necessary to record fitness values of next generation
