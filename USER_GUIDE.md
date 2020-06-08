@@ -32,3 +32,19 @@ L'utilisation de cette librairie se fait à travers une instance de la class **B
 | _hasWaveEnded_	| fonction sans paramètre qui retourne un booléen _true_ si aucune vague n'est en cours et renvoie _false_ sinon	|
 | _startNextWave_	| fonction sans paramètre qui commence une nouvelle vague et ne renvoie rien	|
 | _hasGameEnded_	| fonction sans paramètre qui retourne un booléen _true_ si la partie est terminée et renvoie _false_ sinon	|
+| _startNextGame_	| fonction sans paramètre qui commence une nouvelle partie et ne renvoie rien	|
+| _getMoney_	| fonction sans paramètre qui renvoie un entier de la valeur de l'argent que possède le joueur actuellement	|
+| _placeTower_	| fonction qui prend en paramètre un entier représentant l'index du type de la tour à placer et un tableau de deux entiers représentant les coordonnées _x_ et _y_ où placer la tour 	|
+| _towerCost_	| tableau d'entiers représentant le coût de chaque type de tour	|
+| _towerManager_	| l'instance de _TowerManager_ crée précédemment	|
+| _moneyGap_	| un entier représentant la valeur minimum de gain d'argent (gain de 10 en 10 / de 100 en 100, de 1 en 1, ...)	|
+
+3. Mettre en place l'équilibrage des tours :
+```Cpp
+	botManager.setupTowerBalancer(fonction<void(int)> buffAttribute,
+								fonction<void(int)> nerfAttribute,
+								vector<array<int, 2>> desiredTowerUsageRange);
+```
+| Paramètre | Description	|
+| :-----	| :---------	|
+| _buffAttribute_	| fonction qui prend en paramètre un entier correspondant au numéro
