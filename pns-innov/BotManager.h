@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <memory>
 
 #include "TowerBalancer.h"
 #include "WaveBalancer.h"
