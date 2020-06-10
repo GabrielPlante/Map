@@ -25,6 +25,12 @@
     <ClCompile Include="GeneticBotJNI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TowerManagerJNI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OurJNILib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BotManager.h">
@@ -63,7 +69,13 @@
     <ClInclude Include="TowerBalancer.h">
       <Filter>Header Files\Balancer</Filter>
     </ClInclude>
+    <ClInclude Include="TowerManagerJNI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="TowerManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OurJNILib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

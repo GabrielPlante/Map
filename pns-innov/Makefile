@@ -16,11 +16,15 @@ re: clean $(LIB)
 %.o: %.cpp %.h
 	$(CC) $(CPPFLAGS) -c $<
 
+all: $(LIB)
+
 $(LIB): $(OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-run: GeneticBotJNI.class
-	java -cp . -Djava.library.path=../x64/Debug/ GeneticBotJNI
+#run: GeneticBotJNI.class
+#	java -cp . -Djava.library.path=../x64/Debug/ GeneticBotJNI
+run: TowerManagerJNI.class
+	java -cp . -Djava.library.path=../x64/Debug/ TowerManagerJNI
 
 %.class: %.java
 	javac $<

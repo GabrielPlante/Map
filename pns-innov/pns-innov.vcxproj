@@ -20,15 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneticBotJNI.cpp" />
+    <ClCompile Include="OurJNILib.cpp" />
     <ClCompile Include="TowerBalancer.cpp" />
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="TowerManager.cpp" />
+    <ClCompile Include="TowerManagerJNI.cpp" />
     <ClCompile Include="WaveBalancer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OurJNILib.h" />
     <ClInclude Include="TowerBalancer.h" />
     <ClInclude Include="BalancerAttribute.h" />
     <ClInclude Include="BalancerObject.h" />
@@ -40,6 +43,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="TowerManager.h" />
+    <ClInclude Include="TowerManagerJNI.h" />
     <ClInclude Include="Values.h" />
     <ClInclude Include="WaveBalancer.h" />
   </ItemGroup>

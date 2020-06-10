@@ -1,22 +1,35 @@
 public interface BotManager {
-
-	private boolean hasWaveEnded();
-	private void startNextWave();
-	private boolean hasGameEnded();
-	private void startNewGame();
-
-	private int getMoney();
-	private void placeTower(int a, int[] b);
-	private
-
+	public interface hasWaveEnded_func {
+		@Delegate
+		public boolean func();
+	}
+	public interface startNextWave_func {
+		@Delegate
+		public void func();
+	}
+	public interface hasGameEnded_func {
+		@Delegate
+		public boolean func();
+	}
+	public interface startNewGame_func {
+		@Delegate
+		public void func();
+	}
+	public interface getMoney_func {
+		@Delegate
+		public int func();
+	}
+	public interface placeTower_func {
+		@Delegate
+		public  void func(int a, int[] b);
+	}
 	static {
 		try{
-			System.loadLibrary("../x64/Debug/pns-innov");
+			System.loadLibrary("pns-innov");
 		}catch(Exception e){
 			System.out.println(e.toString());
 		}
 	}
-
 	private long nativeObjectPointer;
 
 	private native long nativeNew(int age, String name);
