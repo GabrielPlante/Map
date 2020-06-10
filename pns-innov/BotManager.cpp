@@ -231,12 +231,11 @@ namespace pns {
 		}
 	}
 
-	void BotManager::setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
+	void BotManager::setupTowerBalancer(const std::vector<BalancerAttribute>& balancerAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
 		//Create the list of towerBalancer objects
 		std::vector<BalancerObject> balancerObjects;
 		for (int i = 0; i != desiredTowerUsageRange.size(); i++) {
-			BalancerAttribute attribute{ buffAttribute, nerfAttribute };
-			BalancerObject object{ attribute, desiredTowerUsageRange[i], i };
+			BalancerObject object{ balancerAttribute, desiredTowerUsageRange[i], i };
 			balancerObjects.push_back(object);
 		}
 		//Setup the towerBalancer

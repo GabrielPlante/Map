@@ -30,6 +30,8 @@
     </ClCompile>
     <ClCompile Include="OurJNILib.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="BalancerObject.cpp">
+      <Filter>Source Files\Balancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "TowerBalancer.h"
 
 namespace pns {
+
 	void TowerBalancer::balanceTowers(const std::vector<double>& towersUsage) {
 		//Calculate the total number of tower used
 		double nbrOfTowerUsed{ 0 };
