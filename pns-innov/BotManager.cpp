@@ -242,8 +242,8 @@ namespace pns {
 		towerBalancer = std::unique_ptr<TowerBalancer>{ new TowerBalancer{balancerObjects} };
 	}
 
-	void BotManager::setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave) {
-		waveBalancer = std::unique_ptr<WaveBalancer>{ new WaveBalancer{buffWave, nerfWave, nbrOfWave} };
+	void BotManager::setupWaveBalancer(const std::vector<BalancerAttribute>& balancerAttribute, int nbrOfWave) {
+		waveBalancer = std::unique_ptr<WaveBalancer>{ new WaveBalancer{balancerAttribute, nbrOfWave} };
 	}
 
 }

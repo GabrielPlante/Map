@@ -2,13 +2,15 @@
 #include <functional>
 #include <vector>
 
+#include "BalancerAttribute.h"
+
 
 namespace pns {
 	class WaveBalancer
 	{
 	private:
-		std::function<void(int)> buffWave;
-		std::function<void(int)> nerfWave;
+		std::vector<BalancerAttribute> attributes;
+		int attributePrioritySum{ 0 };
 
 		int nbrOfWave;
 
@@ -22,7 +24,7 @@ namespace pns {
 	public:
 		//Constructor
 		//buffWave and nerfWave take for parameter the wave number and buff / nerf this wave
-		WaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave);
+		WaveBalancer(const std::vector<BalancerAttribute>& attributes, int nbrOfWave);
 
 		//Balance the actual wave
 		int balanceWave(bool didBotPass);

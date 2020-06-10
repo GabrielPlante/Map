@@ -42,6 +42,15 @@ namespace ian {
 	void buffWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth += 10; }
 	void nerfWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth -= 20; }
 
+	void buffNbrOfEnemies(int waveNbr) { gv::wavesValues[waveNbr].nbrOfEnemy += 1; }
+	void nerfNbrOfEnemies(int waveNbr) { gv::wavesValues[waveNbr].nbrOfEnemy -= 1; }
+
+	void buffEnemySpeed(int waveNbr) { gv::wavesValues[waveNbr].enemySpeed += 0.05f; }
+	void nerfEnemySpeed(int waveNbr) { gv::wavesValues[waveNbr].enemySpeed -= 0.05f; }
+
+	void buffEnemyGold(int waveNbr) { gv::wavesValues[waveNbr].goldPerEnemy -= 10; }
+	void nerfEnemyGold(int waveNbr) { gv::wavesValues[waveNbr].goldPerEnemy += 10; }
+
 	BotSystem::BotSystem() {
 	}
 
@@ -97,7 +106,13 @@ namespace ian {
 			F_FACTORY->botManager->setupTowerBalancer(towerAttributes, { {20, 30}, {35, 45}, {35, 45} });
 
 			//Setup a wave balancer
-			//F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));
+			std::vector<pns::BalancerAttribute> waveAttributes{
+				pns::BalancerAttribute{buffWave, nerfWave, 2},
+				pns::BalancerAttribute{buffEnemyGold, nerfEnemyGold, 1},
+				pns::BalancerAttribute{buffEnemySpeed, nerfEnemySpeed, 1},
+				pns::BalancerAttribute{buffNbrOfEnemies, buffNbrOfEnemies, 1}
+			};
+			F_FACTORY->botManager->setupWaveBalancer(waveAttributes, static_cast<int>(gv::wavesValues.size()));
 		}
 		F_FACTORY->botManager->update();
 	}
