@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "BalancerObject.h"
 #include "TowerBalancer.h"
 #include "WaveBalancer.h"
 #include "TowerManager.h"
@@ -94,7 +95,7 @@ namespace pns {
 		/* buff and nerf attribute are function that take in parameter the tower to change
 		 * desiredTowerUsage is the percent wanted for the tower usage (between 0 and 100)
 		*/
-		void setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
+		void setupTowerBalancer(const std::vector<BalancerAttribute>& balancerAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
 
 		//Setup the wave towerBalancer
 		//buffWave and nerfWave take for parameter the wave number and buff / nerf this wave

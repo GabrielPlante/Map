@@ -25,6 +25,9 @@
     <ClCompile Include="GeneticBotJNI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BalancerObject.cpp">
+      <Filter>Source Files\Balancer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BotManager.h">

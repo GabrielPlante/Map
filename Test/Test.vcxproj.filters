@@ -2,28 +2,26 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="FactoryTest.cpp" />
+    <ClCompile Include="FrecTest.cpp" />
     <ClCompile Include="IDGeneratorTest.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Container2DTest.cpp">
-      <Filter>pns-innov-test</Filter>
-    </ClCompile>
     <ClCompile Include="BotManagerTest.cpp">
-      <Filter>pns-innov-test</Filter>
+      <Filter>pns-innov</Filter>
     </ClCompile>
-    <ClCompile Include="TowerManagerTest.cpp">
-      <Filter>pns-innov-test</Filter>
-    </ClCompile>
-    <ClCompile Include="FrecTest.cpp">
-      <Filter>FroshDefence-test</Filter>
-    </ClCompile>
-    <ClCompile Include="TowerBalancerTest.cpp">
-      <Filter>pns-innov-test</Filter>
-    </ClCompile>
-    <ClCompile Include="WaveBalancerTest.cpp">
-      <Filter>pns-innov-test</Filter>
+    <ClCompile Include="Container2DTest.cpp">
+      <Filter>pns-innov</Filter>
     </ClCompile>
     <ClCompile Include="GeneticBotTest.cpp">
-      <Filter>pns-innov-test</Filter>
+      <Filter>pns-innov</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerBalancerTest.cpp">
+      <Filter>pns-innov</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerManagerTest.cpp">
+      <Filter>pns-innov</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveBalancerTest.cpp">
+      <Filter>pns-innov</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -31,14 +29,11 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="pns-innov-test">
-      <UniqueIdentifier>{d7acdf29-1c2d-4a7f-8040-5e718645d5d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FroshDefence-test">
-      <UniqueIdentifier>{d1cc9cc9-616f-4e6b-b5ec-afa610ac2528}</UniqueIdentifier>
-    </Filter>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Filter Include="pns-innov">
+      <UniqueIdentifier>{57872869-dfd7-459d-a3ce-0d1aac627494}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
