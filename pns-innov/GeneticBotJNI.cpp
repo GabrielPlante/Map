@@ -35,7 +35,6 @@ extern "C" {
 	#pragma warning(disable:4100)
 	JNIEXPORT jlong JNICALL Java_GeneticBotJNI_nativeNew(JNIEnv* env, jobject obj, jobject list) {
 		pns::GeneticBot* p = new pns::GeneticBot(builCopyOfArrayList(env, list));
-		// std::cout << "coucou l asticot " << std::endl;
 		return reinterpret_cast<jlong>(p);
 		#pragma warning(default:4100)
 	}
@@ -57,17 +56,14 @@ extern "C" {
 		jmethodID intClassMID = env->GetMethodID(integerClass, "<init>", "(I)V");
 
 		pns::GeneticBot* bot = reinterpret_cast<pns::GeneticBot*>(getNativePointer(env));
-		// cout << "size= " << copy.size() << endl;
-		// cout << "max= " << static_cast<int>(max) << endl;
 		copy = bot->getValuesUnder(copy, static_cast<int>(max));
 		size = copy.size();
-		// cout << "size= " << size << endl;
+
 		jobject res = env->NewObject(
 			java_util_ArrayList, java_util_ArrayList_method, size);
 		for (int i = 0; i < size; i++) {
 			element = static_cast<jint>(copy.at(i));
 			jobject newObj = env->NewObject(integerClass, intClassMID, element);
-			cout << "elt= " << element << std::endl;
 			env->CallBooleanMethod(res, java_util_ArrayList_add, newObj);
 		}
 		return res;

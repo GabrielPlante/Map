@@ -9,7 +9,6 @@ namespace pns {
 	std::vector<int> GeneticBot::getValuesUnder(const std::vector<int>& values, int max) {
 		std::vector<int> goodValues;
 		for (int i = 0; i != values.size(); i++) {
-			//cout << "xv(i)= " << values[i] << std::endl;
 			if (values[i] <= max)
 				goodValues.push_back(i);
 		}
