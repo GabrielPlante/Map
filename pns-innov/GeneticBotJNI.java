@@ -25,7 +25,7 @@ public class GeneticBotJNI {
 	public native List<Integer> getValuesUnder(
 		List<Integer> values, int max);
 
-/*
+
 	public static void main(String[] args) {
 		GeneticBotJNI self = new GeneticBotJNI(
 			new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4)));
@@ -39,5 +39,5 @@ public class GeneticBotJNI {
 		System.out.println("expected 1, 2, 3, 4");
 		List<Integer> bof = self.getDecisionMap();
 		self.printList(bof);
-	} */
+	}
 }

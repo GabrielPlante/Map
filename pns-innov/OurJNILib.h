@@ -1,4 +1,4 @@
-#include "../Dependencies/include/include/jni.h"
+#include <jni.h>
 #include <vector>
 #include <array>
 #ifndef _Our_JNI_LIB
