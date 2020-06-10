@@ -115,7 +115,7 @@ namespace pns {
 		else
 			nbrOfGenerationSinceImprovement++;
 
-		for (int i = static_cast<int>(bots.size() - 1); bots[i].getFitness() == bestFitness; i--) {
+		for (int i = static_cast<int>(bots.size() - 1); bots[i].getFitness() == bestFitness && i >= 0; i--) {
 			bestBots.push_back(bots[i]);
 		}
 
