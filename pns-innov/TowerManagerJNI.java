@@ -29,6 +29,7 @@ public class TowerManagerJNI {
 		List<int[]> buildableVector,
 		List<Integer> towersRange);
 
+	/*
 	public static void main(String[] args) {
 		List<int[]> pathVector = new ArrayList<int[]>(
 			Arrays.asList(
@@ -43,5 +44,5 @@ public class TowerManagerJNI {
 			buildableVector,
 			towersRange);
 		System.out.println("nativeObjectPtr= " + self.getNativeObjectPtr());
-	}
+	} */
 }

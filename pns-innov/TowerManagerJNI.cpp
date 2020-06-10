@@ -15,6 +15,7 @@ extern "C" {
 			env, pathVector);
 		std::vector<std::array<int, 2>> _buildableVector = builCopyOfArrayListOfArray(
 			env, buildableVector);
+		// Ce qui suit permet de tester si on récupère bien les données
 		/*
 		cout << "_towersRange= " << endl;
 		for (int i = 0; i < _towersRange.size(); i++)

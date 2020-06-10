@@ -24,6 +24,7 @@
     <ClCompile Include="OurJNILib.cpp" />
     <ClCompile Include="TowerBalancer.cpp" />
     <ClCompile Include="BotManager.cpp" />
+    <ClInclude Include="BotManagerJNI.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="BalancerAttribute.h" />
     <ClInclude Include="BalancerObject.h" />
     <ClInclude Include="BotManager.h" />
+    <ClInclude Include="BotManagerJNI.h" />
     <ClInclude Include="Container2D.h" />
     <ClInclude Include="FileWriter.h" />
     <ClInclude Include="GeneticBot.h" />

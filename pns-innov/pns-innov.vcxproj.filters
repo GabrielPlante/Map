@@ -7,6 +7,9 @@
     <ClCompile Include="BotManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClInclude Include="BotManagerJNI.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClCompile Include="GeneticBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +46,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BotManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BotManagerJNI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Container2D.h">

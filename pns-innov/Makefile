@@ -8,7 +8,7 @@ OBJ = $(SRC:.cpp=.o)
 GCH = $(wildcard *.h.gch)
 
 clean:
-	rm -f GeneticBotJNI.Class $(LIB) $(OBJ) $(GCH)
+	rm -f *.class $(LIB) $(OBJ) $(GCH)
 
 re: clean $(LIB)
 
