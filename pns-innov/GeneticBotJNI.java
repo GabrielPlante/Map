@@ -22,6 +22,7 @@ public class GeneticBotJNI {
 		System.out.println("");
 	}
 	public native long nativeNew(List<Integer> decisionMap);
+	public native List<Integer> getDecisionMap();
 	public native List<Integer> getValuesUnder(
 		List<Integer> values, int max);
 
@@ -33,5 +34,9 @@ public class GeneticBotJNI {
 		System.out.println("expected: 0, 5, 7, 8");
 		test1 = self.getValuesUnder(test1, 5);
 		self.printList(test1);
+
+		System.out.println("expected 1, 2, 3, 4");
+		List<Integer> bof = self.getDecisionMap();
+		self.printList(bof);
 	}
 }

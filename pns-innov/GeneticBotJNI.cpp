@@ -6,6 +6,7 @@
 extern "C" {
 	using std::cout;
 	using std::endl;
+#pragma warning(disable:4190)
 	std::vector<int> builCopyOfArrayList(JNIEnv* env, jobject list) {
 		jclass listClass = env->FindClass("java/util/ArrayList");
 		jmethodID listGetId = env->GetMethodID(listClass, "get", "(I)Ljava/lang/Object;");
@@ -20,6 +21,33 @@ extern "C" {
 			jobject temp = env->CallObjectMethodA(list, listGetId, &arg);
 			int _val = env->CallIntMethodA(temp, intValueMid, &arg);
 			res.push_back(_val);
+		}
+		return res;
+#pragma warning(default:4190)
+	}
+
+	jobject vectorToJavaIntegerList(JNIEnv* env, std::vector<int> base) {
+		size_t size = base.size();
+		for (int i = 0; i < size; i++)
+			cout << " i= " << i ;
+		cout << endl;
+		jint element;
+		jclass java_util_ArrayList = static_cast<jclass>(
+			env->NewGlobalRef(env->FindClass("java/util/ArrayList")));
+		jmethodID java_util_ArrayList_method = env->GetMethodID(
+			java_util_ArrayList, "<init>", "(I)V");
+		jmethodID java_util_ArrayList_add = env->GetMethodID(
+			java_util_ArrayList, "add", "(Ljava/lang/Object;)Z");
+		jclass integerClass = env->FindClass("java/lang/Integer");
+		//jmethodID intValueMid = env->GetMethodID(integerClass, "intValue", "()I");
+		jmethodID intClassMID = env->GetMethodID(integerClass, "<init>", "(I)V");
+		jobject res = env->NewObject(
+			java_util_ArrayList, java_util_ArrayList_method, size);
+
+		for (int i = 0; i < size; i++) {
+			element = static_cast<jint>(base.at(i));
+			jobject newObj = env->NewObject(integerClass, intClassMID, element);
+			env->CallBooleanMethod(res, java_util_ArrayList_add, newObj);
 		}
 		return res;
 	}
@@ -38,35 +66,23 @@ extern "C" {
 		return reinterpret_cast<jlong>(p);
 		#pragma warning(default:4100)
 	}
+#pragma warning(disable:4100)
+	JNIEXPORT jobject JNICALL Java_GeneticBotJNI_getDecisionMap(JNIEnv* env, jobject obj) {
+		pns::GeneticBot* bot = reinterpret_cast<pns::GeneticBot*>(getNativePointer(env));
+		return vectorToJavaIntegerList(env, bot->getDecisionMap());
+#pragma warning(default:4100)
+	}
 
+
+#pragma warning(disable:4100)
 	JNIEXPORT jobject JNICALL Java_GeneticBotJNI_getValuesUnder(
 		JNIEnv* env, jobject obj, jobject list, jint max) {
-		jint element;
-		int size;
 		std::vector<int> copy = builCopyOfArrayList(env, list);
-		
-		jclass java_util_ArrayList = static_cast<jclass>(
-			env->NewGlobalRef(env->FindClass("java/util/ArrayList")));
-		jmethodID java_util_ArrayList_method = env->GetMethodID(
-			java_util_ArrayList, "<init>", "(I)V");
-		jmethodID java_util_ArrayList_add = env->GetMethodID(
-			java_util_ArrayList, "add", "(Ljava/lang/Object;)Z");
-		jclass integerClass = env->FindClass("java/lang/Integer");
-		jmethodID intValueMid = env->GetMethodID(integerClass, "intValue", "()I");
-		jmethodID intClassMID = env->GetMethodID(integerClass, "<init>", "(I)V");
-
 		pns::GeneticBot* bot = reinterpret_cast<pns::GeneticBot*>(getNativePointer(env));
 		copy = bot->getValuesUnder(copy, static_cast<int>(max));
-		size = copy.size();
-
-		jobject res = env->NewObject(
-			java_util_ArrayList, java_util_ArrayList_method, size);
-		for (int i = 0; i < size; i++) {
-			element = static_cast<jint>(copy.at(i));
-			jobject newObj = env->NewObject(integerClass, intClassMID, element);
-			env->CallBooleanMethod(res, java_util_ArrayList_add, newObj);
-		}
+		jobject res = vectorToJavaIntegerList(env, copy);
 		return res;
+#pragma warning(default:4100)
 	}
 
 }
