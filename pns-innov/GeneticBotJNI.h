@@ -17,6 +17,14 @@ JNIEXPORT jlong JNICALL Java_GeneticBotJNI_nativeNew
 
 /*
  * Class:     GeneticBotJNI
+ * Method:    getDecisionMap
+ * Signature: ()Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_GeneticBotJNI_getDecisionMap
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     GeneticBotJNI
  * Method:    getValuesUnder
  * Signature: (Ljava/util/List;I)Ljava/util/List;
  */
