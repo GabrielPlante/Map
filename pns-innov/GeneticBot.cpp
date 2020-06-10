@@ -2,12 +2,14 @@
 
 #include "Random.h"
 #include "Values.h"
-
+#include <iostream>
 namespace pns {
+	using std::cout;
 	//Get all the position of the values under a certain point
 	std::vector<int> GeneticBot::getValuesUnder(const std::vector<int>& values, int max) {
 		std::vector<int> goodValues;
 		for (int i = 0; i != values.size(); i++) {
+			//cout << "xv(i)= " << values[i] << std::endl;
 			if (values[i] <= max)
 				goodValues.push_back(i);
 		}
