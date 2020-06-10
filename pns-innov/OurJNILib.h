@@ -3,6 +3,7 @@
 #include <array>
 #ifndef _Our_JNI_LIB
 #define _Our_JNI_LIB
+#include <string>
 
 void print_debug(std::vector<std::array<int, 2>> list);
 
