@@ -110,12 +110,13 @@ namespace pns {
 			bestFitness = fitnessVector[fitnessVector.size() - 1].fitness;
 			std::cout << ", actual: " << bestFitness;
 			nbrOfGenerationSinceImprovement = 0;
-			bestBots.push_back(bots[fitnessVector[fitnessVector.size() - 1].position]);
+			bestBots.clear();
+			//bestBots.push_back(bots[fitnessVector[fitnessVector.size() - 1].position]);
 		}
 		else
 			nbrOfGenerationSinceImprovement++;
 
-		for (int i = static_cast<int>(bots.size() - 1); bots[i].getFitness() == bestFitness && i >= 0; i--) {
+		for (int i = static_cast<int>(bots.size() - 1); i >= 0 && bots[i].getFitness() == bestFitness; i--) {
 			bestBots.push_back(bots[i]);
 		}
 

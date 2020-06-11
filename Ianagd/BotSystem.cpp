@@ -99,7 +99,7 @@ namespace ian {
 
 			//Setup a tower balancer
 			std::vector<pns::BalancerAttribute> towerAttributes{
-				pns::BalancerAttribute{ buffDamage, nerfDamage, 2 },
+				pns::BalancerAttribute{ buffDamage, nerfDamage, 10 },
 				pns::BalancerAttribute{ buffRange, nerfRange, 1 },
 				pns::BalancerAttribute{ buffAttackSpeed, nerfAttackSpeed, 1 },
 				pns::BalancerAttribute{ buffCost, nerfCost, 1 } };
@@ -107,7 +107,7 @@ namespace ian {
 
 			//Setup a wave balancer
 			std::vector<pns::BalancerAttribute> waveAttributes{
-				pns::BalancerAttribute{buffWave, nerfWave, 2},
+				pns::BalancerAttribute{buffWave, nerfWave, 10},
 				pns::BalancerAttribute{buffEnemyGold, nerfEnemyGold, 1},
 				pns::BalancerAttribute{buffEnemySpeed, nerfEnemySpeed, 1},
 				pns::BalancerAttribute{buffNbrOfEnemies, buffNbrOfEnemies, 1}
