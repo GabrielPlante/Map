@@ -1,9 +1,12 @@
-TEST_FILES = $(wildcard *.java)
-EXE = $(basename $(TEST_FILES))
+TEST_FILES = $(wildcard *.java \
+	     	../pns-innov/GeneticBotJNI.java)
+#ADD_FILES = $(wildcard 
+EXE = GeneticBotTest
 
 test: build_lib build_test
-	java -cp "../pns-innov;junit-4.13.jar;hamcrest-core-1.3.jar;." \
-		org.junit.runner.JUnitCore $(EXE)
+	java -Djava.library.path="../x64/Debug" -cp \
+	"../pns-innov;junit-4.13.jar;hamcrest-core-1.3.jar;." \
+	org.junit.runner.JUnitCore $(EXE)
 
 build_lib:
 	cd ../pns-innov && mingw32-make.exe all
