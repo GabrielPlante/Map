@@ -1,5 +1,4 @@
-JAVA_HOME = C:/Program\ Files/Java/jdk1.8.0_181
-JNI_HOME = C:/Program\ Files/Java/jdk1.8.0_181/include
+JAVA_HOME = ../Dependencies/include
 CC = g++
 CPPFLAGS = -I. -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/win32 -lm -m64
 LDFLAGS = -Wl,--add-stdcall-alias -m64
@@ -21,10 +20,10 @@ all: $(LIB)
 $(LIB): $(OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
-#run: GeneticBotJNI.class
-#	java -cp . -Djava.library.path=../x64/Debug/ GeneticBotJNI
-run: TowerManagerJNI.class
-	java -cp . -Djava.library.path=../x64/Debug/ TowerManagerJNI
+run: GeneticBotJNI.class
+	java -cp . -Djava.library.path=../x64/Debug/ GeneticBotJNI
+#run: TowerManagerJNI.class
+#	java -cp . -Djava.library.path=../x64/Debug/ TowerManagerJNI
 
 %.class: %.java
 	javac $<
