@@ -1,8 +1,8 @@
-#Installation Instructions to run JNI Tests
+# Installation Instructions to run JNI Tests
 
 The Makefile was written to work ONLY on MS Windows, with Mingw32/TDM-G++
 
-1. add the path containing javac and java programs in you system environment variables: on Windows, it looks like:
+1. add the path containing javac and java programs in your system environment variables: on Windows, it looks like:
 ```C:\Program Files\Java\jdk1.8.0_181\bin```
 
 2. Install compilation tools:
