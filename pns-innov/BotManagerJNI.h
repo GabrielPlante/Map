@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     BotManagerJNI
  * Method:    nativeNew
- * Signature: (LhasWaveEnded_func;)J
+ * Signature: (L_hasWaveEnded_func;L_startNextWave_func;L_hasGameEnded_func;L_startNewGame_func;L_getMoney_func;L_placeTower_func;)J
  */
 JNIEXPORT jlong JNICALL Java_BotManagerJNI_nativeNew
-  (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jobject, jobject, jobject, jobject, jobject, jobject);
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,22 @@
 import java.util.*;
 
-interface hasWaveEnded_func {
+interface _hasWaveEnded_func {
 	public boolean func();
+}
+interface _startNextWave_func {
+	public void func();
+}
+interface _hasGameEnded_func {
+	public boolean func();
+}
+interface _startNewGame_func {
+	public void func();
+}
+interface _getMoney_func {
+	public int func();
+}
+interface _placeTower_func {
+	public  void func(int a, int[] b);
 }
 
 public class BotManagerJNI {
@@ -12,36 +27,24 @@ public class BotManagerJNI {
 			System.out.println(e.toString());
 		}
 	}
-	/*
-	public interface startNextWave_func {
-		@Delegate
-		public void func();
-	}
-	public interface hasGameEnded_func {
-		@Delegate
-		public boolean func();
-	}
-	public interface startNewGame_func {
-		@Delegate
-		public void func();
-	}
-	public interface getMoney_func {
-		@Delegate
-		public int func();
-	}
-	public interface placeTower_func {
-		@Delegate
-		public  void func(int a, int[] b);
-	} */
+	
 	
 	private long nativeObjectPointer;
 
-	public BotManagerJNI(hasWaveEnded_func hasWaveEnded) {
-		nativeObjectPointer = nativeNew(hasWaveEnded);
+	public BotManagerJNI(
+		_hasWaveEnded_func hasWaveEnded, _startNextWave_func startNextWave,
+		_hasGameEnded_func hasGameEnded, _startNewGame_func startNewGame,
+		_getMoney_func getMoney, _placeTower_func placeTower) {
+		nativeObjectPointer = nativeNew(
+			hasWaveEnded, startNextWave,
+			hasGameEnded, startNewGame,
+			getMoney, placeTower);
 	}
 
 	private native long nativeNew(
-		hasWaveEnded_func hasWaveEnded);
+		_hasWaveEnded_func hasWaveEnded, _startNextWave_func startNextWave,
+		_hasGameEnded_func hasGameEnded, _startNewGame_func startNewGame,
+		_getMoney_func getMoney, _placeTower_func placeTower);
 	/*
 	private native long nativeNew(
 		hasWaveEnded_func hasWaveEnded, startNextWave_func startNextWave,
@@ -71,3 +74,25 @@ public class BotManagerJNI {
 
 	}
 }
+
+/*
+	public interface startNextWave_func {
+		@Delegate
+		public void func();
+	}
+	public interface hasGameEnded_func {
+		@Delegate
+		public boolean func();
+	}
+	public interface startNewGame_func {
+		@Delegate
+		public void func();
+	}
+	public interface getMoney_func {
+		@Delegate
+		public int func();
+	}
+	public interface placeTower_func {
+		@Delegate
+		public  void func(int a, int[] b);
+	} */
