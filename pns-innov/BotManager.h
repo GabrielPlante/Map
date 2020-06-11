@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "BalancerObject.h"
 #include "TowerBalancer.h"
 #include "WaveBalancer.h"
 #include "TowerManager.h"
@@ -74,9 +75,13 @@ namespace pns {
 		* towersCost is a vector that contain each cost of each tower
 		* The money gap is used if money is always the multiple of a number
 		*/
-		BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
-			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1,
-			int nbrOfBotPerGeneration = 20, int percentageOfBotKept = 5, int percentageOfParameterChanged = 20, int nbrOfStaleGenerationForReset = 3);
+		BotManager(
+			std::function<bool()> hasWaveEnded, std::function<void()> startNextWave,
+			std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
+			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower,
+			std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1,
+			int nbrOfBotPerGeneration = 20, int percentageOfBotKept = 5,
+			int percentageOfParameterChanged = 20, int nbrOfStaleGenerationForReset = 3);
 
 		//Update the bot manager, return true if the game is balanced
 		bool update();
@@ -94,12 +99,12 @@ namespace pns {
 		/* buff and nerf attribute are function that take in parameter the tower to change
 		 * desiredTowerUsage is the percent wanted for the tower usage (between 0 and 100)
 		*/
-		void setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
+		void setupTowerBalancer(const std::vector<BalancerAttribute>& balancerAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange);
 
 		//Setup the wave towerBalancer
 		//buffWave and nerfWave take for parameter the wave number and buff / nerf this wave
 		//nbrOfWave is the total number of wave present in the game
-		void setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave);
+		void setupWaveBalancer(const std::vector<BalancerAttribute>& balancerAttribute, int nbrOfWave);
 
 		//Get the number of buff (or nerf) per tower or per wave. Does not check if the wave / tower balancer is set up
 		std::vector<int> getNbrOfBuffPerWave() const { return waveBalancer->getNbrOfBuffPerWave(); }

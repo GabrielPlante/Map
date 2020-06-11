@@ -115,7 +115,7 @@ namespace pns {
 		else
 			nbrOfGenerationSinceImprovement++;
 
-		for (int i = static_cast<int>(bots.size() - 1); bots[i].getFitness() == bestFitness; i--) {
+		for (int i = static_cast<int>(bots.size() - 1); bots[i].getFitness() == bestFitness && i >= 0; i--) {
 			bestBots.push_back(bots[i]);
 		}
 
@@ -231,20 +231,19 @@ namespace pns {
 		}
 	}
 
-	void BotManager::setupTowerBalancer(std::function<void(int)> buffAttribute, std::function<void(int)> nerfAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
+	void BotManager::setupTowerBalancer(const std::vector<BalancerAttribute>& balancerAttribute, std::vector<std::array<int, 2>> desiredTowerUsageRange) {
 		//Create the list of towerBalancer objects
 		std::vector<BalancerObject> balancerObjects;
 		for (int i = 0; i != desiredTowerUsageRange.size(); i++) {
-			BalancerAttribute attribute{ buffAttribute, nerfAttribute };
-			BalancerObject object{ attribute, desiredTowerUsageRange[i], i };
+			BalancerObject object{ balancerAttribute, desiredTowerUsageRange[i], i };
 			balancerObjects.push_back(object);
 		}
 		//Setup the towerBalancer
 		towerBalancer = std::unique_ptr<TowerBalancer>{ new TowerBalancer{balancerObjects} };
 	}
 
-	void BotManager::setupWaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave) {
-		waveBalancer = std::unique_ptr<WaveBalancer>{ new WaveBalancer{buffWave, nerfWave, nbrOfWave} };
+	void BotManager::setupWaveBalancer(const std::vector<BalancerAttribute>& balancerAttribute, int nbrOfWave) {
+		waveBalancer = std::unique_ptr<WaveBalancer>{ new WaveBalancer{balancerAttribute, nbrOfWave} };
 	}
 
 }

@@ -1,24 +1,45 @@
 #include "WaveBalancer.h"
 
+#include "Random.h"
+
 #include <iostream>
 
 namespace pns {
-	WaveBalancer::WaveBalancer(std::function<void(int)> buffWave, std::function<void(int)> nerfWave, int nbrOfWave)
-		: buffWave{ buffWave }, nerfWave{ nerfWave }, nbrOfWave{ nbrOfWave }
-	{}
+	WaveBalancer::WaveBalancer(const std::vector<BalancerAttribute>& attributes, int nbrOfWave)
+		: attributes{ attributes }, nbrOfWave{ nbrOfWave }
+	{
+		for (int i = 0; i != attributes.size(); i++) {
+			attributePrioritySum += attributes[i].getPriority();
+		}
+	}
 
 	int WaveBalancer::balanceWave(bool didBotPass) {
+		int attributeId{ 0 };
+
+		//Choose a random number to get the attribute to balance
+		int randomNumber{ Random::getRandomNumber() % attributePrioritySum };
+
+		int priority{ 0 };
+		//Find at wich attribute the random number belong
+		for (int i = 0; i != attributes.size(); i++) {
+			priority += attributes[i].getPriority();
+			if (randomNumber < priority) {
+				attributeId = i;
+				break;
+			}
+		}
+
 		int balancedWave = currentBalancingWave;
 		if (nbrOfBuffPerWave.size() <= currentBalancingWave)
 			nbrOfBuffPerWave.push_back(0);
 		if (didBotPass) {
-			buffWave(currentBalancingWave);
+			attributes[attributeId].buff(currentBalancingWave);
 			std::cout << "Buffing the wave number: " << currentBalancingWave << std::endl;
 			nbrOfBuffPerWave[currentBalancingWave]++;
 			hasWonThisWave = true;
 		}
 		else {
-			nerfWave(currentBalancingWave);
+			attributes[attributeId].nerf(currentBalancingWave);
 			std::cout << "Nerfing the wave number: " << currentBalancingWave << std::endl;
 			nbrOfBuffPerWave[currentBalancingWave]--;
 			if (hasWonThisWave) {

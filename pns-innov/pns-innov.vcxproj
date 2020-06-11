@@ -19,16 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BalancerObject.cpp" />
     <ClCompile Include="GeneticBotJNI.cpp" />
+    <ClCompile Include="OurJNILib.cpp" />
     <ClCompile Include="TowerBalancer.cpp" />
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="GeneticBot.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="TowerManager.cpp" />
+    <ClCompile Include="TowerManagerJNI.cpp" />
     <ClCompile Include="WaveBalancer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OurJNILib.h" />
     <ClInclude Include="TowerBalancer.h" />
     <ClInclude Include="BalancerAttribute.h" />
     <ClInclude Include="BalancerObject.h" />
@@ -40,6 +44,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="TowerManager.h" />
+    <ClInclude Include="TowerManagerJNI.h" />
     <ClInclude Include="Values.h" />
     <ClInclude Include="WaveBalancer.h" />
   </ItemGroup>
@@ -100,11 +105,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\Java\jdk1.8.0_181\include\win32;C:\Program Files\Java\jdk1.8.0_181\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\Java\jdk1.8.0_181\include\win32;C:\Program Files\Java\jdk1.8.0_181\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -116,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
