@@ -26,5 +26,8 @@ namespace pns {
 
 		//Get the number of buff (or nerf) every tower had
 		std::vector<int> getNbrOfBuffPerTower() const;
+
+		//Get the change for each attribute of each tower
+		std::vector<std::vector<std::array<int, 2>>> getEnhancedChange() const;
 	};
 }

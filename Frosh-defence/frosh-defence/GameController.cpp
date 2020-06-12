@@ -300,7 +300,12 @@ bool hasWaveEnded() {
 	return false;
 }
 void startNewWave() {}
-bool hasGameEnded() { return !GameBoard::getInstance()->getGameState()->timer->isRunning(); }
+pns::GameState hasGameEnded() {
+	if (!GameBoard::getInstance()->getGameState()->timer->isRunning()) {
+		return pns::GameState::Lost;
+	}
+	else return pns::GameState::Running;
+}
 void startNewGame() { GameBoard::getInstance()->getGameState()->timer->start(); }
 void placeFrec(int type, std::array<int, 2> position) {
 	FrecType frecType;

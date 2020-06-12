@@ -30,18 +30,22 @@ namespace pns {
 		}
 
 		int balancedWave = currentBalancingWave;
-		if (nbrOfBuffPerWave.size() <= currentBalancingWave)
+		if (nbrOfBuffPerWave.size() <= currentBalancingWave) {
 			nbrOfBuffPerWave.push_back(0);
+			enhancedChange.push_back(std::vector<std::array<int, 2>>(attributes.size(), { 0, 0 }));
+		}
 		if (didBotPass) {
 			attributes[attributeId].buff(currentBalancingWave);
 			std::cout << "Buffing the wave number: " << currentBalancingWave << std::endl;
 			nbrOfBuffPerWave[currentBalancingWave]++;
+			enhancedChange[currentBalancingWave][attributeId][0]++;
 			hasWonThisWave = true;
 		}
 		else {
 			attributes[attributeId].nerf(currentBalancingWave);
 			std::cout << "Nerfing the wave number: " << currentBalancingWave << std::endl;
 			nbrOfBuffPerWave[currentBalancingWave]--;
+			enhancedChange[currentBalancingWave][attributeId][1]++;
 			if (hasWonThisWave) {
 				currentBalancingWave++;
 				if (currentBalancingWave == nbrOfWave) {

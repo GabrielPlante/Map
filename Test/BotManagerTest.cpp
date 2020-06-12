@@ -8,6 +8,7 @@ using pns::BotManager;
 using pns::GeneticBot;
 
 bool un() { return true; }
+pns::GameState ended() { return pns::GameState::Running; }
 void deux() {}
 int trois() { return 1; }
 void quatre(int, std::array<int, 2>) {}
@@ -24,7 +25,7 @@ TEST(BotManagerTest, Container) {
 		line3{ 8,8,100,19,12,16 },
 		line4{ 1 },
 		line5{ 1, 4, 5 };
-	BotManager botMng = BotManager{un, deux, un, deux, trois, quatre, std::vector<int>(), pns::TowerManager{ std::vector<std::array<int, 2>>{}, std::vector<std::array<int, 2>>{}, std::vector<int>{} }};
+	BotManager botMng = BotManager{un, deux, ended, deux, trois, quatre, std::vector<int>(), pns::TowerManager{ std::vector<std::array<int, 2>>{}, std::vector<std::array<int, 2>>{}, std::vector<int>{} }};
 	botMng.loadBots("Input_Files/input_botmanager.txt");
 	std::vector<GeneticBot> botList = botMng.getBots();
 	EXPECT_EQ(5, botList.at(0).getDecisionMap().size());

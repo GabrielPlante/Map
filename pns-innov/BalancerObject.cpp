@@ -39,4 +39,12 @@ namespace pns {
 			return true;
 		return false;
 	}
+
+	std::vector<std::array<int, 2>> BalancerObject::getEnhancedChange() const {
+		std::vector<std::array<int, 2>> vec;
+		for (int i = 0; i != attribute.size(); i++) {
+			vec.push_back(attribute[i].getChange());
+		}
+		return vec;
+	}
 }

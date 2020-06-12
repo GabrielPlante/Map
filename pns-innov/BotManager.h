@@ -14,6 +14,8 @@
 
 
 namespace pns {
+	enum class GameState { Running, Lost, Won };
+
 	//BotManager
 	class BotManager
 	{
@@ -21,7 +23,7 @@ namespace pns {
 		//Function needed for the manager to run
 		std::function<bool()> hasWaveEnded;
 		std::function<void()> startNextWave;
-		std::function<bool()> hasGameEnded;
+		std::function<GameState()> hasGameEnded;
 		std::function<void()> startNewGame;
 
 		//The parameter used for the bot to work
@@ -77,7 +79,7 @@ namespace pns {
 		*/
 		BotManager(
 			std::function<bool()> hasWaveEnded, std::function<void()> startNextWave,
-			std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
+			std::function<GameState()> hasGameEnded, std::function<void()> startNewGame,
 			std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower,
 			std::vector<int> towersCost, TowerManager towerManager, int moneyGap = 1,
 			int nbrOfBotPerGeneration = 20, int percentageOfBotKept = 5,
@@ -109,6 +111,10 @@ namespace pns {
 		//Get the number of buff (or nerf) per tower or per wave. Does not check if the wave / tower balancer is set up
 		std::vector<int> getNbrOfBuffPerWave() const { return waveBalancer->getNbrOfBuffPerWave(); }
 		std::vector<int> getNbrOfBuffPerTower() const { return towerBalancer->getNbrOfBuffPerTower(); }
+
+		//Get the enhanced number of change for the waves / towers
+		std::vector<std::vector<std::array<int, 2>>> getEnhancedWavesChange() const { return waveBalancer->getEnhancedChange(); }
+		std::vector<std::vector<std::array<int, 2>>> getEnhancedTowerChange() const { return towerBalancer->getEnhancedChange(); }
 	};
 }
 

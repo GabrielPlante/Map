@@ -138,10 +138,10 @@ namespace ian {
 			cameraPosition.x + static_cast<long>(cameraMovement.x * ge::Engine::getInstance()->getTimeSinceLastFrame() / gv::speedDividingFactor),
 			cameraPosition.y + static_cast<long>(cameraMovement.y * ge::Engine::getInstance()->getTimeSinceLastFrame() / gv::speedDividingFactor) });
 
-		handleTowSelUi();
+		//handleTowSelUi();
 	}
 
-	void GameEventHandler::handleTowSelUi() {
+	/*void GameEventHandler::handleTowSelUi() {
 		//Create the tower ui
 		if (towerSelected > -1 && towerSelId == 0) {
 			//Draw the texture
@@ -193,5 +193,5 @@ namespace ian {
 			F_FACTORY->positionFactory.getComponent(F_FACTORY->rendererFactory.getComponent(towerRangeId)->positionComponentId)
 				->setPosition(ge::Vector2<long>{circlePos.x, circlePos.y});
 		}
-	}
+	}*/
 }

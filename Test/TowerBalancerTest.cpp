@@ -9,8 +9,8 @@ void nerf(int id) { isNerfed[id] = true; }
 
 TEST(TestTowerBalancer, TestAll) {
 	pns::BalancerAttribute attribute{ buff, nerf };
-	pns::BalancerObject object1{ attribute, {60, 70}, 0 };
-	pns::BalancerObject object2{ attribute, {30, 40}, 1 };
+	pns::BalancerObject object1{ {attribute}, {60, 70}, 0 };
+	pns::BalancerObject object2{ {attribute }, { 30, 40 }, 1 };
 	pns::TowerBalancer tower{ {object1, object2} };
 
 	EXPECT_EQ(0, tower.getNbrOfBuffPerTower()[0]);

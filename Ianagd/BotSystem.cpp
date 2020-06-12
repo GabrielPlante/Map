@@ -15,7 +15,13 @@ namespace ian {
 	//Every function the bot manager need
 	bool hasWaveEnded() { return F_FACTORY->gameComponent.startNewWave == interWave; }
 	void startNextWave() { EXEC("start_new_wave") }
-	bool hasGameEnded() { return F_FACTORY->gameComponent.startNewWave == playerLost || F_FACTORY->gameComponent.startNewWave == playerWin; }
+	pns::GameState hasGameEnded() {
+		if (F_FACTORY->gameComponent.startNewWave == playerLost)
+			return pns::GameState::Lost;
+		else if (F_FACTORY->gameComponent.startNewWave == playerWin)
+			return pns::GameState::Won;
+		else return pns::GameState::Running;
+	}
 	void startNewGame() { EXEC("restart_game") }
 
 	int getMoney() { return F_FACTORY->gameComponent.playerGold; }
@@ -91,30 +97,33 @@ namespace ian {
 			pns::TowerManager towerManager{ pathTiles, buildableTiles, towersRange };
 			//-----------------------------------------------------------------------------------------
 			//-----------------------------------------------------------------------------------------
-
-			//Create the bot
-			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave}, std::function<bool()>{hasGameEnded},
-				std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, std::array<int, 2>)>{placeTower}, towersCost, towerManager, 50 ,
-			50, 5, 15, 3} };
-
 			//Setup a tower balancer
 			std::vector<pns::BalancerAttribute> towerAttributes{
 				pns::BalancerAttribute{ buffDamage, nerfDamage, 10 },
 				pns::BalancerAttribute{ buffRange, nerfRange, 1 },
 				pns::BalancerAttribute{ buffAttackSpeed, nerfAttackSpeed, 1 },
 				pns::BalancerAttribute{ buffCost, nerfCost, 1 } };
-			F_FACTORY->botManager->setupTowerBalancer(towerAttributes, { {20, 30}, {35, 45}, {35, 45} });
 
-			//Setup a wave balancer
 			std::vector<pns::BalancerAttribute> waveAttributes{
 				pns::BalancerAttribute{buffWave, nerfWave, 10},
 				pns::BalancerAttribute{buffEnemyGold, nerfEnemyGold, 1},
 				pns::BalancerAttribute{buffEnemySpeed, nerfEnemySpeed, 1},
 				pns::BalancerAttribute{buffNbrOfEnemies, buffNbrOfEnemies, 1}
 			};
+
+			//Create the bot manager that handle the bot
+			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{
+				new pns::BotManager{hasWaveEnded, startNextWave, hasGameEnded,
+				startNewGame, getMoney, placeTower, towersCost, towerManager, 50, 50, 5, 15, 3} };
+
+			//Setup the tower balancer
+			F_FACTORY->botManager->setupTowerBalancer(towerAttributes, { {20, 30}, {35, 45}, {35, 45} });
+
+			//Setup the wave balancer
 			F_FACTORY->botManager->setupWaveBalancer(waveAttributes, static_cast<int>(gv::wavesValues.size()));
 		}
+
+		//Update the bot manager each frame
 		F_FACTORY->botManager->update();
 	}
-
 }

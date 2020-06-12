@@ -25,7 +25,7 @@ namespace pns {
 
 	const std::vector<GeneticBot>& BotManager::getBots() const { return bots; }
 
-	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<bool()> hasGameEnded, std::function<void()> startNewGame,
+	BotManager::BotManager(std::function<bool()> hasWaveEnded, std::function<void()> startNextWave, std::function<GameState()> hasGameEnded, std::function<void()> startNewGame,
 		std::function<int()> getMoney, std::function<void(int, std::array<int, 2>)> placeTower, std::vector<int> towersCost, TowerManager towerManager, int moneyGap,
 		int nbrOfBotPerGeneration, int percentageOfBotKept, int percentageOfParameterChanged, int nbrOfStaleGenerationForReset)
 		: hasWaveEnded{ hasWaveEnded }, startNextWave{ startNextWave }, hasGameEnded{ hasGameEnded }, startNewGame{ startNewGame },
@@ -41,7 +41,7 @@ namespace pns {
 			createBots();
 
 		//If the game ended, go to the next bot
-		if (hasGameEnded()) {
+		if (hasGameEnded() != GameState::Running) {
 			//If there is a wave balancer check if a bot did finish the game
 			if (waveNbr > bestBotWave)
 				bestBotWave = waveNbr;
@@ -161,13 +161,17 @@ namespace pns {
 
 	void BotManager::balanceGame(const std::vector<GeneticBot>& newBots) {
 		//If there is a wave balancer that did finish the balance but no bot finished the game, it's time to restart balancing
-		if (waveBalancer && waveBalancer->didFinishBalance() && bestBotWave == waveBalancer->getNbrOfWave() - 1) {
+		if (waveBalancer && waveBalancer->didFinishBalance() && hasGameEnded() != GameState::Won) {
 			waveBalancer->restartBalance(bestBotWave);
 			std::cout << "The bot can't finish the game ! Restarting the wave balancing proccess" << std::endl;
 		}
 		//Make the wave balancing if setup
 		if (waveBalancer && !waveBalancer->didFinishBalance()) {
-			int balancedWave = waveBalancer->balanceWave(false);
+			int balancedWave{ 0 };
+			if (hasGameEnded() == GameState::Won)
+				balancedWave = waveBalancer->balanceWave(true);
+			else
+				balancedWave = waveBalancer->balanceWave(false);
 			stats.setWaveBalancingValue(balancedWave, waveBalancer->getNbrOfBuffPerWave()[balancedWave]);
 			stats.printWaveBalancingValues(stats.waveBalancingValuesFile);
 		}

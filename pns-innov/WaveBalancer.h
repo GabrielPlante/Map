@@ -20,6 +20,8 @@ namespace pns {
 
 		std::vector<int> nbrOfBuffPerWave;
 
+		std::vector<std::vector<std::array<int, 2>>> enhancedChange;
+
 		bool finishedBalancing{ false };
 	public:
 		//Constructor
@@ -43,6 +45,10 @@ namespace pns {
 
 		//Get the number of wave in the game
 		int getNbrOfWave() const { return nbrOfWave; }
+
+		//Get the enhanced change
+		const std::vector<std::vector<std::array<int, 2>>>& getEnhancedChange() const { return enhancedChange; }
+
 	};
 }
 

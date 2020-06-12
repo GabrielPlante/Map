@@ -9,7 +9,8 @@ void nerfWave(int id) { isNerfedWave[id] = true; }
 
 TEST(TestWaveBalancer, TestAll) {
 	constexpr int nbrOfWave{ 2 };
-	pns::WaveBalancer waveBalancer{ buffWave, nerfWave, nbrOfWave };
+	pns::BalancerAttribute attribute{ buffWave, nerfWave };
+	pns::WaveBalancer waveBalancer{ {attribute}, nbrOfWave };
 	
 	EXPECT_FALSE(waveBalancer.didFinishBalance());
 	EXPECT_EQ(0, waveBalancer.getCurrentBalancingWave());

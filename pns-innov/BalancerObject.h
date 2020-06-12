@@ -24,6 +24,9 @@ namespace pns {
 
 		//Get the number of buff (or nerf) this object had
 		int getNbrOfBuff() const { return nbrOfBuff; }
+
+		//Get the precise number of change for each attribute
+		std::vector<std::array<int, 2>> getEnhancedChange() const;
 	};
 
 }
