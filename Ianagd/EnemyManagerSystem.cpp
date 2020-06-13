@@ -40,10 +40,10 @@ namespace ian {
 					hasGameEnded = true;
 					F_FACTORY->gameComponent.startNewWave = playerWin;
 				}
-				else {
+				/*else {
 					F_FACTORY->positionFactory.getComponent(F_FACTORY->uiFactory.getComponent(F_FACTORY->gameComponent.starterUiId)->positionComponentId)
 						->setPosition(ge::Vector2<>{0, 0});
-				}
+				}*/
 			}
 			F_FACTORY->gameComponent.playerGold += waveStat.x * gv::wavesValues[waveNbr - 1].goldPerEnemy;
 		}

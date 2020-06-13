@@ -42,7 +42,7 @@ namespace ian {
 
 		ge::Factory<RendererComponent> rendererFactory;
 
-		ge::Factory<UIComponent> uiFactory;
+		//ge::Factory<UIComponent> uiFactory;
 
 		ge::Factory<MovementComponent> movementFactory;
 

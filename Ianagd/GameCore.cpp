@@ -154,7 +154,7 @@ namespace ian {
 		//ge::Engine::getInstance()->update();
 
 		//Create a text
-		ge::Drawer drawer;
+		/*ge::Drawer drawer;
 		ge::Rectangle textRect{ SCREEN_WIDTH / 2 - 100, 0, 200, 50 };
 		SDL_Renderer* renderer{ drawer.startDrawing({ textRect.w, textRect.h }, { 100, 100, 100, 150 }) };
 		ge::TextInRect text{ { 0, 0, 0, 0 }, "Gold:", renderer, { 0, 0 }, ge::Font{ textRect.h }, { 100, 100, 255 } };
@@ -165,13 +165,13 @@ namespace ian {
 		PositionComponent textPos;
 		textPos.setPosition(ge::Vector2<>{ textRect.x, textRect.y });
 		textComponent.positionComponentId = factoryFactory->positionFactory.addComponent(std::move(textPos));
-		factoryFactory->uiFactory.addComponent(std::move(textComponent));
+		factoryFactory->uiFactory.addComponent(std::move(textComponent));*/
 
 		//Update game values
 		factoryFactory->gameComponent.playerGold = gv::startingGold;
 
 		//Create tower button
-		for (int i = 0; i != gv::towersValues.size(); i++) {
+		/*for (int i = 0; i != gv::towersValues.size(); i++) {
 			renderer = drawer.startDrawing({ gv::tileSize, gv::tileSize }, gv::towersValues[i].color);
 			SDL_Rect towerRect{ ge::Rectangle{0, 0, gv::tileSize, gv::tileSize}.toSDL_Rect() };
 			SDL_RenderFillRect(renderer, &towerRect);
@@ -182,10 +182,10 @@ namespace ian {
 			towerComp.positionComponentId = factoryFactory->positionFactory.addComponent(std::move(posTower));
 			towerComp.texture = drawer.finishDrawing();
 			factoryFactory->uiFactory.addComponent(std::move(towerComp));
-		}
+		}*/
 
 		//Create the starting button
-		ge::Rectangle startRect{ 0, 0, 10 * gv::tileSize, 2 * gv::tileSize };
+		/*ge::Rectangle startRect{ 0, 0, 10 * gv::tileSize, 2 * gv::tileSize };
 		renderer = drawer.startDrawing({ startRect.w, startRect.h }, { 100, 100, 100, 100 });
 		ge::TextInRect textStart{ { 100, 100, 100, 100 }, "Start wave", renderer, { 0, 0 }, ge::Font{ startRect.h }, { 100, 100, 255 } };
 		textStart.render(renderer);
@@ -194,14 +194,14 @@ namespace ian {
 		UIComponent startComponent;
 		startComponent.positionComponentId = factoryFactory->positionFactory.addComponent(std::move(startPosComp));
 		startComponent.texture = drawer.finishDrawing(true);
-		factoryFactory->gameComponent.starterUiId = factoryFactory->uiFactory.addComponent(std::move(startComponent));
+		factoryFactory->gameComponent.starterUiId = factoryFactory->uiFactory.addComponent(std::move(startComponent));*/
 
 		EXEC_ARGS("fps", { 500 })
 
 	}
 
 	void GameCore::endGame() {
-		if (factoryFactory->gameComponent.graphicsOn) {
+		/*if (factoryFactory->gameComponent.graphicsOn) {
 			//Create a text
 			ge::Drawer drawer;
 			ge::Rectangle textRect{ SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 50, 400, 100 };
@@ -220,7 +220,7 @@ namespace ian {
 			textPos.setPosition(ge::Vector2<>{ textRect.x, textRect.y });
 			textComponent.positionComponentId = factoryFactory->positionFactory.addComponent(std::move(textPos));
 			factoryFactory->uiFactory.addComponent(std::move(textComponent));
-		}
+		}*/
 		if (factoryFactory->gameComponent.startNewWave == playerLost)
 			CONSOLE_LOG("You lost")
 		else
@@ -235,7 +235,7 @@ namespace ian {
 		factoryFactory->entityFactory.clear();
 		factoryFactory->positionFactory.clear();
 		factoryFactory->rendererFactory.clear();
-		factoryFactory->uiFactory.clear();
+		//factoryFactory->uiFactory.clear();
 		factoryFactory->movementFactory.clear();
 		factoryFactory->healthFactory.clear();
 		factoryFactory->damageDealerFactory.clear();

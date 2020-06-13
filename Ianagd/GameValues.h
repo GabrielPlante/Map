@@ -19,10 +19,10 @@ public:
 	static constexpr long long timeBetweenSpawn{ 1000 * 1000 };//In micro second
 
 	struct WaveValues {
-		const int nbrOfEnemy;
+		int nbrOfEnemy;
 		int enemyHealth;
-		const float enemySpeed;
-		const int goldPerEnemy;
+		float enemySpeed;
+		int goldPerEnemy;
 		const ge::Color color;
 		WaveValues(int nbrOfEnemy, int enemyHealth, float enemySpeed, int goldPerEnemy, ge::Color color)
 			: nbrOfEnemy{ nbrOfEnemy }, enemyHealth{ enemyHealth }, enemySpeed{ enemySpeed }, goldPerEnemy{ goldPerEnemy }, color{ color } {}
@@ -36,10 +36,10 @@ public:
 	static constexpr int startingGold{ 150 };
 
 	struct TowerValues {
-		const int cost;
+		int cost;
 		int damage;
-		const int range;
-		const int reloadingTime;
+		int range;
+		int reloadingTime;
 		ge::Color color;
 		TowerValues(int cost, int damage, int range, int reloadingTime, ge::Color color)
 			: cost{ cost }, damage{ damage }, range{ range }, reloadingTime{ reloadingTime }, color{ color } {}

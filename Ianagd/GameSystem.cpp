@@ -8,7 +8,7 @@
 #include "GameCore.h"
 
 namespace ian {
-	void GameSystem::renderGold(int amount) {
+	/*void GameSystem::renderGold(int amount) {
 		//Create a text
 		ge::Rectangle textRect{ 730, 0, 200, 50 };
 		ge::Drawer drawer;
@@ -27,12 +27,12 @@ namespace ian {
 		else {
 			F_FACTORY->uiFactory.getComponent(goldRendererId)->texture = drawer.finishDrawing(true);
 		}
-	}
+	}*/
 
 	void GameSystem::update() {
 		if (previousGold != F_FACTORY->gameComponent.playerGold) {
 			previousGold = F_FACTORY->gameComponent.playerGold;
-			renderGold(previousGold);
+			//renderGold(previousGold);
 		}
 	}
 

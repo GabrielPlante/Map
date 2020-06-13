@@ -15,7 +15,10 @@ namespace pns {
 		 * buildableVector contain every tile where you can build on in the game
 		 * towersRange contain the range of every tower
 		*/
-		TowerManager(const std::vector<std::array<int, 2>>& pathVector, const std::vector<std::array<int, 2>>& buildableVector, const std::vector<int>& towersRange);
+		TowerManager(
+			const std::vector<std::array<int, 2>>& pathVector, 
+			const std::vector<std::array<int, 2>>& buildableVector,
+			const std::vector<int>& towersRange);
 
 		//Get the best position for a type of tower, knowing that already nbrOfTowerPlaced tower of that type are placed
 		//towersAlreadyPlaced can be the list of tower already placed, so the algorithm can return a free position

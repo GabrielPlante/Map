@@ -1,36 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Statistics.cpp">
+    <ClCompile Include="BalancerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BotManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClInclude Include="BotManagerJNI.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClCompile Include="GeneticBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticBotJNI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OurJNILib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WaveBalancer.cpp">
-      <Filter>Source Files\Balancer</Filter>
+    <ClCompile Include="Statistics.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TowerBalancer.cpp">
-      <Filter>Source Files\Balancer</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TowerManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TowerManagerJNI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveBalancer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BalancerAttribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BalancerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="BotManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BotManagerJNI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Container2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GeneticBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneticBotJNI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OurJNILib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Random.h">
@@ -39,40 +72,28 @@
     <ClInclude Include="Statistics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Values.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BalancerAttribute.h">
-      <Filter>Header Files\Balancer</Filter>
-    </ClInclude>
-    <ClInclude Include="BalancerObject.h">
-      <Filter>Header Files\Balancer</Filter>
-    </ClInclude>
-    <ClInclude Include="WaveBalancer.h">
-      <Filter>Header Files\Balancer</Filter>
-    </ClInclude>
     <ClInclude Include="TowerBalancer.h">
-      <Filter>Header Files\Balancer</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TowerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TowerManagerJNI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Values.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveBalancer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{49ffa4ae-3d2f-4f4e-8f1a-fb031165a4eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{4476786d-cb4a-45a8-88d4-3d7dfd14cbaf}</UniqueIdentifier>
+      <UniqueIdentifier>{7573ec08-6454-445a-b785-b20a9d8216b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Balancer">
-      <UniqueIdentifier>{d9d93e44-fe27-45b1-b253-62ac9f972621}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Balancer">
-      <UniqueIdentifier>{4d84907a-2bc1-43b6-b9ae-bb353d03ab08}</UniqueIdentifier>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4bda4aee-7cb0-4d3a-8b82-2eb5d3e04534}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

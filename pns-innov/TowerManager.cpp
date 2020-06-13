@@ -1,6 +1,10 @@
 #include "TowerManager.h"
+#include <cmath>
+
 
 namespace pns {
+	using std::pow;
+
 	TowerManager::TowerManager(const std::vector<std::array<int, 2>>& pathVector, const std::vector<std::array<int, 2>>& buildableVector, const std::vector<int>& towersRange) {
 		//Build the bestTowersPosition vector
 		//For every tower

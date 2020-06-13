@@ -21,6 +21,7 @@ def plot_all_tower_balancing(towerBalancingValues):
             towers[j].append(towerBalancingValues[i][j])
     for t in towers:
         plt.plot(nbrOfBalancing, t, label = str(towers.index(t)))
+    plt.xticks(nbrOfBalancing)
     plt.xlabel("number of balancing")
     plt.ylabel("buffing or nerfing")
     plt.title("tower balancing")

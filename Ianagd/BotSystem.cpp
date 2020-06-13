@@ -4,6 +4,7 @@
 #include "../GameEngine2D/Console.h"
 
 #include "../pns-innov/BotManager.h"
+#include "../pns-innov/BalancerAttribute.h"
 
 #include "FactoryFactory.h"
 #include "GameValues.h"
@@ -14,7 +15,13 @@ namespace ian {
 	//Every function the bot manager need
 	bool hasWaveEnded() { return F_FACTORY->gameComponent.startNewWave == interWave; }
 	void startNextWave() { EXEC("start_new_wave") }
-	bool hasGameEnded() { return F_FACTORY->gameComponent.startNewWave == playerLost || F_FACTORY->gameComponent.startNewWave == playerWin; }
+	pns::GameState hasGameEnded() {
+		if (F_FACTORY->gameComponent.startNewWave == playerLost)
+			return pns::GameState::Lost;
+		else if (F_FACTORY->gameComponent.startNewWave == playerWin)
+			return pns::GameState::Won;
+		else return pns::GameState::Running;
+	}
 	void startNewGame() { EXEC("restart_game") }
 
 	int getMoney() { return F_FACTORY->gameComponent.playerGold; }
@@ -28,8 +35,27 @@ namespace ian {
 	void buffDamage(int tower) { gv::towersValues[tower].damage += 4; }
 	void nerfDamage(int tower) { tower == 0 ? gv::towersValues[tower].damage -= 1 : gv::towersValues[tower].damage -= 5; }
 
+	void buffRange(int tower) { gv::towersValues[tower].range += 10; }
+	void nerfRange(int tower) { gv::towersValues[tower].range -= 10; }
+
+	void buffAttackSpeed(int tower) { gv::towersValues[tower].reloadingTime -= 50; }
+	void nerfAttackSpeed(int tower) { gv::towersValues[tower].reloadingTime += 50; }
+
+	void buffCost(int tower) { gv::towersValues[tower].cost -= 20; }
+	void nerfCost(int tower) { gv::towersValues[tower].cost += 20; }
+
+
 	void buffWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth += 10; }
 	void nerfWave(int waveNbr) { gv::wavesValues[waveNbr].enemyHealth -= 20; }
+
+	void buffNbrOfEnemies(int waveNbr) { gv::wavesValues[waveNbr].nbrOfEnemy += 1; }
+	void nerfNbrOfEnemies(int waveNbr) { gv::wavesValues[waveNbr].nbrOfEnemy -= 1; }
+
+	void buffEnemySpeed(int waveNbr) { gv::wavesValues[waveNbr].enemySpeed += 0.05f; }
+	void nerfEnemySpeed(int waveNbr) { gv::wavesValues[waveNbr].enemySpeed -= 0.05f; }
+
+	void buffEnemyGold(int waveNbr) { gv::wavesValues[waveNbr].goldPerEnemy -= 10; }
+	void nerfEnemyGold(int waveNbr) { gv::wavesValues[waveNbr].goldPerEnemy += 10; }
 
 	BotSystem::BotSystem() {
 	}
@@ -37,6 +63,9 @@ namespace ian {
 	void BotSystem::update() {
 		//If there isn't a bot yet create one
 		if (F_FACTORY->botManager == nullptr) {
+
+			//-----------------------------------------------------------------------------------------
+			//-----------------------------------------------------------------------------------------
 			//Create the tower manager
 			std::vector<std::array<int, 2>> pathTiles;
 			std::vector<std::array<int, 2>> buildableTiles;
@@ -66,18 +95,35 @@ namespace ian {
 
 			//Initialise the tower manager
 			pns::TowerManager towerManager{ pathTiles, buildableTiles, towersRange };
-
-			//Create the bot
-			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{ new pns::BotManager{std::function<bool()>{hasWaveEnded}, std::function<void()>{startNextWave}, std::function<bool()>{hasGameEnded},
-				std::function<void()>{startNewGame}, std::function<int()>{getMoney}, std::function<void(int, std::array<int, 2>)>{placeTower}, towersCost, towerManager, 50 } };
-
+			//-----------------------------------------------------------------------------------------
+			//-----------------------------------------------------------------------------------------
 			//Setup a tower balancer
-			F_FACTORY->botManager->setupTowerBalancer(buffDamage, nerfDamage, { {20, 30}, {35, 45}, {35, 45} });
+			std::vector<pns::BalancerAttribute> towerAttributes{
+				pns::BalancerAttribute{ buffDamage, nerfDamage, 10 },
+				pns::BalancerAttribute{ buffRange, nerfRange, 1 },
+				pns::BalancerAttribute{ buffAttackSpeed, nerfAttackSpeed, 1 },
+				pns::BalancerAttribute{ buffCost, nerfCost, 1 } };
 
-			//Setup a wave balancer
-			//F_FACTORY->botManager->setupWaveBalancer(buffWave, nerfWave, static_cast<int>(gv::wavesValues.size()));
+			std::vector<pns::BalancerAttribute> waveAttributes{
+				pns::BalancerAttribute{buffWave, nerfWave, 10},
+				pns::BalancerAttribute{buffEnemyGold, nerfEnemyGold, 1},
+				pns::BalancerAttribute{buffEnemySpeed, nerfEnemySpeed, 1},
+				pns::BalancerAttribute{buffNbrOfEnemies, buffNbrOfEnemies, 1}
+			};
+
+			//Create the bot manager that handle the bot
+			F_FACTORY->botManager = std::unique_ptr<pns::BotManager>{
+				new pns::BotManager{hasWaveEnded, startNextWave, hasGameEnded,
+				startNewGame, getMoney, placeTower, towersCost, towerManager, 50, 50, 5, 15, 3} };
+
+			//Setup the tower balancer
+			F_FACTORY->botManager->setupTowerBalancer(towerAttributes, { {20, 30}, {35, 45}, {35, 45} });
+
+			//Setup the wave balancer
+			F_FACTORY->botManager->setupWaveBalancer(waveAttributes, static_cast<int>(gv::wavesValues.size()));
 		}
+
+		//Update the bot manager each frame
 		F_FACTORY->botManager->update();
 	}
-
 }

@@ -20,6 +20,7 @@ def plot_all_wave_balancing(waveBalancingValues):
         plt.plot(balancing, wave, linestyle='dashed',
                  label = str(waveCounter))
         waveCounter += 1
+    #plt.xticks(waveCounter)
     plt.xlabel("number of balancing")
     plt.ylabel("buffing or nerfing")
     plt.title("balancing for each wave")

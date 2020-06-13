@@ -1,6 +1,7 @@
 #include "TowerBalancer.h"
 
 namespace pns {
+
 	void TowerBalancer::balanceTowers(const std::vector<double>& towersUsage) {
 		//Calculate the total number of tower used
 		double nbrOfTowerUsed{ 0 };
@@ -24,5 +25,13 @@ namespace pns {
 			nbrOfBuffPerTower.push_back(objects[i].getNbrOfBuff());
 		}
 		return nbrOfBuffPerTower;
+	}
+
+	std::vector<std::vector<std::array<int, 2>>> TowerBalancer::getEnhancedChange() const {
+		std::vector<std::vector<std::array<int, 2>>> vec;
+		for (int i = 0; i != objects.size(); i++) {
+			vec.push_back(objects[i].getEnhancedChange());
+		}
+		return vec;
 	}
 }
