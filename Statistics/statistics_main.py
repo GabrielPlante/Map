@@ -75,6 +75,18 @@ bf: plot best fitness values for each generation of each balancing\n
 wb: plot wave balancing values\n
 tb: plot tower balancing values\n
 tu: plot tower usage values\n""")
+    print("\nAvailables file ids:\n")
+    try:
+        filenames = os.listdir('../pns-innov/runs/fitness')
+    except:
+        filenames = []
+    if not filenames:
+        print("There is no available file ids")
+    else:
+        for filename in filenames:
+            file_id = (filename.split('.txt')[0]).split('fitness_values_')[1]
+            print (file_id)
+    print()
     if (len(sys.argv) == 1):
         print("Error: no argument was given")
         return 0
