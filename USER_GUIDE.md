@@ -78,3 +78,16 @@ Pour que le système travaille, appeler la fonction `update()` de l'objet _BotMa
 ```Cpp
 	botManager.update();
 ```
+
+#### Accès au graphiques
+
+On peut accéder à des graphiques permettant de visualiser les équilibrages réalisés grâce à notre librairie. Pour visualiser les graphiques d'une éxécution spécifique, il faut se placer dans le répertoire **Statistics** et lancer la commande `python statistics_main.py` suivi de plusieurs arguments. Le premier argument est le **file_id** qui permet de choisir une éxécution spécifique. Il précise la date et l'heure de l'éxécution (Exemple de **file_id**: 12-5-2020_8h47m37s). La liste de tous les **file_id** disponibles est visible en lançant la commande `python statistics_main.py` telle quelle sans argument. Les arguments placés après le **file_id** permettent de choisir quels graphiques vont être affichés. On peut en mettre un seul ou plusieurs à la suite. Les arguments disponibles sont : 
+| Argument   | Description |
+| :---------- | :---------- |
+| af  | affiche la fitness moyenne pour chaque génération et chaque apprentissage |
+| bf  | affiche la meilleure fitness pour chaque génération et chaque apprentissage |
+| wb | affiche l'équilibrage des vagues |
+| tb | affiche l'équilibrage des tours |
+| tu | affiche le taux d'utilisation des tours |
+
+Exemple : `python statistics_main.py 12-5-2020_8h47m37s af wb`
