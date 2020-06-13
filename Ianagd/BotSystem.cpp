@@ -108,7 +108,7 @@ namespace ian {
 				pns::BalancerAttribute{buffWave, nerfWave, 10},
 				pns::BalancerAttribute{buffEnemyGold, nerfEnemyGold, 1},
 				pns::BalancerAttribute{buffEnemySpeed, nerfEnemySpeed, 1},
-				pns::BalancerAttribute{buffNbrOfEnemies, buffNbrOfEnemies, 1}
+				pns::BalancerAttribute{buffNbrOfEnemies, nerfNbrOfEnemies, 1}
 			};
 
 			//Create the bot manager that handle the bot
