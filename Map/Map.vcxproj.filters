@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{5d2bd6cb-7a10-4cdc-b937-e2544afe2cc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\General">
+      <UniqueIdentifier>{2be4db4c-c496-404d-b0e6-6be4b8907229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Commands">
+      <UniqueIdentifier>{b9cc002f-39c5-4e7e-bc58-522300277f5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\Components">
+      <UniqueIdentifier>{546ccf0e-3c10-480e-864f-c07122f5e763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\Systems">
+      <UniqueIdentifier>{6f1e928b-abfd-4711-9995-24aeab268cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ECS\Entities">
+      <UniqueIdentifier>{60e1e38a-ef86-4f2e-9a70-ccf29e9f626c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{9c634cb9-e5b6-4cfe-a817-1bed2677df76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS">
+      <UniqueIdentifier>{76ed4240-4459-45c4-a31f-72d9b5c27ac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS\Entities">
+      <UniqueIdentifier>{07564043-54ea-46cf-8027-0b03f885b7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS\Components">
+      <UniqueIdentifier>{ebf36468-56a7-41aa-b84e-cdeaaab62f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS\Systems">
+      <UniqueIdentifier>{3dda7203-1b7a-4175-9db2-6c4256150839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\General">
+      <UniqueIdentifier>{cc7d628f-5d3e-4618-9d8b-1703f3a19b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{d8578043-ae70-48c7-a83d-cdb8459dc00c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
