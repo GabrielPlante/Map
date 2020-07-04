@@ -1,5 +1,6 @@
 #pragma once
 
+struct SDL_Renderer;
 namespace map {
 	class Core
 	{
@@ -7,7 +8,9 @@ namespace map {
 		static Core* instance;
 
 		//Constructor private for singleton
-		Core() {}
+		Core();
+
+		SDL_Renderer* gRenderer;
 
 	public:
 		//Init the singleton
