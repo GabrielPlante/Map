@@ -33,36 +33,31 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Dependencies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="MapTest.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FactoryTest.cpp" />
-    <ClCompile Include="FrecTest.cpp" />
+    <ClCompile Include="StorageTest.cpp" />
     <ClCompile Include="IDGeneratorTest.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextureWrapperTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Frosh-defence\frosh-defence\frosh-defence.vcxproj">
-      <Project>{6bda8870-2b5a-4d5a-9969-3477660a6928}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\GameEngine2D\GameEngine2D.vcxproj">
       <Project>{fb60dcd9-ffaf-46cf-ab53-a9b4d27e85d9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Ianagd\Ianagd.vcxproj">
-      <Project>{a30a980a-9807-49c1-9689-687c78c35917}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\pns-innov\pns-innov.vcxproj">
-      <Project>{75eb6a15-a014-4a52-aa6a-b50188b32552}</Project>
+    <ProjectReference Include="..\Map\Map.vcxproj">
+      <Project>{4b620292-16d0-4e47-9cdd-713c7c8d6649}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +97,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\utilisateur\source\repos\pns-innov1920-pns-innov1920-i\Frosh-defence\frosh-defence\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

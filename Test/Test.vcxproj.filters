@@ -1,16 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="FactoryTest.cpp" />
-    <ClCompile Include="FrecTest.cpp" />
-    <ClCompile Include="IDGeneratorTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="IDGeneratorTest.cpp">
+      <Filter>GameEngineTests</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureWrapperTest.cpp">
+      <Filter>GameEngineTests</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StorageTest.cpp">
+      <Filter>GameEngineTests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MapTest.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="MapTest.h">
+      <Filter>IanagdTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MapTests">
+      <UniqueIdentifier>{dea81bbd-e74e-41c8-a2a8-29d6785eb793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngineTests">
+      <UniqueIdentifier>{33c86e74-63be-4611-b417-e6e083363632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IanagdTests">
+      <UniqueIdentifier>{6c2a5a54-f973-4650-a01f-3af3b5c2d0cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

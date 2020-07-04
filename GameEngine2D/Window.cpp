@@ -3,11 +3,11 @@
 #include <stdexcept>
 
 namespace ge {
-	Window::Window(const int screenWidth, const int screenHeight)
+	Window::Window(const int screenWidth, const int screenHeight, const std::string& title)
 		:screenWidth{ screenWidth }, screenHeight{ screenHeight }
 	{
 		//Create window
-		gWindow = SDL_CreateWindow("Ianagd", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 		if (!gWindow)
 			throw std::runtime_error("SDL_CreateWindow failed");
 

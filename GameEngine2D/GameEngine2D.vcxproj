@@ -191,7 +191,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="EventSystem.h" />
-    <ClInclude Include="Factory.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GraphicSystem.h" />
     <ClInclude Include="Handle.h" />

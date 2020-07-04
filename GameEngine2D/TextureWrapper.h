@@ -19,63 +19,26 @@ namespace ge {
 		SDL_Texture* texture{ nullptr };
 
 		//Cleaning function
-		void clean() {
-			if (texture != nullptr) {
-				instanceCounter.find(id)->second--;
-				//If no more instance of this texture exist, delete it
-				if (instanceCounter.find(id)->second == 0) {
-					SDL_DestroyTexture(texture);
-					instanceCounter.erase(id);
-					idGenerator.deleteID(id);
-				}
-			}
-		}
+		void clean();
 
 	public:
+		//For testing purpose
+		static const std::map<unsigned int, int>& getInstanceCounter() { return instanceCounter; }
+
 		//Default constructor
 		TextureWrapper() {}
 
 		//Constructor with a texture
-		TextureWrapper(SDL_Texture* texture) : texture{ texture } {
-			if (texture != nullptr) {
-				id = idGenerator.getNewID();
-				//This is the first wrapper for this texture, create a new instance
-				instanceCounter.insert(std::pair<unsigned int, int>(id, 1));
-			}
-		}
+		TextureWrapper(SDL_Texture* texture);
 
 		//Copy constructor
-		TextureWrapper(const TextureWrapper& other) : texture{ other.get() }, id{ other.getId() } {
-			//If the texture given is not null, then we take into account the fact that it was duplicated
-			if (other.get() != nullptr)
-				instanceCounter.find(id)->second++;
-		}
+		TextureWrapper(const TextureWrapper& other);
 
 		//Copy assignement operator
-		TextureWrapper& operator=(const TextureWrapper& other) {
-			//Avoid self assignement
-			if (this == &other)
-				return *this;
-			//Clean
-			clean();
-			//Get the other parameter
-			id = other.getId();
-			texture = other.get();
-			if (texture != nullptr)
-				instanceCounter.find(id)->second++;
-
-			return *this;
-		}
+		TextureWrapper& operator=(const TextureWrapper& other);
 
 		//Operator = to assign a texture directly
-		TextureWrapper& operator=(SDL_Texture* newTexture) {
-			clean();
-			texture = newTexture;
-			if (newTexture != nullptr) {
-				id = idGenerator.getNewID();
-				instanceCounter.insert(std::pair<unsigned int, int>(id, 1));
-			}
-		}
+		TextureWrapper& operator=(SDL_Texture* newTexture);
 
 		//Get a pointer to the texture. /!\ the pointer must not be stored
 		SDL_Texture* get() const { return texture; }
