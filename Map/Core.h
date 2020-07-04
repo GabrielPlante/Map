@@ -10,6 +10,7 @@ namespace map {
 		//Constructor private for singleton
 		Core();
 
+		//The global renderer
 		SDL_Renderer* gRenderer;
 
 	public:
@@ -24,6 +25,9 @@ namespace map {
 
 		//Run the core
 		void run();
+
+		//Get the global renderer of the map
+		SDL_Renderer* getRenderer() const { return gRenderer; }
 	};
 
 }

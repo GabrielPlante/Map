@@ -151,10 +151,14 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GraphicSystem.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapEventHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandQuitConsole.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="GraphicSystem.h" />
+    <ClInclude Include="MapEventHandler.h" />
+    <ClInclude Include="MapValues.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
