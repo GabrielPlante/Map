@@ -24,6 +24,16 @@ namespace map {
 
 		//Check if there is a tile at the position specified, return true if there is one
 		bool tileExist(ge::Vector2<int> position) const { return map.find(position) != map.end(); }
+
+		//Get a tile
+		const TileComponent& getTile(ge::Vector2<int> position) const { return map.find(position)->second; }
+
+		//Get a pointer on the tile
+		TileComponent* modifyTile(ge::Vector2<int> position) { return &map.find(position)->second; }
+
+		//The map iterator
+		std::map<ge::Vector2<int>, TileComponent>::iterator getBeginningIterator() { return map.begin(); }
+		std::map<ge::Vector2<int>, TileComponent>::iterator getEndIterator() { return map.end(); }
 	};
 }
 

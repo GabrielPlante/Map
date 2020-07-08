@@ -144,6 +144,7 @@
     <ClCompile Include="Angle.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CommandFps.cpp" />
     <ClCompile Include="CommandList.cpp" />
     <ClCompile Include="ComponentHandle.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Angle.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />

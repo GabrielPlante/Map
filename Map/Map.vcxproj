@@ -150,8 +150,10 @@
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GraphicSystem.cpp" />
+    <ClCompile Include="HexagonalMap.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapEventHandler.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapStorage.cpp" />
     <ClCompile Include="TileFactory.cpp" />
   </ItemGroup>
@@ -159,7 +161,9 @@
     <ClInclude Include="CommandQuitConsole.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="GraphicSystem.h" />
+    <ClInclude Include="HexagonalMap.h" />
     <ClInclude Include="MapEventHandler.h" />
+    <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MapStorage.h" />
     <ClInclude Include="MapValues.h" />
     <ClInclude Include="TileComponent.h" />

@@ -6,6 +6,7 @@
 #include "CommandQuitConsole.h"
 
 #include "GraphicSystem.h"
+#include "MapGenerator.h"
 
 //Size of the screen
 constexpr int SCREEN_WIDTH{ 1400 };
@@ -39,6 +40,9 @@ namespace map {
 
 		//Quit the console
 		EXEC("quitconsole");
+		EXEC_ARGS("fps", { 30 });
+
+		MapGenerator mapGenerator{ {10, 10} };
 	}
 
 	void Core::run() {

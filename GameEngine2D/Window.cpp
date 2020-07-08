@@ -2,6 +2,8 @@
 #include <SDL_ttf.h>
 #include <stdexcept>
 
+#include "Drawer.h"
+
 namespace ge {
 	Window::Window(const int screenWidth, const int screenHeight, const std::string& title)
 		:screenWidth{ screenWidth }, screenHeight{ screenHeight }
@@ -22,6 +24,9 @@ namespace ge {
 
 		//Alpha blending https://wiki.libsdl.org/SDL_BlendMode
 		SDL_SetRenderDrawBlendMode(gRenderer, SDL_BLENDMODE_BLEND);
+
+		//Add the renderer to the drawer
+		Drawer::addRenderer(gRenderer);
 	}
 
 	Window::~Window()

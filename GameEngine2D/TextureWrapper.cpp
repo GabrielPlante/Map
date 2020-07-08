@@ -54,4 +54,12 @@ namespace ge {
 		}
 		return *this;
 	}
+
+	SDL_Rect TextureWrapper::getTextureRect() const {
+		SDL_Rect rect;
+		rect.x = 0;
+		rect.y = 0;
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+		return rect;
+	}
 }

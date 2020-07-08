@@ -43,6 +43,9 @@ namespace ge {
 		//Get a pointer to the texture. /!\ the pointer must not be stored
 		SDL_Texture* get() const { return texture; }
 
+		//Get a SDL_Rect the size of the texture
+		SDL_Rect getTextureRect() const;
+
 		//Get the id of this texture wrapper
 		unsigned int getId() const { return id; }
 

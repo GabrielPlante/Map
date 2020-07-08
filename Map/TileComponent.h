@@ -6,5 +6,8 @@ namespace map {
 	struct TileComponent {
 		//At wich height the tile lies
 		int height;
+
+		//The humidity of the tile. Above 1 the tile is flooded
+		float humidity;
 	};
 }
