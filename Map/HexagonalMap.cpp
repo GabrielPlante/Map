@@ -12,7 +12,7 @@ namespace map {
 	constexpr double tileHeight{ mv::tileSize * 2.0 };
 
 	//Relative position to an absolute one
-	ge::Vector2<> HexagonalMap::relativeToAbsolute(ge::Vector2<int> relative) const {
+	ge::Vector2<> HexagonalMap::relativeToAbsolute(ge::Vector2<int> relative) {
 		return { static_cast<long>(relative.x * tileWidth / 2), static_cast<long>(relative.y * tileHeight * 3 / 4) };
 	}
 

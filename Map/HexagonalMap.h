@@ -10,7 +10,7 @@ namespace map {
 	{
 	public:
 		//Relative position to an absolute one
-		ge::Vector2<> relativeToAbsolute(ge::Vector2<int> relative) const;
+		static ge::Vector2<> relativeToAbsolute(ge::Vector2<int> relative);
 
 		//Absolute position to a relative one
 		//ge::Vector2<int> absoluteToRelative(ge::Vector2<> absolute) const;

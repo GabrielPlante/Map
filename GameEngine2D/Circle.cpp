@@ -54,6 +54,6 @@ namespace ge {
 			}
 		}
 
-		texture = drawer.finishDrawing();
+		texture = drawer.finishDrawing(true);
 	}
 }
