@@ -4,6 +4,7 @@
 #include "../GameEngine2D/Circle.h"
 #include "../GameEngine2D/Storage.h"
 
+#include "MapTextureGenerator.h"
 #include "HexagonalMap.h"
 #include "MapStorage.h"
 #include "MapValues.h"
@@ -14,13 +15,17 @@ namespace map {
 	{}
 
 	void GraphicSystem::update() {
+		if (mapTexture.get() == nullptr) {
+			MapTextureGenerator generator{ mv::mapSize };
+			mapTexture = generator.getMapTexture();
+		}
 		//Update the console
 		ge::Console::getInstance()->update(getWindowRenderer());
 
 		//Clear the window
 		window.clear();
 
-		MapStorage storage;
+		/*MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 			ge::TextureWrapper circle = ge::Circle{ mv::tileSize, {static_cast<int>(it->second.height * 200), 100, static_cast<int>(it->second.humidity * 100)}, true }.getTexture();
 			SDL_Rect rect{ circle.getTextureRect() };
@@ -29,8 +34,10 @@ namespace map {
 			rect.y = static_cast<int>(pos.y);
 			SDL_RenderCopy(window.getRenderer(), circle.get(), NULL, &rect);
 			
-		}
+		}*/
 
+		SDL_Rect rect{ mapTexture.getTextureRect() };
+		SDL_RenderCopy(window.getRenderer(), mapTexture.get(), NULL, &rect);
 		
 		//Render the console
 		ge::Console::getInstance()->render(getWindowRenderer());

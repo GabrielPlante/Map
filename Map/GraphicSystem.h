@@ -1,4 +1,6 @@
 #pragma once
+
+#include "../GameEngine2D/TextureWrapper.h"
 #include "../GameEngine2D/System.h"
 #include "../GameEngine2D/Window.h"
 
@@ -12,6 +14,8 @@ namespace map {
 	{
 	private:
 		ge::Window window;
+
+		ge::TextureWrapper mapTexture;
 	public:
 		//Constructor
 		GraphicSystem(int screenWidth, int screenHeight);

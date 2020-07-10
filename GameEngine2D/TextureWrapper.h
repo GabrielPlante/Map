@@ -3,6 +3,7 @@
 #include <map>
 
 #include "IDGenerator.h"
+#include "Vector2.h"
 
 namespace ge {
 	class TextureWrapper
@@ -48,6 +49,9 @@ namespace ge {
 
 		//Get the id of this texture wrapper
 		unsigned int getId() const { return id; }
+
+		//Render the texture at a position
+		void render(SDL_Renderer* renderer, ge::Vector2<int> position = { 0, 0 }, SDL_Rect* srcRect = NULL, SDL_Rect* dstRect = NULL) const;
 
 		//Destructor
 		~TextureWrapper() {

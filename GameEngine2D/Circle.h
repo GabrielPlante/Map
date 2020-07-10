@@ -1,7 +1,8 @@
 #pragma once
 #include <SDL.h>
 
-#include "Drawer.h"
+#include "TextureWrapper.h"
+#include "Color.h"
 
 namespace ge {
 	class Circle

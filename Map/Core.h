@@ -29,5 +29,4 @@ namespace map {
 		//Get the global renderer of the map
 		SDL_Renderer* getRenderer() const { return gRenderer; }
 	};
-
 }

@@ -155,6 +155,7 @@
     <ClCompile Include="MapEventHandler.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapStorage.cpp" />
+    <ClCompile Include="MapTextureGenerator.cpp" />
     <ClCompile Include="TileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="MapEventHandler.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MapStorage.h" />
+    <ClInclude Include="MapTextureGenerator.h" />
     <ClInclude Include="MapValues.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileFactory.h" />

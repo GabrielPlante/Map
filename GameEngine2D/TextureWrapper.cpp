@@ -62,4 +62,16 @@ namespace ge {
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 		return rect;
 	}
+
+	void TextureWrapper::render(SDL_Renderer* renderer, ge::Vector2<int> position, SDL_Rect* srcRect, SDL_Rect* dstRect) const {
+		//If no destination rectangle is provided, build it ourself
+		if (!dstRect) {
+			SDL_Rect rect{ getTextureRect() };
+			rect.x = position.x;
+			rect.y = position.y;
+			SDL_RenderCopy(renderer, texture, srcRect, &rect);
+		}
+		else
+			SDL_RenderCopy(renderer, texture, srcRect, dstRect);
+	}
 }

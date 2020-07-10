@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "MapTextureGenerator.h"
 #include "TileComponent.h"
 #include "MapStorage.h"
 
@@ -29,5 +30,7 @@ namespace map {
 				}
 			}
 		}
+
+		MapTextureGenerator mapTextureGenerator{ mapSize };
 	}
 }

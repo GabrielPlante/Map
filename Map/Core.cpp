@@ -7,6 +7,7 @@
 
 #include "GraphicSystem.h"
 #include "MapGenerator.h"
+#include "MapValues.h"
 
 //Size of the screen
 constexpr int SCREEN_WIDTH{ 1400 };
@@ -42,7 +43,7 @@ namespace map {
 		EXEC("quitconsole");
 		EXEC_ARGS("fps", { 30 });
 
-		MapGenerator mapGenerator{ {10, 10} };
+		MapGenerator mapGenerator{ mv::mapSize };
 	}
 
 	void Core::run() {

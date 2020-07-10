@@ -84,6 +84,9 @@
     <ClInclude Include="MapGenerator.h">
       <Filter>Header Files\General</Filter>
     </ClInclude>
+    <ClInclude Include="MapTextureGenerator.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
@@ -109,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
       <Filter>Source Files\General</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTextureGenerator.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

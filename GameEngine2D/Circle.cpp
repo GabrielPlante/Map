@@ -1,5 +1,7 @@
 #include "Circle.h"
 
+#include "Drawer.h"
+
 namespace ge {
 	//Adapted from
 	//https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
