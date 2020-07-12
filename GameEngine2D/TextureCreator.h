@@ -1,18 +1,16 @@
 #pragma once
-#include <SDL.h>
 
 #include "TextureWrapper.h"
 #include "Color.h"
 
 namespace ge {
-	class Circle
+	/* A texture creator is a base class for classes that create a texture, for example a circle or a rectangle
+	*/
+	class TextureCreator
 	{
-	private:
+	protected:
 		TextureWrapper texture;
 	public:
-		//Constructor
-		Circle(int32_t radius, Color color, bool disk = false);
-
 		//Get the texture of the circle
 		TextureWrapper getTexture() const { return texture; }
 	};

@@ -1,7 +1,6 @@
 #include "GraphicSystem.h"
 
 #include "../GameEngine2D/Console.h"
-#include "../GameEngine2D/Circle.h"
 #include "../GameEngine2D/Storage.h"
 
 #include "MapTextureGenerator.h"

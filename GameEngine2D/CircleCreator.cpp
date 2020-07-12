@@ -1,11 +1,11 @@
-#include "Circle.h"
+#include "CircleCreator.h"
 
 #include "Drawer.h"
 
 namespace ge {
 	//Adapted from
 	//https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
-	Circle::Circle(int32_t radius, Color color, bool disk) {
+	CircleCreator::CircleCreator(int32_t radius, Color color, bool disk, bool blend) {
 		Drawer drawer;
 
 		const int32_t diameter = (radius * 2);
@@ -56,6 +56,6 @@ namespace ge {
 			}
 		}
 
-		texture = drawer.finishDrawing(true);
+		texture = drawer.finishDrawing(blend);
 	}
 }

@@ -1,7 +1,8 @@
 #include "MapTextureGenerator.h"
 #include <map>
 
-#include "../GameEngine2D/Circle.h"
+#include "../GameEngine2D/CircleCreator.h"
+#include "../GameEngine2D/HexagonCreator.h"
 #include "../GameEngine2D/Drawer.h"
 
 #include "HexagonalMap.h"
@@ -17,13 +18,14 @@ namespace map {
 		MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 			//Create the texture
-			ge::TextureWrapper circle = ge::Circle{ mv::tileSize, {static_cast<int>(it->second.height * 200), 100, static_cast<int>(it->second.humidity * 100)}, true }.getTexture();
+			//Tile size + 1 to avoid gap due to approximation
+			ge::TextureWrapper hexagon = ge::HexagonCreator{ mv::tileSize + 1, {static_cast<int>(it->second.height * 200), 100, static_cast<int>(it->second.humidity * 100)} }.getTexture();
+
 			//Create the coordinate
-			SDL_Rect rect{ circle.getTextureRect() };
 			ge::Vector2<> pos{ HexagonalMap::relativeToAbsolute(it->first) };
 			ge::Vector2<int> posInt{ static_cast<int>(pos.x),  static_cast<int>(pos.y) };
 			//Insert it into the map
-			tileVector.insert(std::make_pair(posInt, circle));
+			tileVector.insert(std::make_pair(posInt, hexagon));
 		}
 
 		ge::Drawer drawer;
