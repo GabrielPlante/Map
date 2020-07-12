@@ -18,8 +18,11 @@ namespace map {
 		MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 			//Create the texture
-			//Tile size + 1 to avoid gap due to approximation
-			ge::TextureWrapper hexagon = ge::HexagonCreator{ mv::tileSize + 1, {static_cast<int>(it->second.height * 200), 100, static_cast<int>(it->second.humidity * 100)} }.getTexture();
+			ge::TextureWrapper hexagon;
+			if (it->second.humidity < 1)
+				hexagon = ge::HexagonCreator{ mv::tileSize, {200 - it->second.height * 2, 50, 0} }.getTexture();
+			else
+				hexagon = ge::HexagonCreator{ mv::tileSize, {0, 50, 255 - static_cast<int>((it->second.humidity - 1) * 200)} }.getTexture();
 
 			//Create the coordinate
 			ge::Vector2<> pos{ HexagonalMap::relativeToAbsolute(it->first) };

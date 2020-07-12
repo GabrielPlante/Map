@@ -5,7 +5,15 @@
 //Class map values
 class mv {
 public:
-	static constexpr int tileSize{ 50 };
+	//The size of a tile
+	static constexpr int tileSize{ 26 };
 
-	static constexpr ge::Vector2<int> mapSize{ 30, 10 };
+	//The size of the map, in tile
+	static constexpr ge::Vector2<int> mapSize{ 62, 20 };
+
+	//The maximum height of a tile
+	static constexpr int maxHeight{ 100 };
+
+	//The maximum humidity of a tile
+	static constexpr float maxHumidity{ 2.0f };
 };

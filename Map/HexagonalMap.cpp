@@ -24,12 +24,18 @@ namespace map {
 	std::vector<TileComponent*> HexagonalMap::getNeighbors(ge::Vector2<int> position) const {
 		MapStorage storage;
 		std::vector<TileComponent*> neighbors;
-		neighbors.push_back(storage.modifyTile({ position.x + 2, position.y }));
-		neighbors.push_back(storage.modifyTile({ position.x + 1, position.y - 1 }));
-		neighbors.push_back(storage.modifyTile({ position.x - 1, position.y - 1 }));
-		neighbors.push_back(storage.modifyTile({ position.x - 2, position.y }));
-		neighbors.push_back(storage.modifyTile({ position.x - 1, position.y + 1 }));
-		neighbors.push_back(storage.modifyTile({ position.x + 1, position.y + 1 }));
+		if (storage.tileExist({ position.x + 2, position.y }))
+			neighbors.push_back(storage.modifyTile({ position.x + 2, position.y }));
+		if (storage.tileExist({ position.x + 1, position.y - 1 }))
+			neighbors.push_back(storage.modifyTile({ position.x + 1, position.y - 1 }));
+		if (storage.tileExist({ position.x - 1, position.y - 1 }))
+			neighbors.push_back(storage.modifyTile({ position.x - 1, position.y - 1 }));
+		if (storage.tileExist({ position.x - 2, position.y }))
+			neighbors.push_back(storage.modifyTile({ position.x - 2, position.y }));
+		if (storage.tileExist({ position.x - 1, position.y + 1 }))
+			neighbors.push_back(storage.modifyTile({ position.x - 1, position.y + 1 }));
+		if (storage.tileExist({ position.x + 1, position.y + 1 }))
+			neighbors.push_back(storage.modifyTile({ position.x + 1, position.y + 1 }));
 
 		return neighbors;
 	}
