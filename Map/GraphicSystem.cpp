@@ -9,14 +9,17 @@
 #include "MapValues.h"
 
 namespace map {
+	bool GraphicSystem::generateMap{ true };
+
 	GraphicSystem::GraphicSystem(int screenWidth, int screenHeight)
 		: window{ screenWidth, screenHeight }
 	{}
 
 	void GraphicSystem::update() {
-		if (mapTexture.get() == nullptr) {
+		if (generateMap) {
 			MapTextureGenerator generator{ mv::mapSize };
 			mapTexture = generator.getMapTexture();
+			generateMap = false;
 		}
 		//Update the console
 		ge::Console::getInstance()->update(getWindowRenderer());
@@ -24,19 +27,8 @@ namespace map {
 		//Clear the window
 		window.clear();
 
-		/*MapStorage storage;
-		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
-			ge::TextureWrapper circle = ge::Circle{ mv::tileSize, {static_cast<int>(it->second.height * 200), 100, static_cast<int>(it->second.humidity * 100)}, true }.getTexture();
-			SDL_Rect rect{ circle.getTextureRect() };
-			ge::Vector2<> pos{ HexagonalMap::relativeToAbsolute(it->first) };
-			rect.x = static_cast<int>(pos.x);
-			rect.y = static_cast<int>(pos.y);
-			SDL_RenderCopy(window.getRenderer(), circle.get(), NULL, &rect);
-			
-		}*/
-
-		SDL_Rect rect{ mapTexture.getTextureRect() };
-		SDL_RenderCopy(window.getRenderer(), mapTexture.get(), NULL, &rect);
+		//Render the map texture
+		mapTexture.render(window.getRenderer());
 		
 		//Render the console
 		ge::Console::getInstance()->render(getWindowRenderer());

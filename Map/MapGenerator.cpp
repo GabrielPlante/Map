@@ -43,7 +43,7 @@ namespace map {
 					averageHeight += height;
 					//If the tile is too high, there isn't water on top of it
 					if (height > 2 * mv::maxHeight / 3)
-						averageHumidity += rand() % static_cast<int>((mv::maxHumidity - 1) * 100) / 100.0f;
+						averageHumidity += rand() % static_cast<int>((mv::maxHumidity - mv::minWaterLevel) * 100) / 100.0f;
 					else
 						averageHumidity += rand() % static_cast<int>(mv::maxHumidity * 100) / 100.0f;
 				}
@@ -55,7 +55,8 @@ namespace map {
 			//Create the tile
 			TileComponent tile;
 			tile.height = averageHeight / nbrOfSum;
-			tile.humidity = averageHumidity / nbrOfSum;
+			//tile.humidity = averageHumidity / nbrOfSum;
+			tile.humidity = 1.5f;
 			storage.addTile({ position.x, position.y }, std::move(tile));
 		}
 

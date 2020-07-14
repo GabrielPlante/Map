@@ -7,6 +7,7 @@
 
 #include "GraphicSystem.h"
 #include "MapGenerator.h"
+#include "WaterSystem.h"
 #include "MapValues.h"
 
 //Size of the screen
@@ -39,7 +40,11 @@ namespace map {
 		gRenderer = graphicSystem->getWindowRenderer();
 		ge::Engine::getInstance()->addGraphicSystem(std::move(graphicSystem));
 
-		//Quit the console
+		std::shared_ptr<WaterSystem> waterSystem{ new WaterSystem{} };
+		ge::Engine::getInstance()->addSystem(waterSystem);
+
+
+		//Quit the console and reduce fps to reduce work load
 		EXEC("quitconsole");
 		EXEC_ARGS("fps", { 30 });
 

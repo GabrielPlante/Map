@@ -17,6 +17,9 @@ namespace map {
 
 		//Get the 6 neighbors of a tile
 		std::vector<TileComponent*> getNeighbors(ge::Vector2<int> position) const;
+
+		//Get the neighbors of a tile with their position
+		std::vector<std::pair<ge::Vector2<int>, TileComponent*>> getNeighborsWithPos(ge::Vector2<int> position) const;
 	};
 }
 

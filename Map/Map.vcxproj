@@ -157,6 +157,7 @@
     <ClCompile Include="MapStorage.cpp" />
     <ClCompile Include="MapTextureGenerator.cpp" />
     <ClCompile Include="TileFactory.cpp" />
+    <ClCompile Include="WaterSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandQuitConsole.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="MapValues.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileFactory.h" />
+    <ClInclude Include="WaterSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
