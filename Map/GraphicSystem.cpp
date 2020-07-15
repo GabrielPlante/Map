@@ -17,7 +17,7 @@ namespace map {
 
 	void GraphicSystem::update() {
 		if (generateMap) {
-			MapTextureGenerator generator{ mv::mapSize };
+			MapTextureGenerator generator{ {mv::SCREEN_WIDTH, mv::SCREEN_HEIGHT} };
 			mapTexture = generator.getMapTexture();
 			generateMap = false;
 		}

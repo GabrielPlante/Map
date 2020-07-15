@@ -19,8 +19,7 @@ namespace map {
 
 		//Create the drawer and get the renderer
 		ge::Drawer drawer;
-		ge::Vector2<> realMapSize{ HexagonalMap::relativeToAbsolute(mapSize) };
-		SDL_Renderer* renderer{ drawer.startDrawing({static_cast<int>(realMapSize.x) + mv::tileSize, static_cast<int>(realMapSize.y) + mv::tileSize}, {0, 0, 0}) };
+		SDL_Renderer* renderer{ drawer.startDrawing({mapSize.x, mapSize.y}, {0, 0, 0}) };
 
 		MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {

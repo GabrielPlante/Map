@@ -10,9 +10,6 @@
 #include "WaterSystem.h"
 #include "MapValues.h"
 
-//Size of the screen
-constexpr int SCREEN_WIDTH{ 1400 };
-constexpr int SCREEN_HEIGHT{ 800 };
 
 namespace map {
 	void fillCommandList() {
@@ -30,13 +27,13 @@ namespace map {
 
 	Core::Core() {
 		//Init the engine
-		ge::Engine::init(SCREEN_WIDTH, SCREEN_HEIGHT);
+		ge::Engine::init(mv::SCREEN_WIDTH, mv::SCREEN_HEIGHT);
 
 		//Fill the command list
 		fillCommandList();
 
 		//Add a graphic system
-		std::shared_ptr<GraphicSystem> graphicSystem{ new GraphicSystem{SCREEN_WIDTH, SCREEN_HEIGHT} };
+		std::shared_ptr<GraphicSystem> graphicSystem{ new GraphicSystem{mv::SCREEN_WIDTH, mv::SCREEN_HEIGHT} };
 		gRenderer = graphicSystem->getWindowRenderer();
 		ge::Engine::getInstance()->addGraphicSystem(std::move(graphicSystem));
 
@@ -48,7 +45,7 @@ namespace map {
 		EXEC("quitconsole");
 		EXEC_ARGS("fps", { 30 });
 
-		MapGenerator mapGenerator{ mv::mapSize };
+		MapGenerator mapGenerator{ mv::mapSideSize };
 	}
 
 	void Core::run() {

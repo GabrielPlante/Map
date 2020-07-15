@@ -11,7 +11,7 @@ namespace map {
 		unsigned int seed;
 	public:
 		//Constructor, generate a map
-		MapGenerator(ge::Vector2<int> mapSize, unsigned int seed = 0);
+		MapGenerator(int mapSize, unsigned int seed = 0);
 
 		//Create a tile
 		void createTile(ge::Vector2<int> position, MapStorage storage) const;
