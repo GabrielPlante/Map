@@ -16,6 +16,9 @@ namespace map {
 		//Create a tile
 		void createTile(ge::Vector2<int> position, MapStorage storage) const;
 
+		//Create a tile at the position with the average of the other tile given plus one random
+		void createTileFractal(ge::Vector2<int> position, MapStorage storage, const std::vector<ge::Vector2<int>>& tileToAverage) const;
+
 		//Get the seed of this map
 		unsigned int getSeed() const { return seed; }
 	};

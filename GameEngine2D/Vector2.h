@@ -25,10 +25,10 @@ namespace ge {
 		constexpr Vector2(T x, T y) :x{ x }, y{ y } {}
 
 		//Constructor with a SDL_Point
-		Vector2(const SDL_Point& point) :x{ point.x }, y{ point.y } {}
+		constexpr Vector2(const SDL_Point& point) :x{ point.x }, y{ point.y } {}
 
 		//Default constructor
-		Vector2() {}
+		constexpr Vector2() {}
 
 		//Vector2 to a SDL_Point
 		inline SDL_Point toSDL_Point() const;

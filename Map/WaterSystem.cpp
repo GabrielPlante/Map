@@ -7,8 +7,6 @@
 #include "MapStorage.h"
 #include "MapValues.h"
 
-#include <iostream>
-
 //The percentage of water that will leave this tile if other tiles are below this one (between 0 and 1)
 constexpr float waterLostByTicks{ 0.25f };
 
@@ -122,7 +120,6 @@ namespace map {
 			//If there is change in the map, notify the graphic system to re generate the map
 			if (changeInMap) {
 				GraphicSystem::needGenerateMap();
-				std::cout << nbrOfChange << std::endl;
 			}
 		}
 	}

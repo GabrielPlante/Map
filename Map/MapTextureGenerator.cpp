@@ -25,7 +25,9 @@ namespace map {
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 			//Set the proper color
 			if (it->second.humidity < 1)
-				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
+				//SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
+				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)),
+					static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)), static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)));
 			else {
 				int blue{ static_cast<int>((it->second.humidity - 1) * 200) };
 				if (blue > 200) blue = 200;
