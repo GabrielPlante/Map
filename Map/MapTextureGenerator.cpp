@@ -9,9 +9,10 @@
 #include "MapStorage.h"
 #include "MapValues.h"
 
-#include "../GameEngine2D/Clock.h"
-
 namespace map {
+	constexpr double redHeightFactor{ 1 };
+	constexpr double greenHeightFactor{ 0.6 };
+	constexpr double blueHeightFactor{ 0.2 };
 	MapTextureGenerator::MapTextureGenerator(ge::Vector2<int> mapSize) {
 
 		//Create the base hexagon. Only the color of this hexagon will be changed to render every other hexagon
@@ -26,8 +27,8 @@ namespace map {
 			//Set the proper color
 			if (it->second.humidity < 1)
 				//SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
-				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)),
-					static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)), static_cast<Uint8>(255 - (it->second.height * 255 / mv::maxHeight)));
+				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * redHeightFactor),
+					static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * blueHeightFactor));
 			else {
 				int blue{ static_cast<int>((it->second.humidity - 1) * 200) };
 				if (blue > 200) blue = 200;

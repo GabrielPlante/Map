@@ -41,6 +41,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Array2DTest.cpp" />
     <ClCompile Include="StorageTest.cpp" />
     <ClCompile Include="IDGeneratorTest.cpp" />
     <ClCompile Include="Main.cpp" />

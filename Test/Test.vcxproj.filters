@@ -12,6 +12,9 @@
     <ClCompile Include="StorageTest.cpp">
       <Filter>GameEngineTests</Filter>
     </ClCompile>
+    <ClCompile Include="Array2DTest.cpp">
+      <Filter>MapTests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

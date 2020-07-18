@@ -160,6 +160,7 @@
     <ClCompile Include="WaterSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Array2D.h" />
     <ClInclude Include="CommandQuitConsole.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="GraphicSystem.h" />

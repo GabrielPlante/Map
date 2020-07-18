@@ -11,7 +11,7 @@
 constexpr float waterLostByTicks{ 0.25f };
 
 //The multiplicator of the level of water to the height of the water (if humidity is 1.5, water level is 0.5, height is 0.5 * waterToHeight + the height of the tile
-constexpr float waterToHeight{ 3 };
+constexpr float waterToHeight{ 5 };
 
 //The minimum height two neighbor tiles must have for the water to flow between them
 constexpr int minHeightDiffForFlow{ 1 };

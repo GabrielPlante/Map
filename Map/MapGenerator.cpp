@@ -9,13 +9,21 @@
 #include "TileComponent.h"
 #include "HexagonalMap.h"
 #include "MapValues.h"
+#include "Array2D.h"
 
 #include <iostream>
+#include "../GameEngine2D/Clock.h"
+
 
 namespace map {
 	//Check if tile is in between tile1 and tile2
 	bool isInBetween(ge::Vector2<int> tile, ge::Vector2<int> tile1, ge::Vector2<int> tile2) {
 		return (tile1.x + tile2.x) / 2.0 == static_cast<double>(tile.x) && (tile1.y + tile2.y) / 2.0 == static_cast<double>(tile.y);
+	}
+
+	//Find the tile on the opposite side of this tile from tile1
+	ge::Vector2<int> findOtherTile(ge::Vector2<int> tile, ge::Vector2<int> tile1) {
+		return { 2 * tile.x - tile1.x, 2 * tile.y - tile1.y };
 	}
 
 	//Find the tile in between the two tile. If no tile is in between, return {0, 0}
@@ -26,6 +34,8 @@ namespace map {
 	}
 
 	MapGenerator::MapGenerator(int mapSize, unsigned int seed) {
+		ge::Clock clock;
+
 		const int nbrOfTile{ 1 + 3 * mapSize * (mapSize - 1) };
 		//To respect the correct map size
 		mapSize -= 1;
@@ -40,93 +50,136 @@ namespace map {
 		this->seed = seed;
 
 		//The tile already placed
-		std::set<ge::Vector2<int>> tilePlaced;
+		Array2D tilePlaced;
 		MapStorage storage;
 
 		//Create the corner tile
 		for (int i = 0; i <= 2 * mapSize; i += mapSize) {
 			for (int j = 0; j <= 2 * mapSize; j += mapSize) {
-				if (i + j >= mapSize && i + j <= 3 * mapSize && i != j) {
+				if (i + j >= mapSize && i + j <= 3 * mapSize) {
 					createTileFractal({ j, i }, storage, {});
-					tilePlaced.insert({ j, i });
+					tilePlaced.addPosition({ j, i });
 				}
 			}
 		}
-		bool didReplaceImportantTile{ false };
-		//While the algorithm didn't finish
-		while (tilePlaced.size() != nbrOfTile) {
-			//The map that will hold every tile that is in between two or more tile and those tiles too
-			std::map<ge::Vector2<int>, std::vector<ge::Vector2<int>>> tilesInBetween;
-			//For every tile already placed, the algorithm need to find the tile in between those placed
-			for (auto it = tilePlaced.begin(); it != tilePlaced.end(); it++) {
-				for (auto jt = it; jt != tilePlaced.end(); jt++) {
-					ge::Vector2<int> tileInBetween{ findInBetween(*it, *jt) };
-					//If it is not both the same tile, that there is a tile in between them that is not already placed
-					if (it != jt && tileInBetween != ge::Vector2<int>{0, 0} && tilePlaced.find(tileInBetween) == tilePlaced.end()) {
-						//If we already found a couple of tile for this one
-						if (tilesInBetween.find(tileInBetween) != tilesInBetween.end()) {
-							//Limit the number of average to do 
-							//if (tilesInBetween.find(tileInBetween)->second.size() <= mapSize) {
-								tilesInBetween.find(tileInBetween)->second.push_back(*it);
-								tilesInBetween.find(tileInBetween)->second.push_back(*jt);
-							//}
-						}
-						//Else create the spot
-						else {
-							tilesInBetween.insert(std::make_pair(tileInBetween, std::vector<ge::Vector2<int>>{ *it, * jt }));
-						}
-					}
-				}
-			}
-			//Place all the tile found
-			for (auto it = tilesInBetween.begin(); it != tilesInBetween.end(); it++) {
-				createTileFractal(it->first, storage, it->second);
-				tilePlaced.insert(it->first);
-			}
-			//Delete the important tile
-			if (tilePlaced.size() == nbrOfTile && !didReplaceImportantTile) {
-				didReplaceImportantTile = true;
-				constexpr int deletePrecision{ 8 };
-				for (int i = mapSize / deletePrecision; i <= 2 * mapSize; i += mapSize / deletePrecision) {
-					for (int j = mapSize / deletePrecision; j <= 2 * mapSize; j += mapSize / deletePrecision) {
-						if (i + j > mapSize && i + j < 3 * mapSize) {
-							tilePlaced.erase({ j, i });
-							storage.deleteTile({ j, i });
-						}
-					}
-				}
-			}
 
-			//For every tile
-			/*for (int i = 0; i <= 2 * mapSize; i++) {
-				for (int j = 0; j <= 2 * mapSize; j++) {
-					//If the tile is in the map and was not placed
-					if (i + j >= mapSize && i + j <= 3 * mapSize && tilePlaced.find({ j, i }) == tilePlaced.end()) {
-						std::vector<ge::Vector2<int>> tileToAverage;
-						//For every tile placed
-						for (auto it = tilePlaced.begin(); it != tilePlaced.end(); it++) {
-							for (auto jt = it; jt != tilePlaced.end(); jt++) {
-								//If the two are not the same tile and the tile is in between the two tile
-								if (it != jt && isInBetween({ j, i }, (*it), (*jt))) {
-									tileToAverage.push_back((*it));
-									tileToAverage.push_back((*jt));
-								}
+		const int maxDistanceForImpact{ mapSize * mapSize };
+		constexpr int maxTileForAverage{ 1 };
+		int mapSizeDivider{ 1 };
+		while (mapSizeDivider <= mapSize) {
+			//Map that hold the tile to avoid that the tile being built depend on the last one built
+			std::map<ge::Vector2<int>, std::vector<ge::Vector2<int>>> tileHolder;
+			//Parcour every tile on this subdivision
+			for (int i = 0; i <= 2 * mapSize; i += mapSize / mapSizeDivider) {
+				for (int j = 0; j <= 2 * mapSize; j += mapSize / mapSizeDivider) {
+					//If this tile is valid and isn't already placed
+					if (i + j >= mapSize && i + j <= 3 * mapSize && !tilePlaced.positionExist({ j, i })) {
+						std::vector<ge::Vector2<int>> tileAround;
+						std::array<int, 12> directionFound;
+						directionFound.fill(0);
+						//Find the nearest already placed tile in each direction
+						for (int r = 1; (r + i + j >= mapSize && r + i + j <= 3 * mapSize) || (-r + i + j >= mapSize && -r + i + j <= 3 * mapSize); r++) {
+							if (directionFound[0] < maxTileForAverage && tilePlaced.positionExist({ r + j, i })) {
+								tileAround.push_back({ r + j, i });
+								directionFound[0]++;
+							}
+							if (directionFound[1] < maxTileForAverage && tilePlaced.positionExist({ -r + j, i })) {
+								tileAround.push_back({ -r + j, i });
+								directionFound[1]++;
+							}
+							if (directionFound[2] < maxTileForAverage && tilePlaced.positionExist({ j, r + i })){
+								tileAround.push_back({ j, r + i });
+								directionFound[2]++;
+							}
+							if (directionFound[3] < maxTileForAverage && tilePlaced.positionExist({ j, -r + i })){
+								tileAround.push_back({ j, -r + i });
+								directionFound[3]++;
+							}
+							if (directionFound[4] < maxTileForAverage && tilePlaced.positionExist({ r + j, -r + i })){
+								tileAround.push_back({ r + j, -r + i });
+								directionFound[4]++;
+							}
+							if (directionFound[5] < maxTileForAverage && tilePlaced.positionExist({ -r + j, r + i })){
+								tileAround.push_back({ -r + j, r + i });
+								directionFound[5]++;
+							}
+							if (directionFound[6] < maxTileForAverage && tilePlaced.positionExist({ r + j, r + i })){
+								tileAround.push_back({ r + j, r + i });
+								directionFound[6]++;
+							}
+							if (directionFound[7] < maxTileForAverage && tilePlaced.positionExist({ -r + j, -r + i })){
+								tileAround.push_back({ -r + j, -r + i });
+								directionFound[7]++;
+							}
+							if (directionFound[8] < maxTileForAverage && tilePlaced.positionExist({ r + j, -2 * r + i })){
+								tileAround.push_back({ r + j, -2 * r + i });
+								directionFound[8]++;
+							}
+							if (directionFound[9] < maxTileForAverage && tilePlaced.positionExist({ -r + j, 2 * r + i })){
+								tileAround.push_back({ -r + j, 2 * r + i });
+								directionFound[9]++;
+							}
+							if (directionFound[10] < maxTileForAverage && tilePlaced.positionExist({ -2 * r + j, r + i })){
+								tileAround.push_back({ -2 * r + j, r + i });
+								directionFound[10]++;
+							}
+							if (directionFound[11] < maxTileForAverage && tilePlaced.positionExist({ 2 * r + j, -r + i })){
+								tileAround.push_back({ 2 * r + j, -r + i });
+								directionFound[11]++;
 							}
 						}
-						if (tileToAverage.size() >= 2) {
-							createTileFractal({ j, i }, storage, tileToAverage);
-							tilePlaced.insert({ j, i });
-						}
+						//For every tile placed
+						/*for (auto it = tilePlaced.begin(); !it.end(); it++) {
+							//If the tile has an opposite already placed
+							if ((mapSizeDivider <= 4 || it.get().distanceSquared(ge::Vector2<int>{ j, i }) <= maxDistanceForImpact) && tilePlaced.positionExist(findOtherTile({ j, i }, it.get()))) {
+								tileAround.push_back(it.get());
+								tileAround.push_back(findOtherTile({ j, i }, it.get()));
+							}
+						}*/
+						//Add the tile to the holder
+						tileHolder.insert(std::make_pair(ge::Vector2<int>{ j, i }, tileAround));
 					}
 				}
-			}*/
+			}
+			//Construct all the tile held
+			for (auto it = tileHolder.begin(); it != tileHolder.end(); it++) {
+				createTileFractal(it->first, storage, it->second);
+				tilePlaced.addPosition(it->first);
+			}
+			//std::cout << mapSizeDivider << std::endl;
+			mapSizeDivider *= 2;
 		}
 
+		HexagonalMap hexagonalMap;
+		std::map<ge::Vector2<int>, int> tileToChange;
+		//Smooth the terrain by elevating the height of every tile that is below all his neighbors
+		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+			//Get the neighbors of this tile
+			auto neighbors{ hexagonalMap.getNeighbors(it->first) };
+			int lowestNeighbor{ mv::maxHeight };
+			//Find the lowest neighbors
+			for (int i = 0; i != neighbors.size(); i++) {
+				if (neighbors[i]->height < lowestNeighbor)
+					lowestNeighbor = neighbors[i]->height;
+			}
+			//If the lowest neighbor is still higher than this tile
+			if (lowestNeighbor > it->second.height) {
+				//Add this tile to the list of tile to change
+				tileToChange.insert(std::make_pair(it->first, lowestNeighbor));
+			}
+		}
+		//Apply change
+		for (auto it = tileToChange.begin(); it != tileToChange.end(); it++) {
+			storage.modifyTile(it->first)->height = it->second;
+		}
+
+		//Make statistics
 		long averageHeight{ 0 };
 		int maxHeight{ 0 };
 		int minHeight{ 100 };
-		for (auto it = tilePlaced.begin(); it != tilePlaced.end(); it++) {
-			int height = storage.getTile(*it).height;
+		//The average
+		for (auto it = tilePlaced.begin(); !it.end(); it++) {
+			int height = storage.getTile(it.get()).height;
 			averageHeight += height;
 			if (height > maxHeight)
 				maxHeight = height;
@@ -135,12 +188,14 @@ namespace map {
 		}
 		averageHeight /= static_cast<int>(tilePlaced.size());
 		double variance{ 0 };
-		for (auto it = tilePlaced.begin(); it != tilePlaced.end(); it++) {
-			int height = storage.getTile(*it).height;
+		//The standard deviation
+		for (auto it = tilePlaced.begin(); !it.end(); it++) {
+			int height = storage.getTile(it.get()).height;
 			variance += pow(height - averageHeight, 2);
 		}
 
-		std::cout << "average : " << averageHeight << ", standard deviation : " << sqrt(variance / tilePlaced.size()) << ", min : " << minHeight << ", max : " << maxHeight << std::endl;
+		std::cout << "Generated map in " << clock.getTime() / 1000 << " milliseconds, spent " << timeInTileCreation / 1000 << " milliseconds creating tile. Statistics: " << std::endl;
+		std::cout << "average: " << averageHeight << ", standard deviation: " << sqrt(variance / tilePlaced.size()) << ", min: " << minHeight << ", max: " << maxHeight << std::endl;
 		/*for (int i = 0; i <= 2 * mapSize; i++) {
 			for (int j = 0; j <= 2 * mapSize; j++) {
 				if (i + j >= mapSize && i + j <= 3 * mapSize)
@@ -149,39 +204,9 @@ namespace map {
 		}*/
 	}
 
-	void MapGenerator::createTile(ge::Vector2<int> position, MapStorage storage) const {
-		//Get the neighbors tile
-		std::vector<TileComponent*> neighbors{ HexagonalMap{}.getNeighbors(position) };
-
-		//Make statistics
-		int averageHeight{ 0 };
-		float averageHumidity{ 0 };
-		constexpr int nbrOfSum{ 4 };
-		for (int i = 0; i != nbrOfSum; i++) {
-			//If there is no more neighbor to check
-			if (i >= neighbors.size()) {
-				int height{ rand() % mv::maxHeight };
-				averageHeight += height;
-				//If the tile is too high, there isn't water on top of it
-				if (height > 2 * mv::maxHeight / 3)
-					averageHumidity += rand() % static_cast<int>((mv::maxHumidity - mv::minWaterLevel) * 100) / 100.0f;
-				else
-					averageHumidity += rand() % static_cast<int>(mv::maxHumidity * 100) / 100.0f;
-			}
-			else {
-				averageHeight += neighbors[i]->height;
-				averageHumidity += neighbors[i]->humidity;
-			}
-		}
-		//Create the tile
-		TileComponent tile;
-		tile.height = averageHeight / nbrOfSum;
-		//tile.humidity = averageHumidity / nbrOfSum;
-		tile.humidity = 1.5f;
-		storage.addTile({ position.x, position.y }, std::move(tile));
-	}
-
-	void MapGenerator::createTileFractal(ge::Vector2<int> position, MapStorage storage, const std::vector<ge::Vector2<int>>& tileToAverage) const {
+	void MapGenerator::createTileFractal(ge::Vector2<int> position, MapStorage storage, const std::vector<ge::Vector2<int>>& tileToAverage) {
+		ge::Clock clock;
+		//std::cout << tileToAverage.size() << std::endl;
 		int averageHeight{ 0 };
 		//Make the average of every tile given
 		for (int i = 0; i != tileToAverage.size(); i++) {
@@ -203,5 +228,7 @@ namespace map {
 		}
 		tile.humidity = 0.2f;
 		storage.addTile(position, std::move(tile));
+
+		timeInTileCreation += clock.getTime();
 	}
 }
