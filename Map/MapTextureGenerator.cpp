@@ -13,6 +13,11 @@ namespace map {
 	constexpr double redHeightFactor{ 1 };
 	constexpr double greenHeightFactor{ 0.6 };
 	constexpr double blueHeightFactor{ 0.2 };
+
+	constexpr float maxWaterForColor{ 3 };
+	constexpr double redWaterFactor{ 0.2 };
+	constexpr double greenWaterFactor{ 0.5 };
+	constexpr double blueWaterFactor{ 1 };
 	MapTextureGenerator::MapTextureGenerator(ge::Vector2<int> mapSize) {
 
 		//Create the base hexagon. Only the color of this hexagon will be changed to render every other hexagon
@@ -30,9 +35,12 @@ namespace map {
 				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * redHeightFactor),
 					static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * blueHeightFactor));
 			else {
-				int blue{ static_cast<int>((it->second.humidity - 1) * 200) };
-				if (blue > 200) blue = 200;
-				SDL_SetTextureColorMod(baseHexagon.get(), 0, 50, 255 - static_cast<Uint8>(blue));
+				float water{ it->second.humidity };
+				if (water > maxWaterForColor)
+					water = maxWaterForColor;
+				water = 255 - (water * 255 / (maxWaterForColor + 1));
+				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(water * redWaterFactor),
+					static_cast<Uint8>(water * greenWaterFactor), static_cast<Uint8>(water * blueWaterFactor));
 			}
 
 			//Create the coordinate

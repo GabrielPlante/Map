@@ -226,7 +226,7 @@ namespace map {
 			else
 				tile.height = mv::maxHeight - rand() % (mv::maxHeight / 10);
 		}
-		tile.humidity = 0.2f;
+		tile.humidity = 1.2f;
 		storage.addTile(position, std::move(tile));
 
 		timeInTileCreation += clock.getTime();
