@@ -8,6 +8,7 @@
 #include "GraphicSystem.h"
 #include "MapGenerator.h"
 #include "WaterSystem.h"
+#include "RainSystem.h"
 #include "MapValues.h"
 
 
@@ -37,8 +38,11 @@ namespace map {
 		gRenderer = graphicSystem->getWindowRenderer();
 		ge::Engine::getInstance()->addGraphicSystem(std::move(graphicSystem));
 
+		//Add the other systems
 		std::shared_ptr<WaterSystem> waterSystem{ new WaterSystem{} };
 		ge::Engine::getInstance()->addSystem(waterSystem);
+		std::shared_ptr<RainSystem> rainSystem{ new RainSystem{} };
+		ge::Engine::getInstance()->addSystem(rainSystem);
 
 
 		//Quit the console and reduce fps to reduce work load

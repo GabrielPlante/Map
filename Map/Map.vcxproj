@@ -156,6 +156,7 @@
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MapStorage.cpp" />
     <ClCompile Include="MapTextureGenerator.cpp" />
+    <ClCompile Include="RainSystem.cpp" />
     <ClCompile Include="TileFactory.cpp" />
     <ClCompile Include="WaterSystem.cpp" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="MapStorage.h" />
     <ClInclude Include="MapTextureGenerator.h" />
     <ClInclude Include="MapValues.h" />
+    <ClInclude Include="RainSystem.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileFactory.h" />
     <ClInclude Include="WaterSystem.h" />

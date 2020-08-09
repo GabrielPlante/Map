@@ -8,14 +8,19 @@
 #include "MapStorage.h"
 #include "MapValues.h"
 
+//#include
+
 //The percentage of water that will leave this tile if other tiles are below this one (between 0 and 1)
 constexpr float waterLostByTicks{ 0.25f };
 
-//The multiplicator of the level of water to the height of the water (if humidity is 1.5, water level is 0.5, height is 0.5 * waterToHeight + the height of the tile
-constexpr float waterToHeight{ 5 };
-
 //The minimum height two neighbor tiles must have for the water to flow between them
 constexpr int minHeightDiffForFlow{ 1 };
+
+//The rate at wich the water erode the height of a tile. If the rate is 10, for each 0.1 of water, it will erode 1 height of the tile.
+constexpr float waterErosionRate{ 10 };
+
+//The time between two update of the water system that handle the water flow in microsecond
+constexpr long long timeBetweenWaterUpdate{ 300 * 1000 };
 
 namespace map {
 	void applyWaterFlow(const float waterChange, std::map<ge::Vector2<int>, float>* humidityChangeMap, ge::Vector2<int> neighborPosition
@@ -37,9 +42,9 @@ namespace map {
 		timeSinceLastUpdate += ge::Engine::getInstance()->getTimeSinceLastFrame();
 
 		//If it is time to update the water
-		if (timeSinceLastUpdate > mv::timeBetweenWaterUpdate) {
+		if (timeSinceLastUpdate > timeBetweenWaterUpdate) {
 			//Update the timer
-			timeSinceLastUpdate -= mv::timeBetweenWaterUpdate;
+			timeSinceLastUpdate -= timeBetweenWaterUpdate;
 
 			bool changeInMap{ false };
 
@@ -55,10 +60,10 @@ namespace map {
 					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it->first) };
 
 					//The tile height accounting the water
-					const int tileRealHeight{ it->second.height + static_cast<int>((it->second.humidity - mv::minWaterLevel) * waterToHeight) };
+					const int tileRealHeight{ it->second.realheight() };
 
 					//The water present on the tile that will be lost
-					const float tileWater{ (it->second.humidity - mv::minWaterLevel + 0.05f) * waterLostByTicks };
+					const float tileWater{ (it->second.humidity - minWaterLevel + 0.05f) * waterLostByTicks };
 
 					//The vector contain the real height (with the water accounted) of every neighbor, and it's position
 					std::vector<std::pair<int, int>> neighborsHeight;
@@ -67,11 +72,7 @@ namespace map {
 					int totalHeightBelow{ 0 };
 					for (int i = 0; i != neighbors.size(); i++) {
 						//Find the real height of the neighbor
-						int neighborHeight;
-						if (neighbors[i].second->humidity > mv::minWaterLevel)
-							neighborHeight = neighbors[i].second->height + static_cast<int>((neighbors[i].second->humidity - mv::minWaterLevel) * waterToHeight);
-						else
-							neighborHeight = neighbors[i].second->height;
+						int neighborHeight{ neighbors[i].second->realheight() };
 						//Check if the neighbor is below this tile
 						if (neighborHeight + minHeightDiffForFlow < tileRealHeight) {
 							//Add it's height to the total
@@ -83,29 +84,21 @@ namespace map {
 					//If there are tiles below this one
 					if (totalHeightBelow != 0) {
 						//Distribute the water
-						//If there is only one neighbor below this one, treat it separatly
-						if (neighborsHeight.size() == 1) {
+						for (int i = 0; i != neighborsHeight.size(); i++) {
+							//The water that will flow from the tile to the neighbors tile
+							float waterChange{ static_cast<float>(tileRealHeight - neighborsHeight[i].second) * tileWater / totalHeightBelow };
 							//If the height of the water that will flow to the neighbor tile is superior to the difference of height between the two tile
-							if (tileWater * waterToHeight * 2 > totalHeightBelow) {
+							if (waterChange * waterToHeight * 2 > tileRealHeight - neighborsHeight[i].second) {
 								//Apply a diminished water to avoid the water returning to this tile on the next iteration
-								applyWaterFlow(totalHeightBelow / waterToHeight / 2, &humidityChangeMap, neighbors[neighborsHeight[0].first].first, it->first);
+								applyWaterFlow((tileRealHeight - neighborsHeight[i].second) / waterToHeight / 2, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it->first);
 							}
 							//Else apply normal water flow
 							else {
-								applyWaterFlow(tileWater, &humidityChangeMap, neighbors[neighborsHeight[0].first].first, it->first);
-							}
-							changeInMap = true;
-						}
-						//Else handle the other normally
-						else {
-							for (int i = 0; i != neighborsHeight.size(); i++) {
-								//The water that will flow from the tile to the neighbors tile
-								float waterChange{ static_cast<float>(tileRealHeight - neighborsHeight[i].second) * tileWater / totalHeightBelow };
 								//Apply the water change on the temporary map
 								applyWaterFlow(waterChange, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it->first);
-
-								changeInMap = true;
 							}
+
+							changeInMap = true;
 						}
 					}
 				}
@@ -113,6 +106,9 @@ namespace map {
 			//Apply the change on the real map
 			for (auto it = humidityChangeMap.begin(); it != humidityChangeMap.end(); it++) {
 				storage.modifyTile(it->first)->humidity += it->second;
+				//If the tile is eroded, apply it
+				//if (static_cast<int>(abs(it->second) * waterErosionRate) >= storage.getTile(it->first).heightLost)
+					//storage.modifyTile(it->first)->heightLost++;
 			}
 
 			//If there is change in the map, notify the graphic system to re generate the map
