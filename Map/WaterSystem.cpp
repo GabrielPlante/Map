@@ -8,13 +8,13 @@
 #include "MapStorage.h"
 #include "MapValues.h"
 
-//#include
+#include <iostream>
 
 //The percentage of water that will leave this tile if other tiles are below this one (between 0 and 1)
 constexpr float waterLostByTicks{ 0.25f };
 
 //The minimum height two neighbor tiles must have for the water to flow between them
-constexpr int minHeightDiffForFlow{ 1 };
+constexpr int minHeightDiffForFlow{ 0 };
 
 //The rate at wich the water erode the height of a tile. If the rate is 10, for each 0.1 of water, it will erode 1 height of the tile.
 constexpr float waterErosionRate{ 10 };
@@ -51,6 +51,12 @@ namespace map {
 			//A temporary map to apply all the change at the same time (after everything is calculated)
 			std::map<ge::Vector2<int>, float> humidityChangeMap;
 
+			//Temp
+			long tilesHeightSum{ 0 };
+			double tilesHeightSumWeighted{ 0 };
+			int nbrOfWaterTile{ 0 };
+			double nbrOfWaterTileWeighted{ 0 };
+
 			MapStorage storage;
 			for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 				//First, handle the water flow due to the height
@@ -61,6 +67,11 @@ namespace map {
 
 					//The tile height accounting the water
 					const int tileRealHeight{ it->second.realheight() };
+
+					tilesHeightSum += it->second.height;
+					nbrOfWaterTile++;
+					tilesHeightSumWeighted += it->second.height * it->second.humidity;
+					nbrOfWaterTileWeighted += it->second.humidity;
 
 					//The water present on the tile that will be lost
 					const float tileWater{ (it->second.humidity - minWaterLevel + 0.05f) * waterLostByTicks };
@@ -114,6 +125,7 @@ namespace map {
 			//If there is change in the map, notify the graphic system to re generate the map
 			if (changeInMap) {
 				GraphicSystem::needGenerateMap();
+				//std::cout << "Average height of water tiles: " << tilesHeightSum / nbrOfWaterTile << ", with weight: " << tilesHeightSumWeighted / nbrOfWaterTileWeighted << std::endl;
 			}
 		}
 	}

@@ -20,6 +20,9 @@ namespace map {
 
 		//Get the neighbors of a tile with their position
 		std::vector<std::pair<ge::Vector2<int>, TileComponent*>> getNeighborsWithPos(ge::Vector2<int> position) const;
+
+		//Get the distance between two tiles
+		int distance(ge::Vector2<int> tile1, ge::Vector2<int> tile2) const;
 	};
 }
 

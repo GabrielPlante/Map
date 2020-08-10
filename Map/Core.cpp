@@ -47,7 +47,7 @@ namespace map {
 
 		//Quit the console and reduce fps to reduce work load
 		EXEC("quitconsole");
-		EXEC_ARGS("fps", { 30 });
+		EXEC_ARGS("fps", { 10 });
 
 		MapGenerator mapGenerator{ mv::mapSideSize };
 	}

@@ -16,6 +16,55 @@
 
 
 namespace map {
+	//Simple struct for a cube
+	template <typename T = int>
+	struct Cube {
+		T x;
+		T y;
+		T z;
+
+		//Default constructor
+		Cube<T>(T x, T y, T z) : x{ x }, y{ y }, z{ z } {}
+
+		//Construct a cube from an axial coordinate
+		Cube<T>(ge::Vector2<T> axial) : x{ axial.x }, z{ axial.y } {
+			y = -x - z;
+		}
+
+		//Constuct a cube from an axial integer coordinate
+		Cube<T>(ge::Vector2<int> axial) : x{ static_cast<T>(axial.x) }, z{ static_cast<T>(axial.y) }{
+			y = -x - z;
+		}
+
+		//Get the axial coordinate from the cube
+		ge::Vector2<T> toAxial() const {
+			return ge::Vector2<T>{x, z};
+		}
+
+		ge::Vector2<int> toAxialRound() const {
+			return ge::Vector2<int>{static_cast<int>(x), static_cast<int>(z)};
+		}
+	};
+
+	//Lerp from https://www.redblobgames.com/grids/hexagons/#line-drawing
+	float lerp(float a, float b, float t) {
+		return a + (b - a) * t;
+	}
+
+	Cube<float> cubeLerp(Cube<float> a, Cube<float> b, float t) {
+		return Cube<float>{lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t)};
+	}
+
+	std::vector<ge::Vector2<int>> lineDraw(ge::Vector2<int> a, ge::Vector2<int> b) {
+		HexagonalMap hexagonMap;
+		const int distance{ hexagonMap.distance(a, b) };
+		std::vector<ge::Vector2<int>> tileInBetween;
+		for (int i = 0; i <= distance; i++) {
+			tileInBetween.push_back(cubeLerp(a, b, 1.0f / distance * i).toAxialRound());
+		}
+		return tileInBetween;
+	}
+
 	//Check if tile is in between tile1 and tile2
 	bool isInBetween(ge::Vector2<int> tile, ge::Vector2<int> tile1, ge::Vector2<int> tile2) {
 		return (tile1.x + tile2.x) / 2.0 == static_cast<double>(tile.x) && (tile1.y + tile2.y) / 2.0 == static_cast<double>(tile.y);
@@ -63,7 +112,6 @@ namespace map {
 			}
 		}
 
-		const int maxDistanceForImpact{ mapSize * mapSize };
 		constexpr int maxTileForAverage{ 1 };
 		int mapSizeDivider{ 1 };
 		while (mapSizeDivider <= mapSize) {
@@ -150,7 +198,69 @@ namespace map {
 			mapSizeDivider *= 2;
 		}
 
+		//Create rivers
 		HexagonalMap hexagonalMap;
+		//Map with the height as the key and 
+		std::vector<std::pair<int, ge::Vector2<int>>> localMinTile;
+		//Find all the tile that are local minimum
+		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+			//Get the neighbors of this tile
+			auto neighbors{ hexagonalMap.getNeighbors(it->first) };
+			int lowestNeighbor{ mv::maxHeight };
+			//Find the lowest neighbors
+			for (int i = 0; i != neighbors.size(); i++) {
+				if (neighbors[i]->height < lowestNeighbor)
+					lowestNeighbor = neighbors[i]->height;
+			}
+			//If the lowest neighbor is still higher than this tile
+			if (lowestNeighbor > it->second.height) {
+				if (localMinTile.empty()) {
+					localMinTile.push_back(std::make_pair(it->second.height, it->first));
+				}
+				else {
+					//Add this tile to the list of local minimum, sorted by the height
+					for (auto jt = localMinTile.begin(); jt != localMinTile.end();) {
+						//If this tile is lower than our tile, insert our tile right before this one
+						if (jt->first <= it->second.height) {
+							localMinTile.insert(jt, std::make_pair(it->second.height, it->first));
+							break;
+						}
+						jt++;
+						//If it is the end of the list, add the tile at the end
+						if (jt == localMinTile.end()) {
+							localMinTile.push_back(std::make_pair(it->second.height, it->first));
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		const int maxDistanceForRiver{ mapSize };
+
+		//For every local minimum, find the closest one (algorithm in O(n^2) with n the number of local minimum, could maybe be optimised by searching around the tile)
+		for (int i = 0; i != localMinTile.size(); i++) {
+			int closestDistance{ maxDistanceForRiver };
+			int closestId{ 0 };
+			//Find the closest tile
+			for (int j = i + 1; j < localMinTile.size(); j++) {
+				if (hexagonalMap.distance(localMinTile[i].second, localMinTile[j].second) < closestDistance) {
+					closestDistance = hexagonalMap.distance(localMinTile[i].second, localMinTile[j].second);
+					closestId = j;
+				}
+			}
+			//If there is another local minimum near this one, make a river
+			if (closestId != 0) {
+				std::vector<ge::Vector2<int>> tileInBetween{ lineDraw(localMinTile[closestId].second, localMinTile[i].second) };
+				for (int j = 0; j != tileInBetween.size(); j++) {
+					//(a-b)*j/total+b
+					storage.modifyTile(tileInBetween[j])->height = (localMinTile[i].first - localMinTile[closestId].first) * j / static_cast<int>(tileInBetween.size()) + localMinTile[closestId].first;
+				}
+			}
+		}
+
+
+		/*HexagonalMap hexagonalMap;
 		std::map<ge::Vector2<int>, int> tileToChange;
 		//Smooth the terrain by elevating the height of every tile that is below all his neighbors
 		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
@@ -171,7 +281,7 @@ namespace map {
 		//Apply change
 		for (auto it = tileToChange.begin(); it != tileToChange.end(); it++) {
 			storage.modifyTile(it->first)->height = it->second;
-		}
+		}*/
 
 		//Make statistics
 		long averageHeight{ 0 };

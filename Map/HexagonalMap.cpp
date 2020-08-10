@@ -58,6 +58,11 @@ namespace map {
 			neighbors.push_back(std::make_pair(ge::Vector2<int>{ position.x, position.y + 1 }, storage.modifyTile({ position.x, position.y + 1 })));
 
 		return neighbors;
+	}
 
+	int HexagonalMap::distance(ge::Vector2<int> tile1, ge::Vector2<int> tile2) const {
+		return (abs(tile1.x - tile2.x)
+			+ abs(tile1.x + tile1.y - tile2.x - tile2.y)
+			+ abs(tile1.y - tile2.y)) / 2;
 	}
 }
