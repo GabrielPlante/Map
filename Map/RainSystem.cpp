@@ -11,15 +11,17 @@
 constexpr long long timeBetweenRainUpdate{ 300 * 1000 };
 
 //The maximum rain fall for a tick, divided by 1000
-constexpr int maxRainFall{ 100 };
+constexpr int maxRainFall{ 20 };
 
 constexpr int maxTimeWithoutRain{ 200 };
 constexpr int maxTimeWithRain{ 50 };
 
+constexpr bool disableRain{ false };
+
 namespace map {
 	void RainSystem::update() {
 		//Update the timer
-		/*timeSinceLastUpdate += ge::Engine::getInstance()->getTimeSinceLastFrame();
+		timeSinceLastUpdate += ge::Engine::getInstance()->getTimeSinceLastFrame();
 
 		//If it is time to update the rain
 		if (timeSinceLastUpdate > timeBetweenRainUpdate) {
@@ -41,16 +43,16 @@ namespace map {
 				rainDuration++;
 			}
 			//If the rain just finished, determine the time without rain
-			else if (rainDuration == 0){
+			else if (rainDuration == 0 && !disableRain){
 				rainDuration = -(rand() % maxTimeWithoutRain) - 1;
 				std::cout << "Rain stop for " << abs(rainDuration) << std::endl;
 			}
 			//If it is time to rain again
-			else if (rainDuration == -1) {
+			else if (rainDuration == -1 && !disableRain) {
 				rainDuration = rand() % maxTimeWithRain + 1;
 				rainIntensity = static_cast<float>(rand() % maxRainFall) / 1000.0f;
 				std::cout << "Rain start for " << rainDuration << " with intensity " << rainIntensity << std::endl;
 			}
-		}*/
+		}
 	}
 }

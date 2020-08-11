@@ -17,25 +17,32 @@ constexpr float waterLostByTicks{ 0.25f };
 constexpr int minHeightDiffForFlow{ 0 };
 
 //The rate at wich the water erode the height of a tile. If the rate is 10, for each 0.1 of water, it will erode 1 height of the tile.
-constexpr float waterErosionRate{ 10 };
+//constexpr float waterErosionRate{ 10 };
 
 //The time between two update of the water system that handle the water flow in microsecond
 constexpr long long timeBetweenWaterUpdate{ 300 * 1000 };
+
+
+//The amount of humidity that goes from a water tile to a dry neighbor tile each tick
+constexpr float waterToDryHumidityFlow{ 0.01f };
+
+//The percent of humidity that goes from a dry tile to a dry neighbor tile each tick
+constexpr float dryToDryHumidityFlowPercent{ 0.01f };
+
+//The amount of water a tile with water on it lose each tick
+constexpr float waterEvaporationRate{ 0.005f };
+
+//The amount of humidity a dry tile lose each tick
+constexpr float humidityDissipationRate{ 0.002f };
 
 namespace map {
 	void applyWaterFlow(const float waterChange, std::map<ge::Vector2<int>, float>* humidityChangeMap, ge::Vector2<int> neighborPosition
 		, ge::Vector2<int> tilePosition) {
 		//Apply the water change on the temporary map
 		//First apply the change to the neighbor tile
-		if (humidityChangeMap->find(neighborPosition) == humidityChangeMap->end())
-			humidityChangeMap->insert(std::make_pair(neighborPosition, waterChange));
-		else
-			humidityChangeMap->find(neighborPosition)->second += waterChange;
+		humidityChangeMap->find(neighborPosition)->second += waterChange;
 		//Then apply the change of this tile
-		if (humidityChangeMap->find(tilePosition) == humidityChangeMap->end())
-			humidityChangeMap->insert(std::make_pair(tilePosition, -waterChange));
-		else
-			humidityChangeMap->find(tilePosition)->second -= waterChange;
+		humidityChangeMap->find(tilePosition)->second -= waterChange;
 	}
 
 	void WaterSystem::update() {
@@ -51,27 +58,24 @@ namespace map {
 			//A temporary map to apply all the change at the same time (after everything is calculated)
 			std::map<ge::Vector2<int>, float> humidityChangeMap;
 
-			//Temp
-			long tilesHeightSum{ 0 };
-			double tilesHeightSumWeighted{ 0 };
-			int nbrOfWaterTile{ 0 };
-			double nbrOfWaterTileWeighted{ 0 };
-
+			//Fill the humidity change map
 			MapStorage storage;
+			for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+				humidityChangeMap.insert(std::make_pair(it->first, 0.0f));
+			}
+
 			for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
 				//First, handle the water flow due to the height
 				//If there is water above the tile
 				if (it->second.humidity > 1) {
+					//Handle the evaporation
+					humidityChangeMap.find(it->first)->second -= waterEvaporationRate;
+
 					//Get the neighbors from the map with their position
 					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it->first) };
 
 					//The tile height accounting the water
 					const int tileRealHeight{ it->second.realheight() };
-
-					tilesHeightSum += it->second.height;
-					nbrOfWaterTile++;
-					tilesHeightSumWeighted += it->second.height * it->second.humidity;
-					nbrOfWaterTileWeighted += it->second.humidity;
 
 					//The water present on the tile that will be lost
 					const float tileWater{ (it->second.humidity - minWaterLevel + 0.05f) * waterLostByTicks };
@@ -90,6 +94,13 @@ namespace map {
 							totalHeightBelow += tileRealHeight - neighborHeight;
 							//Add it to the list of neighbors below the tile
 							neighborsHeight.push_back(std::make_pair(i, neighborHeight));
+						}
+						//If the neighbor is a dry tile and no water will flow to this tile and the tile will not overflow
+						else if (neighbors[i].second->humidity + humidityChangeMap.find(neighbors[i].first)->second < 1 - waterToDryHumidityFlow) {
+							//Add the humidity given to the neighbor
+							humidityChangeMap.find(neighbors[i].first)->second += waterToDryHumidityFlow;
+							//Substract the humidity lost by this tile
+							humidityChangeMap.find(it->first)->second -= waterToDryHumidityFlow;
 						}
 					}
 					//If there are tiles below this one
@@ -113,19 +124,37 @@ namespace map {
 						}
 					}
 				}
+				//Handle the humidity change of a dry tile
+				else if (it->second.humidity > 0) {
+					//Handle the dissipation 
+					humidityChangeMap.find(it->first)->second -= humidityDissipationRate;
+
+					//Get the neighbors from the map with their position
+					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it->first) };
+
+					for (int i = 0; i != neighbors.size(); i++) {
+						//If the neighbor have less humidity than this tile and the tile will not overflow due to the transfert of humidity
+						if (neighbors[i].second->humidity < it->second.humidity
+							&& neighbors[i].second->humidity + humidityChangeMap.find(neighbors[i].first)->second < 1 - dryToDryHumidityFlowPercent * it->second.humidity) {
+							//Add the humidity given to the neighbor
+							humidityChangeMap.find(neighbors[i].first)->second += dryToDryHumidityFlowPercent * it->second.humidity;
+							//Substract the humidity lost by this tile
+							humidityChangeMap.find(it->first)->second -= dryToDryHumidityFlowPercent * it->second.humidity;
+						}
+					}
+				}
 			}
 			//Apply the change on the real map
 			for (auto it = humidityChangeMap.begin(); it != humidityChangeMap.end(); it++) {
 				storage.modifyTile(it->first)->humidity += it->second;
-				//If the tile is eroded, apply it
-				//if (static_cast<int>(abs(it->second) * waterErosionRate) >= storage.getTile(it->first).heightLost)
-					//storage.modifyTile(it->first)->heightLost++;
+				//The humidity of a tile cannot go below 0
+				if (storage.getTile(it->first).humidity < 0)
+					storage.modifyTile(it->first)->humidity = 0;
 			}
 
 			//If there is change in the map, notify the graphic system to re generate the map
 			if (changeInMap) {
 				GraphicSystem::needGenerateMap();
-				//std::cout << "Average height of water tiles: " << tilesHeightSum / nbrOfWaterTile << ", with weight: " << tilesHeightSumWeighted / nbrOfWaterTileWeighted << std::endl;
 			}
 		}
 	}
