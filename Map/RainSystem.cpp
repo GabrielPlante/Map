@@ -34,8 +34,8 @@ namespace map {
 
 				//Make the rain fall on every tile
 				MapStorage storage;
-				for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
-					it->second.humidity += rainIntensity;
+				for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
+					it->humidity += rainIntensity;
 				}
 			}
 			//If it is not raining

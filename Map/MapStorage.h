@@ -9,9 +9,12 @@ namespace map {
 	//Store every tile component that compose the map
 	class MapStorage
 	{
+		friend class Iterator;
 	private:
 		//The map storage, static so the map is unique
-		static std::map<ge::Vector2<int>, TileComponent> map;
+		//static std::map<ge::Vector2<int>, TileComponent> map;
+
+		static std::vector<std::vector<TileComponent>> map;
 	public:
 		//Add a tile to the map. Return true if the tile was added, return false if there was already a tile
 		bool addTile(ge::Vector2<int> position, TileComponent&& tile);
@@ -20,20 +23,81 @@ namespace map {
 		bool deleteTile(ge::Vector2<int> position);
 
 		//Change a tile, or add the tile if no tile was there
-		void changeTile(ge::Vector2<int> position, TileComponent&& tile);
+		//void changeTile(ge::Vector2<int> position, TileComponent&& tile);
 
 		//Check if there is a tile at the position specified, return true if there is one
-		bool tileExist(ge::Vector2<int> position) const { return map.find(position) != map.end(); }
+		//bool tileExist(ge::Vector2<int> position) const { return map.find(position) != map.end(); }
+		bool tileExist(ge::Vector2<int> position) const { return map.size() > position.x && map[position.x].size() > position.y && map[position.x][position.y].height != -1; }
 
 		//Get a tile
-		const TileComponent& getTile(ge::Vector2<int> position) const { return map.find(position)->second; }
+		//const TileComponent& getTile(ge::Vector2<int> position) const { return map.find(position)->second; }
+		const TileComponent& getTile(ge::Vector2<int> position) const { return map[position.x][position.y]; }
 
 		//Get a pointer on the tile
-		TileComponent* modifyTile(ge::Vector2<int> position) { return &map.find(position)->second; }
+		//TileComponent* modifyTile(ge::Vector2<int> position) { return &map.find(position)->second; }
+		TileComponent* modifyTile(ge::Vector2<int> position) { return &map[position.x][position.y]; }
+
+		class Iterator {
+		private:
+			MapStorage* mapStorage;
+			ge::Vector2<int> position{ 0, 0 };
+			bool hasEnded{ false };
+		public:
+			//Constructor
+			Iterator(MapStorage* mapStorage, ge::Vector2<int> startPosition = { 0, 0 }) : mapStorage{ mapStorage }, position{ startPosition } {
+				if (!mapStorage->tileExist(position)) {
+					(*this)++;
+				}
+			}
+
+			//Return false if the iterator is at the end
+			Iterator operator++(int) {
+				position.y++;
+				//While there are still line to explore in the vector
+				while (mapStorage->map.size() > position.x) {
+					//While there are still position to explore in the line
+					while (mapStorage->map[position.x].size() > position.y) {
+						//If the tile exist, we found the next tile
+						if (mapStorage->tileExist(position))
+							return *this;
+						position.y++;
+					}
+					position.x++;
+					position.y = 0;
+				}
+				hasEnded = true;
+				return *this;
+			}
+
+			//Return true if the iterator is at the end
+			bool endReached() {
+				return hasEnded;
+			}
+
+			//Get the position of the pointer
+			/*std::pair<ge::Vector2<int>, TileComponent> operator*() const {
+				return std::make_pair(position, *mapStorage->modifyTile(position));
+			}*/
+
+			TileComponent* operator->() const {
+				return mapStorage->modifyTile(position);
+			}
+
+			//Get the position of the iterator
+			ge::Vector2<int> getPosition() const { return position; }
+
+			//Check if the iterator is the same as a vector2D
+			bool operator!=(ge::Vector2<int> other) { return other != position; }
+			//bool operator!=(Iterator other) { return (*other) != position; }
+		};
 
 		//The map iterator
-		std::map<ge::Vector2<int>, TileComponent>::iterator getBeginningIterator() { return map.begin(); }
-		std::map<ge::Vector2<int>, TileComponent>::iterator getEndIterator() { return map.end(); }
+		//std::map<ge::Vector2<int>, TileComponent>::iterator getBeginningIterator() { return map.begin(); }
+		//std::map<ge::Vector2<int>, TileComponent>::iterator getEndIterator() { return map.end(); }
+		MapStorage::Iterator getBeginningIterator() { return Iterator{ this }; }
+		//ge::Vector2 getEndIterator() {return It}
+
+
 	};
 }
 

@@ -203,9 +203,9 @@ namespace map {
 		//Map with the height as the key and 
 		std::vector<std::pair<int, ge::Vector2<int>>> localMinTile;
 		//Find all the tile that are local minimum
-		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+		for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 			//Get the neighbors of this tile
-			auto neighbors{ hexagonalMap.getNeighbors(it->first) };
+			auto neighbors{ hexagonalMap.getNeighbors(it.getPosition()) };
 			int lowestNeighbor{ mv::maxHeight };
 			//Find the lowest neighbors
 			for (int i = 0; i != neighbors.size(); i++) {
@@ -213,22 +213,22 @@ namespace map {
 					lowestNeighbor = neighbors[i]->height;
 			}
 			//If the lowest neighbor is still higher than this tile
-			if (lowestNeighbor > it->second.height) {
+			if (lowestNeighbor > it->height) {
 				if (localMinTile.empty()) {
-					localMinTile.push_back(std::make_pair(it->second.height, it->first));
+					localMinTile.push_back(std::make_pair(it->height, it.getPosition()));
 				}
 				else {
 					//Add this tile to the list of local minimum, sorted by the height
 					for (auto jt = localMinTile.begin(); jt != localMinTile.end();) {
 						//If this tile is lower than our tile, insert our tile right before this one
-						if (jt->first <= it->second.height) {
-							localMinTile.insert(jt, std::make_pair(it->second.height, it->first));
+						if (jt->first <= it->height) {
+							localMinTile.insert(jt, std::make_pair(it->height, it.getPosition()));
 							break;
 						}
 						jt++;
 						//If it is the end of the list, add the tile at the end
 						if (jt == localMinTile.end()) {
-							localMinTile.push_back(std::make_pair(it->second.height, it->first));
+							localMinTile.push_back(std::make_pair(it->height, it.getPosition()));
 							break;
 						}
 					}

@@ -3,6 +3,8 @@
 #include "../GameEngine2D/Engine.h"
 #include "../GameEngine2D/Vector2.h"
 
+#include "../GameEngine2D/Clock.h"
+
 #include "GraphicSystem.h"
 #include "HexagonalMap.h"
 #include "MapStorage.h"
@@ -25,15 +27,13 @@ constexpr long long timeBetweenWaterUpdate{ 300 * 1000 };
 
 //The amount of humidity that goes from a water tile to a dry neighbor tile each tick
 constexpr float waterToDryHumidityFlow{ 0.01f };
-
-//The percent of humidity that goes from a dry tile to a dry neighbor tile each tick
-constexpr float dryToDryHumidityFlowPercent{ 0.01f };
-
 //The amount of water a tile with water on it lose each tick
 constexpr float waterEvaporationRate{ 0.005f };
 
-//The amount of humidity a dry tile lose each tick
-constexpr float humidityDissipationRate{ 0.002f };
+//The percent of humidity that goes from a dry tile to a dry neighbor tile each tick
+constexpr float dryToDryHumidityFlowPercent{ 0.01f };
+//The percent of humidity a dry tile lose each tick
+constexpr float humidityDissipationPercent{ 0.01f };
 
 namespace map {
 	void applyWaterFlow(const float waterChange, std::map<ge::Vector2<int>, float>* humidityChangeMap, ge::Vector2<int> neighborPosition
@@ -50,6 +50,8 @@ namespace map {
 
 		//If it is time to update the water
 		if (timeSinceLastUpdate > timeBetweenWaterUpdate) {
+			ge::Clock clock;
+
 			//Update the timer
 			timeSinceLastUpdate -= timeBetweenWaterUpdate;
 
@@ -60,25 +62,25 @@ namespace map {
 
 			//Fill the humidity change map
 			MapStorage storage;
-			for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
-				humidityChangeMap.insert(std::make_pair(it->first, 0.0f));
+			for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
+				humidityChangeMap.insert(std::make_pair(it.getPosition(), 0.0f));
 			}
 
-			for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+			for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 				//First, handle the water flow due to the height
 				//If there is water above the tile
-				if (it->second.humidity > 1) {
+				if (it->humidity > 1) {
 					//Handle the evaporation
-					humidityChangeMap.find(it->first)->second -= waterEvaporationRate;
+					humidityChangeMap.find(it.getPosition())->second -= waterEvaporationRate;
 
 					//Get the neighbors from the map with their position
-					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it->first) };
+					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it.getPosition()) };
 
 					//The tile height accounting the water
-					const int tileRealHeight{ it->second.realheight() };
+					const int tileRealHeight{ it->realheight() };
 
 					//The water present on the tile that will be lost
-					const float tileWater{ (it->second.humidity - minWaterLevel + 0.05f) * waterLostByTicks };
+					const float tileWater{ (it->humidity - minWaterLevel + 0.05f) * waterLostByTicks };
 
 					//The vector contain the real height (with the water accounted) of every neighbor, and it's position
 					std::vector<std::pair<int, int>> neighborsHeight;
@@ -100,7 +102,7 @@ namespace map {
 							//Add the humidity given to the neighbor
 							humidityChangeMap.find(neighbors[i].first)->second += waterToDryHumidityFlow;
 							//Substract the humidity lost by this tile
-							humidityChangeMap.find(it->first)->second -= waterToDryHumidityFlow;
+							humidityChangeMap.find(it.getPosition())->second -= waterToDryHumidityFlow;
 						}
 					}
 					//If there are tiles below this one
@@ -112,12 +114,12 @@ namespace map {
 							//If the height of the water that will flow to the neighbor tile is superior to the difference of height between the two tile
 							if (waterChange * waterToHeight * 2 > tileRealHeight - neighborsHeight[i].second) {
 								//Apply a diminished water to avoid the water returning to this tile on the next iteration
-								applyWaterFlow((tileRealHeight - neighborsHeight[i].second) / waterToHeight / 2, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it->first);
+								applyWaterFlow((tileRealHeight - neighborsHeight[i].second) / waterToHeight / 2, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it.getPosition());
 							}
 							//Else apply normal water flow
 							else {
 								//Apply the water change on the temporary map
-								applyWaterFlow(waterChange, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it->first);
+								applyWaterFlow(waterChange, &humidityChangeMap, neighbors[neighborsHeight[i].first].first, it.getPosition());
 							}
 
 							changeInMap = true;
@@ -125,21 +127,22 @@ namespace map {
 					}
 				}
 				//Handle the humidity change of a dry tile
-				else if (it->second.humidity > 0) {
+				else if (it->humidity > 0) {
 					//Handle the dissipation 
-					humidityChangeMap.find(it->first)->second -= humidityDissipationRate;
+					humidityChangeMap.find(it.getPosition())->second -= humidityDissipationPercent * it->humidity;
 
 					//Get the neighbors from the map with their position
-					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it->first) };
+					auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it.getPosition()) };
 
+					//Handle the humidity transfert to neighbors
 					for (int i = 0; i != neighbors.size(); i++) {
 						//If the neighbor have less humidity than this tile and the tile will not overflow due to the transfert of humidity
-						if (neighbors[i].second->humidity < it->second.humidity
-							&& neighbors[i].second->humidity + humidityChangeMap.find(neighbors[i].first)->second < 1 - dryToDryHumidityFlowPercent * it->second.humidity) {
+						if (neighbors[i].second->humidity < it->humidity
+							&& neighbors[i].second->humidity + humidityChangeMap.find(neighbors[i].first)->second < 1 - dryToDryHumidityFlowPercent * it->humidity) {
 							//Add the humidity given to the neighbor
-							humidityChangeMap.find(neighbors[i].first)->second += dryToDryHumidityFlowPercent * it->second.humidity;
+							humidityChangeMap.find(neighbors[i].first)->second += dryToDryHumidityFlowPercent * it->humidity;
 							//Substract the humidity lost by this tile
-							humidityChangeMap.find(it->first)->second -= dryToDryHumidityFlowPercent * it->second.humidity;
+							humidityChangeMap.find(it.getPosition())->second -= dryToDryHumidityFlowPercent * it->humidity;
 						}
 					}
 				}
@@ -156,6 +159,8 @@ namespace map {
 			if (changeInMap) {
 				GraphicSystem::needGenerateMap();
 			}
+
+			std::cout << "Time: " << clock.getTime() / 1000 << std::endl;
 		}
 	}
 }

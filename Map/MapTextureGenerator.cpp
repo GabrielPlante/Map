@@ -28,14 +28,14 @@ namespace map {
 		SDL_Renderer* renderer{ drawer.startDrawing({mapSize.x, mapSize.y}, {0, 0, 0}) };
 
 		MapStorage storage;
-		for (auto it = storage.getBeginningIterator(); it != storage.getEndIterator(); it++) {
+		for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 			//Set the proper color
-			if (it->second.humidity < 1)
+			if (it->humidity < 1)
 				//SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
-				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * redHeightFactor),
-					static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->second.height * 255 / mv::maxHeight)) * blueHeightFactor));
+				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * redHeightFactor),
+					static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * blueHeightFactor));
 			else {
-				float water{ it->second.humidity };
+				float water{ it->humidity };
 				if (water > maxWaterForColor)
 					water = maxWaterForColor;
 				water = 255 - (water * 255 / (maxWaterForColor + 1));
@@ -44,7 +44,7 @@ namespace map {
 			}
 
 			//Create the coordinate
-			ge::Vector2<> pos{ HexagonalMap::relativeToAbsolute(it->first) };
+			ge::Vector2<> pos{ HexagonalMap::relativeToAbsolute(it.getPosition()) };
 			ge::Vector2<int> posInt{ static_cast<int>(pos.x),  static_cast<int>(pos.y) };
 
 			baseHexagon.render(renderer, posInt);
