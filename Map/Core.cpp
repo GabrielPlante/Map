@@ -5,6 +5,7 @@
 
 #include "CommandQuitConsole.h"
 
+#include "HumiditySystem.h"
 #include "GraphicSystem.h"
 #include "MapGenerator.h"
 #include "WaterSystem.h"
@@ -41,6 +42,8 @@ namespace map {
 		//Add the other systems
 		std::shared_ptr<WaterSystem> waterSystem{ new WaterSystem{} };
 		ge::Engine::getInstance()->addSystem(waterSystem);
+		std::shared_ptr<HumiditySystem> humditySystem{ new HumiditySystem{} };
+		ge::Engine::getInstance()->addSystem(humditySystem);
 		std::shared_ptr<RainSystem> rainSystem{ new RainSystem{} };
 		ge::Engine::getInstance()->addSystem(rainSystem);
 

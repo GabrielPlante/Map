@@ -12,8 +12,6 @@ namespace map {
 		friend class Iterator;
 	private:
 		//The map storage, static so the map is unique
-		//static std::map<ge::Vector2<int>, TileComponent> map;
-
 		static std::vector<std::vector<TileComponent>> map;
 	public:
 		//Add a tile to the map. Return true if the tile was added, return false if there was already a tile
@@ -26,15 +24,12 @@ namespace map {
 		//void changeTile(ge::Vector2<int> position, TileComponent&& tile);
 
 		//Check if there is a tile at the position specified, return true if there is one
-		//bool tileExist(ge::Vector2<int> position) const { return map.find(position) != map.end(); }
 		bool tileExist(ge::Vector2<int> position) const { return map.size() > position.x && map[position.x].size() > position.y && map[position.x][position.y].height != -1; }
 
 		//Get a tile
-		//const TileComponent& getTile(ge::Vector2<int> position) const { return map.find(position)->second; }
 		const TileComponent& getTile(ge::Vector2<int> position) const { return map[position.x][position.y]; }
 
 		//Get a pointer on the tile
-		//TileComponent* modifyTile(ge::Vector2<int> position) { return &map.find(position)->second; }
 		TileComponent* modifyTile(ge::Vector2<int> position) { return &map[position.x][position.y]; }
 
 		class Iterator {
@@ -50,7 +45,7 @@ namespace map {
 				}
 			}
 
-			//Return false if the iterator is at the end
+			//Increment the iterator to the next tile
 			Iterator operator++(int) {
 				position.y++;
 				//While there are still line to explore in the vector
@@ -74,11 +69,6 @@ namespace map {
 				return hasEnded;
 			}
 
-			//Get the position of the pointer
-			/*std::pair<ge::Vector2<int>, TileComponent> operator*() const {
-				return std::make_pair(position, *mapStorage->modifyTile(position));
-			}*/
-
 			TileComponent* operator->() const {
 				return mapStorage->modifyTile(position);
 			}
@@ -88,14 +78,10 @@ namespace map {
 
 			//Check if the iterator is the same as a vector2D
 			bool operator!=(ge::Vector2<int> other) { return other != position; }
-			//bool operator!=(Iterator other) { return (*other) != position; }
 		};
 
 		//The map iterator
-		//std::map<ge::Vector2<int>, TileComponent>::iterator getBeginningIterator() { return map.begin(); }
-		//std::map<ge::Vector2<int>, TileComponent>::iterator getEndIterator() { return map.end(); }
 		MapStorage::Iterator getBeginningIterator() { return Iterator{ this }; }
-		//ge::Vector2 getEndIterator() {return It}
 
 
 	};

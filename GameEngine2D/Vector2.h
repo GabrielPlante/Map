@@ -121,4 +121,11 @@ namespace ge {
 		return (pow(deltaX, 2) + pow(deltaY, 2)) <= pow(circleRadius, 2);
 	}
 
+	template <typename T, const int primeConstant>
+	struct Vector2Hash {
+		std::size_t operator()(const Vector2<T>& v) const {
+			return (primeConstant + v.x) * primeConstant + v.y;
+		}
+	};
+
 }

@@ -30,12 +30,12 @@ namespace map {
 		MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 			//Set the proper color
-			if (it->humidity < 1)
+			if (it->water == 0)
 				//SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
 				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * redHeightFactor),
 					static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * blueHeightFactor));
 			else {
-				float water{ it->humidity };
+				float water{ it->water };
 				if (water > maxWaterForColor)
 					water = maxWaterForColor;
 				water = 255 - (water * 255 / (maxWaterForColor + 1));
