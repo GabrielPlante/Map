@@ -14,9 +14,6 @@ constexpr float waterLostByTicks{ 0.25f };
 //The minimum height two neighbor tiles must have for the water to flow between them
 constexpr int minHeightDiffForFlow{ 0 };
 
-//The time between two update of the water system that handle the water flow in microsecond
-constexpr long long timeBetweenWaterUpdate{ 300 * 1000 };
-
 
 //The amount of water a tile with water on it lose each tick
 constexpr float waterEvaporationRate{ 0.005f };
@@ -35,9 +32,9 @@ namespace map {
 		timeSinceLastUpdate += ge::Engine::getInstance()->getTimeSinceLastFrame();
 
 		//If it is time to update the water
-		if (timeSinceLastUpdate > timeBetweenWaterUpdate) {
+		if (timeSinceLastUpdate > mv::timeBetweenEnvironmentUpdate) {
 			//Update the timer
-			timeSinceLastUpdate -= timeBetweenWaterUpdate;
+			timeSinceLastUpdate -= mv::timeBetweenEnvironmentUpdate;
 
 			bool changeInMap{ false };
 

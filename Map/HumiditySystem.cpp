@@ -4,12 +4,10 @@
 
 #include "HexagonalMap.h"
 #include "MapStorage.h"
-
-//The time between two update of the water system that handle the water flow in microsecond
-constexpr long long timeBetweenHumidityUpdate{ 300 * 1000 };
+#include "MapValues.h"
 
 //The amount of water a tile can absorb and convert into humidity each tick
-constexpr float waterAbsorbtion{ 0.02f };
+constexpr float waterAbsorbtion{ 0.01f };
 //The percent of humidity that goes from a dry tile to a dry neighbor tile each tick
 constexpr float humidityFlowPercent{ 0.01f };
 //The percent of humidity a dry tile lose each tick
@@ -21,9 +19,9 @@ namespace map {
 		timeSinceLastUpdate += ge::Engine::getInstance()->getTimeSinceLastFrame();
 
 		//If it is time to update the water
-		if (timeSinceLastUpdate > timeBetweenHumidityUpdate) {
+		if (timeSinceLastUpdate > mv::timeBetweenEnvironmentUpdate) {
 			//Update the timer
-			timeSinceLastUpdate -= timeBetweenHumidityUpdate;
+			timeSinceLastUpdate -= mv::timeBetweenEnvironmentUpdate;
 
 			//A temporary map to apply all the change at the same time (after everything is calculated)
 			std::vector<std::vector<float>> humidityChangeMap;

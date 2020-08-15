@@ -173,6 +173,7 @@
     <ClInclude Include="MapTextureGenerator.h" />
     <ClInclude Include="MapValues.h" />
     <ClInclude Include="RainSystem.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="WaterSystem.h" />
   </ItemGroup>

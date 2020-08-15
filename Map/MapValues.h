@@ -22,6 +22,9 @@ public:
 	//The maximum height of a tile
 	static constexpr int maxHeight{ 1000 };
 
+	//The time between two update of each environment system
+	static constexpr long long timeBetweenEnvironmentUpdate{ 300 * 1000 };
+
 	//The maximum humidity of a tile
 	static constexpr float maxHumidity{ 2.0f };
 };
