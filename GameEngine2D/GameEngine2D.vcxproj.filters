@@ -331,5 +331,8 @@
     <ClInclude Include="HexagonCreator.h">
       <Filter>Header Files\Renderable\TextureCreator</Filter>
     </ClInclude>
+    <ClInclude Include="VectorOfVector.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

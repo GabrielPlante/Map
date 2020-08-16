@@ -18,11 +18,4 @@ TEST(Array2DTest, All) {
 	EXPECT_EQ(position, it.get());
 	it++;
 	EXPECT_TRUE(it.end());
-	a.addPosition({ 0, 2 });
-	a.addPosition({ 0, 4 });
-	a.addPosition({ 1, 1 });
-	a.addPosition({ 1, 3 });
-	it = a.begin();
-	EXPECT_EQ(position, it.get());
-
 }

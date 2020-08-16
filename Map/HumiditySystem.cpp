@@ -12,6 +12,8 @@ constexpr float waterAbsorbtion{ 0.01f };
 constexpr float humidityFlowPercent{ 0.01f };
 //The percent of humidity a dry tile lose each tick
 constexpr float humidityDissipationPercent{ 0.01f };
+//The minimum difference in humidity for two neighbor tiles to exange humidity
+constexpr float minHumidityDifForFlow{ 0.05f };
 
 namespace map {
 	void HumiditySystem::update() {
@@ -59,7 +61,7 @@ namespace map {
 				auto neighbors{ HexagonalMap{}.getNeighborsWithPos(it.getPosition()) };
 				for (auto jt = neighbors.begin(); jt != neighbors.end(); jt++) {
 					//If this tile got more humidity than it's neighbor, make the humidity flow between the two tile
-					if (it->humidity > jt->second->humidity) {
+					if (it->humidity > jt->second->humidity + minHumidityDifForFlow) {
 						humidityChangeMap[it.getPosition().x][it.getPosition().y] -= humidityFlowPercent * it->humidity;
 						humidityChangeMap[jt->first.x][jt->first.y] += humidityFlowPercent * it->humidity;
 					}

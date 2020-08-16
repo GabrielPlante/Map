@@ -7,7 +7,6 @@ namespace map {
 	bool MapStorage::addTile(ge::Vector2<int> position, TileComponent&& tile) {
 		if (tileExist(position))
 			return false;
-		//map.insert(std::make_pair(position, tile));
 		while (map.size() <= position.x)
 			map.push_back(std::vector<TileComponent>{});
 		while (map[position.x].size() <= position.y) {
@@ -20,7 +19,6 @@ namespace map {
 	}
 
 	bool MapStorage::deleteTile(ge::Vector2<int> position) {
-		//return map.erase(position);
 		if (!tileExist(position))
 			return false;
 		map[position.x][position.y].height = -1;

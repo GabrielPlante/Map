@@ -31,12 +31,24 @@ namespace map {
 		double humiditySum{ 0 };
 		double waterSum{ 0 };
 		int tileSum{ 0 };
+		ge::Vector2<float> extremumHumidity{ 1, 0 };
+		ge::Vector2<float> extremumWater{ 100, 0 };
 		for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 			humiditySum += it->humidity;
 			waterSum += it->water;
+			if (it->humidity < extremumHumidity.x)
+				extremumHumidity.x = it->humidity;
+			else if (it->humidity > extremumHumidity.y)
+				extremumHumidity.y = it->humidity;
+			if (it->water < extremumWater.x)
+				extremumWater.x = it->water;
+			else if (it->water > extremumWater.y)
+				extremumWater.y = it->water;
 			tileSum++;
 		}
-		std::cout << " Average humidity: " << humiditySum / tileSum << " ; average water: " << waterSum / tileSum << std::endl;
+		std::cout << "Average humidity: " << humiditySum / tileSum << " ; average water: " << waterSum / tileSum << std::endl;
+		std::cout << "Min humidity: " << extremumHumidity.x << " ; max humidity: " << extremumHumidity.y << " ; min water: " << extremumWater.x << " ; max water: " << extremumWater.y << std::endl;
+
 	}
 
 	void RainSystem::update() {

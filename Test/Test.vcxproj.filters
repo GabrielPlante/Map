@@ -15,6 +15,9 @@
     <ClCompile Include="Array2DTest.cpp">
       <Filter>MapTests</Filter>
     </ClCompile>
+    <ClCompile Include="VectorOfVectorTest.cpp">
+      <Filter>GameEngineTests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
