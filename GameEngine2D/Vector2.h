@@ -65,6 +65,12 @@ namespace ge {
 		bool operator<(const Vector2<P>& other) const {
 			return x != other.x ? x < other.x : y < other.y;
 		}
+
+		//Overloading of the type cast, so static_cast can be used on the Vector2D
+		template <typename P>
+		operator P() const {
+			return Vector2<P>{static_cast<P>(x), static_cast<P>(y)};
+		}
 	};
 
 
