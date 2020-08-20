@@ -10,6 +10,8 @@
 #include "MapValues.h"
 
 namespace map {
+	bool MapTextureGenerator::showWater{ true };
+
 	constexpr double redHeightFactor{ 1 };
 	constexpr double greenHeightFactor{ 0.6 };
 	constexpr double blueHeightFactor{ 0.2 };
@@ -30,7 +32,7 @@ namespace map {
 		MapStorage storage;
 		for (auto it = storage.getBeginningIterator(); !it.endReached(); it++) {
 			//Set the proper color
-			if (it->water == 0)
+			if (it->water == 0 || !showWater)
 				//SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>(200 - it->second.height * 2), 50, 0);
 				SDL_SetTextureColorMod(baseHexagon.get(), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * redHeightFactor),
 					static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * greenHeightFactor), static_cast<Uint8>((255 - (it->height * 255 / mv::maxHeight)) * blueHeightFactor));

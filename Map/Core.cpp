@@ -4,6 +4,7 @@
 #include "../GameEngine2D/CommandList.h"
 
 #include "CommandQuitConsole.h"
+#include "CommandToggleWater.h"
 
 #include "HumiditySystem.h"
 #include "GraphicSystem.h"
@@ -16,6 +17,7 @@
 namespace map {
 	void fillCommandList() {
 		ge::CommandList::getInstance()->addCommand(std::move(std::unique_ptr<ge::Command>{new CommandQuitConsole{}}));
+		ge::CommandList::getInstance()->addCommand(std::move(std::unique_ptr<ge::Command>{new CommandToggleWater{}}));
 	}
 
 	Core* Core::instance{ nullptr };

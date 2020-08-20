@@ -163,7 +163,10 @@
   <ItemGroup>
     <ClInclude Include="Array2D.h" />
     <ClInclude Include="CommandQuitConsole.h" />
+    <ClInclude Include="CommandToggleWater.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="FloraComponent.h" />
+    <ClInclude Include="FloraRestriction.h" />
     <ClInclude Include="GraphicSystem.h" />
     <ClInclude Include="HexagonalMap.h" />
     <ClInclude Include="HumiditySystem.h" />
