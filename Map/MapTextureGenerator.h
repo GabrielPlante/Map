@@ -8,6 +8,7 @@ namespace map {
 	{
 	private:
 		static bool showWater;
+		static bool showFlora;
 
 		ge::TextureWrapper mapTexture;
 	public:
@@ -19,5 +20,6 @@ namespace map {
 
 		//Toggle the water
 		static void toggleWater() { showWater = !showWater; }
+		static void toggleFlora() { showFlora = !showFlora; }
 	};
 }

@@ -19,6 +19,9 @@ public:
 	//Test for a new way to build the map, the map will be an hexagon of side mapSideSize
 	static constexpr int mapSideSize{ 33 };
 
+	//The number of tile present in the map
+	static constexpr int nbrOfTile{ 1 + 3 * mapSideSize * (mapSideSize - 1) };
+
 	//The maximum height of a tile
 	static constexpr int maxHeight{ 1000 };
 

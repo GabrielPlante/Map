@@ -8,5 +8,13 @@ namespace map {
 
 		//The survival time outside the restriction, in ticks
 		int survivalTime;
+
+		//The time spent outside the restriction so far
+		int timeInSurvival{ 0 };
+
+		//Constructor
+		FloraRestriction(T restriction, int survivalTime) : restriction{ restriction }, survivalTime{ survivalTime } {}
+		//Default constructor
+		FloraRestriction() {}
 	};
 }

@@ -19,7 +19,6 @@ namespace map {
 		//Execute
 		void execute(const std::vector<float>&) override {
 			MapTextureGenerator::toggleWater();
-			//MapTextureGenerator generator;
 		}
 	};
 }

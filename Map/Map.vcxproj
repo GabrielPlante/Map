@@ -149,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="FloraStorage.cpp" />
+    <ClCompile Include="FloraSystem.cpp" />
     <ClCompile Include="GraphicSystem.cpp" />
     <ClCompile Include="HexagonalMap.cpp" />
     <ClCompile Include="HumiditySystem.cpp" />
@@ -167,6 +169,8 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="FloraComponent.h" />
     <ClInclude Include="FloraRestriction.h" />
+    <ClInclude Include="FloraStorage.h" />
+    <ClInclude Include="FloraSystem.h" />
     <ClInclude Include="GraphicSystem.h" />
     <ClInclude Include="HexagonalMap.h" />
     <ClInclude Include="HumiditySystem.h" />

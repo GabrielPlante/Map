@@ -7,7 +7,7 @@
 #include "MapValues.h"
 
 //The amount of water a tile can absorb and convert into humidity each tick
-constexpr float waterAbsorbtion{ 0.01f };
+constexpr float waterAbsorbtion{ 0.02f };
 //The percent of humidity that goes from a dry tile to a dry neighbor tile each tick
 constexpr float humidityFlowPercent{ 0.01f };
 //The percent of humidity a dry tile lose each tick

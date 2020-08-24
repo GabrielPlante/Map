@@ -52,6 +52,7 @@ namespace ge {
 
 			//Get the element pointed by the vector
 			T* operator->() const { return &(*vectorOfVector)[position]; }
+			T& operator*() { return (*vectorOfVector)[position]; }
 
 			//Get the actual position of the iterator
 			Vector2<int> getPosition() const{ return position; }

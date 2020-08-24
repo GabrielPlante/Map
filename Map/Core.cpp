@@ -9,6 +9,7 @@
 #include "HumiditySystem.h"
 #include "GraphicSystem.h"
 #include "MapGenerator.h"
+#include "FloraSystem.h"
 #include "WaterSystem.h"
 #include "RainSystem.h"
 #include "MapValues.h"
@@ -48,6 +49,8 @@ namespace map {
 		ge::Engine::getInstance()->addSystem(humditySystem);
 		std::shared_ptr<RainSystem> rainSystem{ new RainSystem{} };
 		ge::Engine::getInstance()->addSystem(rainSystem);
+		std::shared_ptr<FloraSystem> floraSystem{ new FloraSystem{} };
+		ge::Engine::getInstance()->addSystem(floraSystem);
 
 
 		//Quit the console and reduce fps to reduce work load

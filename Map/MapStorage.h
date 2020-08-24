@@ -10,10 +10,8 @@ namespace map {
 	//Store every tile component that compose the map
 	class MapStorage
 	{
-		friend class Iterator;
 	private:
 		//The map storage, static so the map is unique
-		//static std::vector<std::vector<TileComponent>> map;
 		static ge::VectorOfVector<TileComponent> map;
 	public:
 		//Add a tile to the map. Return true if the tile was added, return false if there was already a tile
@@ -21,9 +19,6 @@ namespace map {
 
 		//Delete the tile at the position. Return true if the tile was deleted, and false if there was no tile at the position
 		void deleteTile(ge::Vector2<int> position) { map.deleteElement(position); }
-
-		//Change a tile, or add the tile if no tile was there
-		//void changeTile(ge::Vector2<int> position, TileComponent&& tile);
 
 		//Check if there is a tile at the position specified, return true if there is one
 		bool tileExist(ge::Vector2<int> position) const { return map.elementExist(position); }
@@ -36,8 +31,6 @@ namespace map {
 
 		//The map iterator
 		ge::VectorOfVector<TileComponent>::Iterator getBeginningIterator() { return map.begin(); }
-
-
 	};
 }
 
